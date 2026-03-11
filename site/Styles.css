@@ -3,7 +3,7 @@
 :root {
     --purple: rgb(123, 31, 162);
     --violet: rgb(103, 58, 183);
-    --pink: rgb(244, 143, 177);
+    --blue: rgb(240, 100, 27);
 }
 
 body {
@@ -11,7 +11,7 @@ body {
     margin: 0px;
     overflow: auto;  /* Changed from hidden to auto */
     user-select: none;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     color: #F9F6EF;
     display: grid;
     place-content: center;
