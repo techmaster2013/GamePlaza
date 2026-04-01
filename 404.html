@@ -11,12 +11,18 @@
     </h1>
     
     <h2>
-        lol page not found or something
+        so this link actually doesnt exist lol
     </h2>
 
-  <form action="/site/index.html">
-  <button type="submit">go to correct link</button>
-</form>   
+  <button id="Barnacle">real link here</button>
+
+    <script>
+        const Barnacle = document.getElementById("Barnacle");
+
+        Barnacle.addEventListener("click", function() {
+            window.location.href = '/site/index.html';
+        });
+    </script>   
 
     <!-- Some cool configurations -->
     <canvas id="snowflakes"></canvas>
