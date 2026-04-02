@@ -6,4 +6,4 @@ A website created by a Staten Island middle schooler who wanted an easy way to f
 
 Since I am fairly new to coding, I am using some code from another unblocked games website like GamePlaza, [Barnical](https://barnical.github.io/).
 
-If you want to go to the original GamePlaza, click [here](https://sites.google.com/nycstudents.net/gameplaza). It only works for NYCDOE accounts, so I wouldn't use it anymore, but it might become needed.
+If you want to go to the original GamePlaza, click [here](https://sites.google.com/nycstudents.net/gameplaza). It only works for NYCDOE accounts, so I wouldn't use it anymore.
