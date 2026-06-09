@@ -96,6 +96,13 @@
             transform: scale(0.95);
         }
 
+        #featured-container {
+            background-color: rgba(244, 143, 177, 0.1);
+            padding: 15px;
+            border-left: 4px solid var(--pink);
+            margin-bottom: 20px;
+        }
+
         @media (max-width: 768px) {
             .button-container button {
                 flex-basis: calc(50% - 10px);
@@ -153,12 +160,17 @@
     <!-- Search bar -->
     <input type="text" id="game-search" placeholder="Search games..." />
 
-    <!-- Buttons -->
-    <div class="button-container">
+    <!-- Featured Games Section -->
+    <div id="featured-container" class="button-container">
         <button data-action="action1">GSite GamePlaza</button>
+        <button data-action="action3">Request Games</button>
+        <button data-action="action28">Barnical</button>
+    </div>
+
+    <!-- All Games Section -->
+    <div class="button-container" id="button-container">
         <button data-action="action2">T9 OS</button>
         <button data-action="action676767676767676767676">DDLC+</button>
-        <button data-action="action3">Request Games</button>
         <button data-action="action4">KART BROS!</button>
         <button data-action="action5">Slope Game</button>
         <button data-action="action7">Online Racing Game</button>
@@ -175,7 +187,6 @@
         <button data-action="action24">Dino Game</button>
         <button data-action="action26">Drift Boss</button>
         <button data-action="action27">Baldi's Basics Classic Remastered</button>
-        <button data-action="action28">Barnical</button>
         <button data-action="action29">New York Times Games</button>
         <button data-action="action30">Chess</button>
         <button data-action="action31">eParkour</button>
@@ -219,10 +230,13 @@
 
     <!-- JS -->
     <script>
-        const buttons = document.querySelectorAll(".button-container button");
+        const featuredContainer = document.getElementById("featured-container");
+        const buttonContainer = document.getElementById("button-container");
         const searchInput = document.getElementById("game-search");
-        const buttonContainer = document.querySelector(".button-container");
-        const allButtons = Array.from(buttonContainer.querySelectorAll("button"));
+        
+        const allFeaturedButtons = Array.from(featuredContainer.querySelectorAll("button"));
+        const allRegularButtons = Array.from(buttonContainer.querySelectorAll("button"));
+        const allButtons = [...allFeaturedButtons, ...allRegularButtons];
 
         function sortButtons(buttons) {
             return buttons.sort((a, b) => a.textContent.trim().localeCompare(b.textContent.trim()));
@@ -230,20 +244,30 @@
 
         searchInput.addEventListener("input", () => {
             const searchTerm = searchInput.value.toLowerCase();
-            const filteredButtons = allButtons.filter(btn => btn.textContent.toLowerCase().includes(searchTerm));
+            
+            // Filter featured buttons
+            const filteredFeatured = allFeaturedButtons.filter(btn => btn.textContent.toLowerCase().includes(searchTerm));
+            featuredContainer.innerHTML = "";
+            sortButtons(filteredFeatured).forEach(btn => featuredContainer.appendChild(btn));
+            
+            // Filter regular buttons
+            const filteredRegular = allRegularButtons.filter(btn => btn.textContent.toLowerCase().includes(searchTerm));
             buttonContainer.innerHTML = "";
-            sortButtons(filteredButtons).forEach(btn => buttonContainer.appendChild(btn));
+            sortButtons(filteredRegular).forEach(btn => buttonContainer.appendChild(btn));
         });
 
         // Initial alphabetical sorting
+        featuredContainer.innerHTML = "";
+        sortButtons(allFeaturedButtons).forEach(btn => featuredContainer.appendChild(btn));
+        
         buttonContainer.innerHTML = "";
-        sortButtons(allButtons).forEach(btn => buttonContainer.appendChild(btn));
+        sortButtons(allRegularButtons).forEach(btn => buttonContainer.appendChild(btn));
 
         function openDictionary(dictionaryURL) {
             window.location.href = dictionaryURL;
         }
 
-        buttons.forEach((button) => {
+        allButtons.forEach((button) => {
             button.addEventListener("click", function () {
                 const action = button.dataset.action;
                 switch (action) {
