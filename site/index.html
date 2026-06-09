@@ -103,15 +103,181 @@
             margin-bottom: 20px;
         }
 
+        .update-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--purple), var(--violet));
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(123, 31, 162, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .update-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(123, 31, 162, 0.6);
+        }
+
+        /* Update Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #242424 0%, #1a1a1a 100%);
+            border: 2px solid var(--pink);
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(244, 143, 177, 0.3);
+            animation: slideUp 0.4s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--pink);
+            padding-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            background: linear-gradient(to right, var(--purple), var(--violet), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 28px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--pink);
+            font-size: 28px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .close-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .modal-body {
+            color: #F9F6EF;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .modal-body h3 {
+            color: var(--pink);
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+
+        .modal-body ul, .modal-body ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .modal-body li {
+            margin: 8px 0;
+        }
+
+        .modal-footer {
+            margin-top: 25px;
+            text-align: right;
+        }
+
+        .modal-footer button {
+            background: linear-gradient(135deg, var(--purple), var(--violet));
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .modal-footer button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(123, 31, 162, 0.4);
+        }
+
+        .modal-footer button:active {
+            transform: translateY(0);
+        }
+
         @media (max-width: 768px) {
             .button-container button {
                 flex-basis: calc(50% - 10px);
+            }
+            
+            .modal-content {
+                padding: 25px;
+                margin: 20px;
+            }
+
+            .modal-header h2 {
+                font-size: 22px;
             }
         }
 
         @media (max-width: 480px) {
             .button-container button {
                 flex-basis: calc(100% - 10px);
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .update-badge {
+                padding: 6px 12px;
+                font-size: 12px;
             }
         }
 
@@ -156,6 +322,47 @@
     <h2>
         <span class=magic>
             <span class="magic-text">Update 6.9.26</span>
+            <div class="update-badge" id="update-trigger">View Update Notes</div>
+        </span>
+    </h2>
+
+    <!-- Update Modal -->
+    <div class="modal-overlay" id="updateModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Update 6.9.26</h2>
+                <button class="close-btn" id="closeBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>What's New</h3>
+                <p>Placeholder: Add your update notes here. Describe the new features, improvements, and bug fixes included in this update.</p>
+                
+                <h3>Features Added</h3>
+                <ul>
+                    <li>Placeholder feature 1</li>
+                    <li>Placeholder feature 2</li>
+                    <li>Placeholder feature 3</li>
+                </ul>
+
+                <h3>Improvements</h3>
+                <ul>
+                    <li>Placeholder improvement 1</li>
+                    <li>Placeholder improvement 2</li>
+                </ul>
+
+                <h3>Bug Fixes</h3>
+                <ul>
+                    <li>Placeholder bug fix 1</li>
+                    <li>Placeholder bug fix 2</li>
+                </ul>
+
+                <p><strong>Release Date:</strong> June 9, 2026</p>
+            </div>
+            <div class="modal-footer">
+                <button id="dismissBtn">Got it!</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Search bar -->
     <input type="text" id="game-search" placeholder="Search games..." />
@@ -334,6 +541,35 @@
                     default: break;
                 }
             });
+        });
+
+        // Update Modal Logic
+        const updateModal = document.getElementById("updateModal");
+        const updateTrigger = document.getElementById("update-trigger");
+        const closeBtn = document.getElementById("closeBtn");
+        const dismissBtn = document.getElementById("dismissBtn");
+
+        // Show modal on page load
+        window.addEventListener("load", () => {
+            updateModal.classList.add("active");
+        });
+
+        // Close modal functions
+        function closeModal() {
+            updateModal.classList.remove("active");
+        }
+
+        closeBtn.addEventListener("click", closeModal);
+        dismissBtn.addEventListener("click", closeModal);
+        updateTrigger.addEventListener("click", () => {
+            updateModal.classList.add("active");
+        });
+
+        // Close modal when clicking outside
+        updateModal.addEventListener("click", (e) => {
+            if (e.target === updateModal) {
+                closeModal();
+            }
         });
     </script>
 <footer>
