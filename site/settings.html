@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GamePlaza Settings</title>
+    <link rel="icon" href="../Normal.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple: rgb(123, 31, 162);
+            --violet: rgb(103, 58, 183);
+            --pink: rgb(244, 143, 177);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #1a0f2e, #0f0820, #1f1240, #0d0619);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            font-family: 'Ubuntu', sans-serif;
+            color: #F9F6EF;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(244, 143, 177, 0.1);
+            border-left: 4px solid var(--pink);
+            border-radius: 8px;
+        }
+
+        .header h1 {
+            background: linear-gradient(to right, var(--purple), var(--violet), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 32px;
+            font-weight: 400;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, var(--purple), var(--violet));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(123, 31, 162, 0.4);
+        }
+
+        .back-btn:active {
+            transform: translateY(0);
+        }
+
+        .settings-section {
+            background: rgba(36, 36, 36, 0.8);
+            border: 1px solid rgba(244, 143, 177, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .settings-section:hover {
+            border-color: rgba(244, 143, 177, 0.4);
+            box-shadow: 0 0 15px rgba(123, 31, 162, 0.2);
+        }
+
+        .settings-section h2 {
+            color: var(--pink);
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .settings-section p {
+            color: #999;
+            font-size: 13px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .setting-control {
+            margin: 15px 0;
+        }
+
+        label {
+            display: block;
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #1a1a1a;
+            border: 1px solid rgba(244, 143, 177, 0.3);
+            color: #F9F6EF;
+            border-radius: 5px;
+            font-family: 'Ubuntu', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        select:hover, input[type="text"]:hover {
+            border-color: rgba(244, 143, 177, 0.6);
+        }
+
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--pink);
+            box-shadow: 0 0 10px rgba(244, 143, 177, 0.3);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background-color: #242424;
+            border: 2px solid rgba(244, 143, 177, 0.4);
+            color: #7d7d7d;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Ubuntu', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        button:hover {
+            border-color: var(--pink);
+            box-shadow: 0 0 15px rgba(123, 31, 162, 0.4), 0 0 30px rgba(103, 58, 183, 0.2);
+            color: #F9F6EF;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .button-action {
+            width: 100%;
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            padding: 12px;
+            border-radius: 5px;
+            border-left: 3px solid #4CAF50;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Settings</h1>
+            <button class="back-btn" onclick="window.location.href='/';">← Back to GamePlaza</button>
+        </div>
+
+        <!-- Tab Cloak Section -->
+        <div class="settings-section">
+            <h2>Tab Cloak</h2>
+            <p>Change how your tab appears to others. Perfect for keeping your gaming sessions private!</p>
+            <div class="setting-control">
+                <label for="cloakSelect">Preset Cloaks:</label>
+                <select id="cloakSelect">
+                    <option value="search">Google</option>
+                    <option value="drive">Google Drive</option>
+                    <option value="classroom">Google Classroom</option>
+                    <option value="fakesearch">Fake Google Search</option>
+                    <option value="gmail">Gmail</option>
+                    <option value="word">Word</option>
+                    <option value="powerpoint">Powerpoint</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="calendar">Google Calendar</option>
+                    <option value="meets">Google Meet</option>
+                    <option value="canvas">Canvas</option>
+                    <option value="zoom">Zoom</option>
+                    <option value="khan">Khan Academy</option>
+                </select>
+            </div>
+            <div class="buttons">
+                <button onclick="setCloak()">Set Cloak</button>
+                <button onclick="resetTab()">Reset Cloak</button>
+            </div>
+            <div id="cloakMessage" class="success-message"></div>
+        </div>
+
+        <!-- Custom Cloak Section -->
+        <div class="settings-section">
+            <h2>Custom Cloak</h2>
+            <p>Create your own custom tab title and icon.</p>
+            <div class="setting-control">
+                <label for="titleInput">Tab Title:</label>
+                <input id="titleInput" type="text" placeholder="Enter custom tab title" onkeyup="setCustomTitle(this.value)">
+            </div>
+            <div class="setting-control">
+                <label for="iconInput">Favicon URL:</label>
+                <input id="iconInput" type="text" placeholder="https://example.com/favicon.ico" onkeyup="setCustomFavicon(this.value.trim())">
+            </div>
+            <div id="customCloakMessage" class="success-message"></div>
+        </div>
+
+        <!-- Particles Section -->
+        <div class="settings-section">
+            <h2>Particles</h2>
+            <p>Toggle particle effects in the background.</p>
+            <div class="buttons">
+                <button onclick="enableParticles()">Enable</button>
+                <button onclick="disableParticles()">Disable</button>
+            </div>
+            <div id="particlesMessage" class="success-message"></div>
+        </div>
+
+        <!-- Mobile Screen Sizer Section -->
+        <div class="settings-section">
+            <h2>Mobile Screen Sizer</h2>
+            <p>Automatically adjust the display for mobile devices.</p>
+            <div class="buttons">
+                <button onclick="enableMobileScreen()">Enable</button>
+                <button onclick="disableMobileScreen()">Disable</button>
+            </div>
+            <div id="mobileMessage" class="success-message"></div>
+        </div>
+
+        <!-- Anti Deledao Section -->
+        <div class="settings-section">
+            <h2>Anti Deledao</h2>
+            <p>Adds a static image overlay that game detection systems can't see through. This may not always work, but adds an extra layer of privacy.</p>
+            <div class="buttons">
+                <button onclick="enableDeledao()">Enable</button>
+                <button onclick="disableDeledao()">Disable</button>
+            </div>
+            <div id="deledaoMessage" class="success-message"></div>
+        </div>
+
+        <!-- About Blank Cloaker Section -->
+        <div class="settings-section">
+            <h2>About:blank Cloaker</h2>
+            <p>Double-click the button to cloak your current tab as a blank page.</p>
+            <button class="button-action" onclick="cloakToBlank()" id="cloakerBtn">Cloak (Double-click)</button>
+        </div>
+    </div>
+
+    <script>
+        // Tab Cloak functionality
+        function setCloak() {
+            const cloakType = document.getElementById('cloakSelect').value;
+            const cloaks = {
+                'search': { title: 'Google', icon: 'https://www.google.com/favicon.ico' },
+                'drive': { title: 'Google Drive', icon: 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png' },
+                'classroom': { title: 'Google Classroom', icon: 'https://ssl.gstatic.com/images/branding/product/1x/classroom_2020q4_32dp.png' },
+                'fakesearch': { title: 'Google', icon: 'https://www.google.com/favicon.ico' },
+                'gmail': { title: 'Gmail', icon: 'https://ssl.gstatic.com/ui/v1/icons/mail/rfresh4/gmail.ico' },
+                'word': { title: 'Microsoft Word', icon: 'https://www.microsoft.com/favicon.ico' },
+                'powerpoint': { title: 'Microsoft PowerPoint', icon: 'https://www.microsoft.com/favicon.ico' },
+                'youtube': { title: 'YouTube', icon: 'https://www.youtube.com/favicon.ico' },
+                'calendar': { title: 'Google Calendar', icon: 'https://ssl.gstatic.com/images/branding/product/1x/calendar_2020q4_32dp.png' },
+                'meets': { title: 'Google Meet', icon: 'https://ssl.gstatic.com/images/branding/product/1x/meet_2020q4_32dp.png' },
+                'canvas': { title: 'Canvas', icon: 'https://canvas.instructure.com/favicon.ico' },
+                'zoom': { title: 'Zoom', icon: 'https://www.zoom.us/favicon.ico' },
+                'khan': { title: 'Khan Academy', icon: 'https://www.khanacademy.org/favicon.ico' }
+            };
+
+            const cloak = cloaks[cloakType];
+            if (cloak) {
+                document.title = cloak.title;
+                let favicon = document.querySelector("link[rel='icon']");
+                if (!favicon) {
+                    favicon = document.createElement('link');
+                    favicon.rel = 'icon';
+                    document.head.appendChild(favicon);
+                }
+                favicon.href = cloak.icon;
+                localStorage.setItem('gameplaza_cloak_title', cloak.title);
+                localStorage.setItem('gameplaza_cloak_icon', cloak.icon);
+                showMessage('cloakMessage', '✓ Cloak applied successfully!');
+            }
+        }
+
+        function resetTab() {
+            document.title = 'GamePlaza';
+            let favicon = document.querySelector("link[rel='icon']");
+            if (favicon) {
+                favicon.href = '../Normal.png';
+            }
+            localStorage.removeItem('gameplaza_cloak_title');
+            localStorage.removeItem('gameplaza_cloak_icon');
+            showMessage('cloakMessage', '✓ Cloak reset to default!');
+        }
+
+        // Custom Cloak functionality
+        function setCustomTitle(title) {
+            if (title.trim()) {
+                document.title = title;
+                localStorage.setItem('gameplaza_custom_title', title);
+                showMessage('customCloakMessage', '✓ Title updated!');
+            }
+        }
+
+        function setCustomFavicon(url) {
+            if (url) {
+                let favicon = document.querySelector("link[rel='icon']");
+                if (!favicon) {
+                    favicon = document.createElement('link');
+                    favicon.rel = 'icon';
+                    document.head.appendChild(favicon);
+                }
+                favicon.href = url;
+                localStorage.setItem('gameplaza_custom_icon', url);
+                showMessage('customCloakMessage', '✓ Favicon updated!');
+            }
+        }
+
+        // Particles
+        function enableParticles() {
+            localStorage.setItem('gameplaza_particles', 'true');
+            showMessage('particlesMessage', '✓ Particles enabled!');
+        }
+
+        function disableParticles() {
+            localStorage.setItem('gameplaza_particles', 'false');
+            showMessage('particlesMessage', '✓ Particles disabled!');
+        }
+
+        // Mobile Screen Sizer
+        function enableMobileScreen() {
+            localStorage.setItem('gameplaza_mobile_sizer', 'true');
+            document.body.style.width = '375px';
+            document.body.style.margin = '0 auto';
+            showMessage('mobileMessage', '✓ Mobile screen sizer enabled!');
+        }
+
+        function disableMobileScreen() {
+            localStorage.setItem('gameplaza_mobile_sizer', 'false');
+            document.body.style.width = 'auto';
+            showMessage('mobileMessage', '✓ Mobile screen sizer disabled!');
+        }
+
+        // Anti Deledao
+        function enableDeledao() {
+            localStorage.setItem('gameplaza_anti_deledao', 'true');
+            showMessage('deledaoMessage', '✓ Anti Deledao enabled!');
+        }
+
+        function disableDeledao() {
+            localStorage.setItem('gameplaza_anti_deledao', 'false');
+            showMessage('deledaoMessage', '✓ Anti Deledao disabled!');
+        }
+
+        // About:blank Cloaker
+        let cloakerWindow = null;
+        document.getElementById('cloakerBtn').addEventListener('dblclick', function() {
+            cloakToBlank();
+        });
+
+        function cloakToBlank() {
+            if (cloakerWindow) {
+                cloakerWindow.focus();
+            } else {
+                cloakerWindow = window.open();
+                cloakerWindow.document.body.style.margin = '0';
+                cloakerWindow.document.title = document.title;
+                let faviconElement = document.querySelector('link[rel="icon"]');
+                let faviconURL = faviconElement ? faviconElement.href : '';
+                if (faviconURL) {
+                    let favicon = cloakerWindow.document.createElement('link');
+                    favicon.rel = 'icon';
+                    favicon.href = faviconURL;
+                    cloakerWindow.document.head.appendChild(favicon);
+                }
+                let iframe = cloakerWindow.document.createElement('iframe');
+                iframe.style.border = 'none';
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                iframe.style.margin = '0';
+                iframe.src = window.location.href;
+                cloakerWindow.document.body.appendChild(iframe);
+                window.location.replace('about:blank');
+
+                let interval = setInterval(function() {
+                    if (cloakerWindow.closed) {
+                        clearInterval(interval);
+                        cloakerWindow = null;
+                    }
+                }, 500);
+            }
+        }
+
+        // Helper function to show messages
+        function showMessage(elementId, message) {
+            const msgElement = document.getElementById(elementId);
+            msgElement.textContent = message;
+            msgElement.classList.add('show');
+            setTimeout(() => {
+                msgElement.classList.remove('show');
+            }, 3000);
+        }
+
+        // Load saved settings on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('gameplaza_mobile_sizer') === 'true') {
+                document.body.style.width = '375px';
+                document.body.style.margin = '0 auto';
+            }
+        });
+    </script>
+</body>
+</html>
