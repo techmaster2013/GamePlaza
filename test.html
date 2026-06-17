@@ -338,6 +338,21 @@
         #game-search::placeholder {
             color: #555;
         }
+/* Keeps images inside your buttons looking sharp and completely uniform */
+.button-container button img {
+  width: 100%;             /* Stretches the image safely to fill the button width */
+  height: 120px;           /* Locks every single image to the exact same height */
+  object-fit: cover;       /* Cleanly crops your image so it never stretches or looks squished */
+  border-radius: 6px;      /* Slightly rounds the image edges to match your layout */
+  margin-bottom: 10px;     /* Leaves a perfect gap between the image and your button text */
+  display: block;          /* Forces the text down beneath the picture */
+}
+
+/* Tweaks your existing button styling to handle images gracefully */
+.button-container button {
+  height: auto;            /* Allows the button to naturally grow to fit the picture */
+  padding: 12px;           /* Gives an even frame of space around the inside contents */
+}
     </style>
 </head>
 
