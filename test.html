@@ -108,27 +108,20 @@
 
 
 .button-container button {
-  flex-basis: calc(33.33% - 10px);
-  margin: 0px;
-  padding: 16px 20px; 
-  border: 2px solid var(--purple); /* Solid deep purple base line */
+  margin: 0px; /* Reset margins since 'gap' handles spacing now */
+  padding: 18px 20px; 
+  border: 2px solid var(--purple); 
   border-radius: 12px;
-  
-  /* FIXED: Uses your Ubuntu font correctly */
   font-family: 'Ubuntu', sans-serif; 
   font-size: 16px;
   font-weight: 500;
   color: #F9F6EF; 
-  
-  background: #190f26; /* Deep, rich twilight background */
-  width: max(15vh, 35vh);
+  background: #190f26; 
   text-align: center;
   cursor: pointer;
-  
-  /* Smooth transition for glowing transitions */
+  box-sizing: border-box;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
-
 
        .button-container button:hover {
   transform: translateY(-4px); /* Lifts the text card cleanly */
