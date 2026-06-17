@@ -104,6 +104,7 @@
   margin: 0 auto;
   padding: 20px;
   box-sizing: border-box;
+  justify-content: center;
 }
 
 
@@ -378,6 +379,23 @@
     grid-template-columns: 1fr;
   }
 }
+/* Custom Neon Scrollbar Layout */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0619; /* Matches your dark background */
+}
+::-webkit-scrollbar-thumb {
+  background: var(--purple); 
+  border-radius: 10px;
+  border: 2px solid #0d0619; /* Creates a clean gap outline */
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pink); /* Glows pink when grabbed */
+}
+
     </style>
 </head>
 
@@ -385,7 +403,7 @@
 
     <h1>
         <span class="magic">
-            <span class="magic-text">gameplaza testing (upd 3)</span>
+            <span class="magic-text">gameplaza testing (upd 4)</span>
         </span>
     </h1>
 
@@ -643,5 +661,45 @@
 <footer>
     <a href="https://github.com/xxpwnxxx420lord">Original by Syntaxical</a>
 </footer>
+<canvas id="bg-canvas" style="position: fixed; top:0; left:0; min-width:100vw; min-height:100vh; z-index:-1; pointer-events:none;"></canvas>
+
+<script>
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Build 40 tiny purple dust particles
+  for(let i=0; i<40; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 3 + 1,
+      speedY: Math.random() * 0.5 + 0.2
+    });
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'rgba(244, 143, 177, 0.3)'; // Faint neon pink/purple dots
+    
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+      p.y -= p.speedY; // Float upwards
+      if(p.y < 0) p.y = canvas.height; // Loop back to bottom
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
+</script>
+
 </body>
 </html>
