@@ -101,26 +101,39 @@
             align-items: center;
         }
 
-        .button-container button {
-            flex-basis: calc(33.33% - 10px);
-            margin: 5px;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            font-size: 15px;
-            box-shadow: 0px 0px 5px rgba(84, 78, 78, 0.8);
-            background-color: #242424;
-            font-weight: normal;
-            color: #7d7d7d;
-            width: max(15vh, 35vh);
-            text-align: center;
-            transition: transform 0.2s, box-shadow 0.3s ease;
-        }
+.button-container button {
+  flex-basis: calc(33.33% - 10px);
+  margin: 8px;
+  padding: 16px 20px; 
+  border: 2px solid var(--purple); /* Solid deep purple base line */
+  border-radius: 12px;
+  
+  /* FIXED: Uses your Ubuntu font correctly */
+  font-family: 'Ubuntu', sans-serif; 
+  font-size: 16px;
+  font-weight: 500;
+  color: #F9F6EF; 
+  
+  background: #190f26; /* Deep, rich twilight background */
+  width: max(15vh, 35vh);
+  text-align: center;
+  cursor: pointer;
+  
+  /* Smooth transition for glowing transitions */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
 
-        .button-container button:hover {
-            box-shadow: 0 0 15px rgba(123, 31, 162, 0.6), 0 0 30px rgba(103, 58, 183, 0.4), 0px 0px 5px rgba(84, 78, 78, 0.8);
-        }
+
+       .button-container button:hover {
+  transform: translateY(-4px); /* Lifts the text card cleanly */
+  background: #25163a; /* Brightens the dark background slightly */
+  border-color: var(--pink); /* Sharp flash to your neon pink variable */
+  
+  /* Layered glowing shadow effect */
+  box-shadow: 0 0 15px rgba(123, 31, 162, 0.7), 
+              0 0 30px rgba(244, 143, 177, 0.3); 
+}
+
 
         .button-container button:active {
             transform: scale(0.95);
@@ -360,7 +373,7 @@
 
     <h1>
         <span class="magic">
-            <span class="magic-text">gameplaza testing</span>
+            <span class="magic-text">gameplaza testing (upd 1)</span>
         </span>
     </h1>
 
