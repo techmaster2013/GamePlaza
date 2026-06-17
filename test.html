@@ -94,16 +94,22 @@
             }
         }
 
-        .button-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-        }
+  .button-container {
+  display: grid;
+  /* Automatically builds columns based on screen width */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+  gap: 15px;
+  width: 90vw; /* Keeps the grid nicely centered on the screen */
+  max-width: 1200px; 
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
 
 .button-container button {
   flex-basis: calc(33.33% - 10px);
-  margin: 8px;
+  margin: 0px;
   padding: 16px 20px; 
   border: 2px solid var(--purple); /* Solid deep purple base line */
   border-radius: 12px;
@@ -365,6 +371,19 @@
 .button-container button {
   height: auto;            /* Allows the button to naturally grow to fit the picture */
   padding: 12px;           /* Gives an even frame of space around the inside contents */
+}
+/* On desktop viewports, lock the grid strictly into 3 equal columns */
+@media (min-width: 900px) {
+  .button-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* On mobile viewports, stack buttons vertically in 1 column */
+@media (max-width: 600px) {
+  .button-container {
+    grid-template-columns: 1fr;
+  }
 }
     </style>
 </head>
