@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Portal Remake | GamePlaza</title>
+    <style>
+        /* Reset spacing and eliminate duplicate scrollbars */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; 
+            background-color: #000; /* Sets a clean backdrop for letterboxing */
+        }
+
+        /* Force the object container to adapt to the exact browser tab size */
+        object, embed, ruffle-player {
+            width: 100vw !important;
+            height: 100vh !important;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Your standard Flash object tag with responsive attributes -->
+    <object width="100%" height="100%" data="/GamePlaza/games/ruffles/Pacman.swf">
+        <param name="movie" value="/GamePlaza/games/ruffles/Pacman.swf">
+        <embed src="/GamePlaza/games/ruffles/Pacman.swf" width="100%" height="100%"></embed>
+    </object>
+
+    <!-- Load the Ruffle script at the very bottom -->
+    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+</body>
+</html>
