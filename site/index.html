@@ -3,7 +3,7 @@
 <!--Thank you to the people at Barnical for keeping Barnical open-source!-->
 <head>
     <meta charset="UTF-8">
-    <title>GamePlaza</title>
+    <title>TestPlaza</title>
     <link rel="icon" href="../Normal.png" type="image/x-icon" />
 
     <!-- Google Fonts -->
@@ -94,33 +94,46 @@
             }
         }
 
-        .button-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-        }
+  .button-container {
+  display: grid;
+  /* Automatically builds columns based on screen width */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+  gap: 15px;
+  width: 90vw; /* Keeps the grid nicely centered on the screen */
+  max-width: 1200px; 
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+  justify-content: center;
+}
 
-        .button-container button {
-            flex-basis: calc(33.33% - 10px);
-            margin: 5px;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            font-size: 15px;
-            box-shadow: 0px 0px 5px rgba(84, 78, 78, 0.8);
-            background-color: #242424;
-            font-weight: normal;
-            color: #7d7d7d;
-            width: max(15vh, 35vh);
-            text-align: center;
-            transition: transform 0.2s, box-shadow 0.3s ease;
-        }
 
-        .button-container button:hover {
-            box-shadow: 0 0 15px rgba(123, 31, 162, 0.6), 0 0 30px rgba(103, 58, 183, 0.4), 0px 0px 5px rgba(84, 78, 78, 0.8);
-        }
+.button-container button {
+  margin: 0px; /* Reset margins since 'gap' handles spacing now */
+  padding: 18px 20px; 
+  border: 2px solid var(--purple); 
+  border-radius: 12px;
+  font-family: 'Ubuntu', sans-serif; 
+  font-size: 16px;
+  font-weight: 500;
+  color: #F9F6EF; 
+  background: #190f26; 
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+       .button-container button:hover {
+  transform: translateY(-4px); /* Lifts the text card cleanly */
+  background: #25163a; /* Brightens the dark background slightly */
+  border-color: var(--pink); /* Sharp flash to your neon pink variable */
+  
+  /* Layered glowing shadow effect */
+  box-shadow: 0 0 15px rgba(123, 31, 162, 0.7), 
+              0 0 30px rgba(244, 143, 177, 0.3); 
+}
+
 
         .button-container button:active {
             transform: scale(0.95);
@@ -338,6 +351,51 @@
         #game-search::placeholder {
             color: #555;
         }
+/* Keeps images inside your buttons looking sharp and completely uniform */
+.button-container button img {
+  width: 100%;             /* Stretches the image safely to fill the button width */
+  height: 120px;           /* Locks every single image to the exact same height */
+  object-fit: cover;       /* Cleanly crops your image so it never stretches or looks squished */
+  border-radius: 6px;      /* Slightly rounds the image edges to match your layout */
+  margin-bottom: 10px;     /* Leaves a perfect gap between the image and your button text */
+  display: block;          /* Forces the text down beneath the picture */
+}
+
+/* Tweaks your existing button styling to handle images gracefully */
+.button-container button {
+  height: auto;            /* Allows the button to naturally grow to fit the picture */
+  padding: 12px;           /* Gives an even frame of space around the inside contents */
+}
+/* On desktop viewports, lock the grid strictly into 3 equal columns */
+@media (min-width: 900px) {
+  .button-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* On mobile viewports, stack buttons vertically in 1 column */
+@media (max-width: 600px) {
+  .button-container {
+    grid-template-columns: 1fr;
+  }
+}
+/* Custom Neon Scrollbar Layout */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0619; /* Matches your dark background */
+}
+::-webkit-scrollbar-thumb {
+  background: var(--purple); 
+  border-radius: 10px;
+  border: 2px solid #0d0619; /* Creates a clean gap outline */
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pink); /* Glows pink when grabbed */
+}
+
     </style>
 </head>
 
@@ -351,7 +409,7 @@
 
     <h2>
         <span class=magic>
-            <span class="magic-text">Update 6.17.26</span>
+            <span class="magic-text">Update 6.18.26</span>
             <div class="update-badge" id="update-trigger">Update Notes</div>
         </span>
     </h2>
@@ -360,7 +418,7 @@
     <div class="modal-overlay" id="updateModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Update 6.17.26</h2>
+                <h2>Update 6.18.26</h2>
                 <button class="close-btn" id="closeBtn">&times;</button>
             </div>
             <div class="modal-body">
@@ -369,7 +427,9 @@
                 
                 <h3>Features Added</h3>
                 <ul>
-                    <li>added emojis</li>
+                    <li>Added background particles</li>
+                    <li>purple scrollbar</li>
+                    <li>button redesign</li>
                 </ul>
 
                 <h3>New Games</h3>
@@ -377,7 +437,7 @@
                     <li>none</li>
                 </ul>
 
-                <p><strong>Release Date:</strong> June 17th, 2026</p>
+                <p><strong>Release Date:</strong> June 18th, 2026</p>
             </div>
             <div class="modal-footer">
                 <button id="dismissBtn">Dismiss</button>
@@ -391,9 +451,9 @@
     <!-- Featured Games Section -->
     <div id="featured-container" class="button-container">
         <button data-action="action1">GSite GamePlaza</button>
-        <button data-action="action3">🛠 Update Requests</button>
+        <button data-action="action3">Update Requests</button>
         <button data-action="action28">Barnical</button>
-        <button data-action="settings">⚙ Settings</button>
+        <button data-action="settings">Settings</button>
     </div>
 
     <!-- All Games Section -->
@@ -600,5 +660,45 @@
 <footer>
     <a href="https://github.com/xxpwnxxx420lord">Original by Syntaxical</a>
 </footer>
+<canvas id="bg-canvas" style="position: fixed; top:0; left:0; min-width:100vw; min-height:100vh; z-index:-1; pointer-events:none;"></canvas>
+
+<script>
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Build 40 tiny purple dust particles
+  for(let i=0; i<40; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 3 + 1,
+      speedY: Math.random() * 0.5 + 0.2
+    });
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'rgba(244, 143, 177, 0.3)'; // Faint neon pink/purple dots
+    
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+      p.y -= p.speedY; // Float upwards
+      if(p.y < 0) p.y = canvas.height; // Loop back to bottom
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
+</script>
+
 </body>
 </html>
