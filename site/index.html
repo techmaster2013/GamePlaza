@@ -431,7 +431,7 @@
                     <li>Added background particles</li>
                     <li>purple scrollbar</li>
                     <li>button redesign</li>
-                    <li>surprise me button (dont work yet)</li>
+                    <li>surprise me button</li>
                 </ul>
 
                 <h3>New Games</h3>
@@ -707,6 +707,20 @@
   }
   animate();
 </script>
+<script>
+function playRandomGame() {
+    // Grabs all game buttons, but explicitly ignores action1, action3, action28, and settings
+    const allGameButtons = document.querySelectorAll(
+        'button[data-action]:not([data-action="action1"]):not([data-action="action3"]):not([data-action="action28"]):not([data-action="settings"])'
+    );
 
+    if (allGameButtons.length > 0) {
+        const randomIndex = Math.floor(Math.random() * allGameButtons.length);
+        allGameButtons[randomIndex].click();
+    } else {
+        alert("No valid games found!");
+    }
+}
+</script>
 </body>
 </html>
