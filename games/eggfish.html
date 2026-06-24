@@ -2,44 +2,42 @@
 <html>
 <head>
     <title>Eggfish | GamePlaza</title>
-    <link rel="icon" type="image/png" href="https://proxy-plaza.vercel.app/uv/service/hvtrs8%2F-iog%2Civcj.xole-aU1lLxI6MFI7NxE1LlBwZu%3D%3F%2F12z30%2503-uAA%5BfZ.rne">
-    <link rel="stylesheet" href="/GamePlaza/site/Styles.css">
+    <!-- Your Gameplaza stylesheet -->
+    <link rel="stylesheet" href="styles.css"> 
+    
+    <!-- Your requested high-res favicon asset -->
+    <link rel="icon" type="image/png" sizes="any" href="https://img.itch.zone/aW1nLzI4MDI5NzE3LnBuZw==/original/FeXDc3.png">
 </head>
 <body>
-    <button onclick="launchGame()" style="
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px 40px;
-    font-size: 24px;
-    cursor: pointer;
-    z-index: 9999;
-">Launch Eggfish on GamePlaza</button>
 
+    <!-- Ensure your button class matches your styles.css centering layout -->
+    <button onclick="launchGame()" class="launcher-btn">Launch Eggfish on GamePlaza</button>
+
+    <!-- THE FIX: This script block must be completely valid and closed -->
     <script>
-function launchGame() {
-    fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://burghbrain.itch.io/eggfish')}`) .then(response => { if (response.ok) return response.json() throw new Error('Network response was not ok.') }) .then(data => console.log(data.contents));
-    })
-    .then(data => {
-        // Matches the updated double-nested directory strings perfectly
-        const regex = /https:\/\/html-classic\.itch\.zone\/html\/[0-9\-]+\/index\.html/;
-        const match = data.contents.match(regex);
-        
-        if (match) {
-            window.location.href = match[0];
-        } else {
-            // Backup tracker: searches for the hidden embedded project object data instead
-            const idMatch = data.contents.match(/"id":\s*(\d+)/);
-            if (idMatch) {
-                window.location.href = "https://itch.io" + idMatch[1] + "?color=333333";
-            } else {
-                alert("Update path pattern missed. Developer changed page layout format.");
-            }
+        function launchGame() {
+            // Your exact working documentation fetch line
+            fetch(`https://allorigins.win{encodeURIComponent('https://burghbrain.itch.io/eggfish')}`)
+            .then(response => {
+                if (response.ok) return response.json();
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                // Matches the live, changing itch.zone link inside the HTML text
+                const regex = /https:\/\/html-classic\.itch\.zone\/html\/[0-9\-]+\/index\.html/;
+                const match = data.contents.match(regex);
+                
+                if (match) {
+                    // Extract the clean URL string from the regex array match
+                    window.location.href = match[0]; 
+                } else {
+                    alert("Could not locate the live itch.zone update link.");
+                }
+            })
+            .catch(err => {
+                alert("Proxy Error: " + err.message);
+            });
         }
-    })
-    .catch(err => alert("Proxy server error: " + err.message));
-}
     </script>
 </body>
 </html>
