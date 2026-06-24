@@ -470,5 +470,31 @@
             }
         });
     </script>
-</body>
+    <!-- ... all your existing settings options, inputs, and html elements ... -->
+
+    <script>
+      // Automatically save inputs when they change
+      document.querySelectorAll('input, select').forEach(element => {
+        // 1. Load any previously saved choices so the settings page shows them
+        const savedValue = localStorage.getItem('setting_' + element.id);
+        if (savedValue && element.id) {
+          if (element.type === 'checkbox') {
+            element.checked = savedValue === 'true';
+          } else {
+            element.value = savedValue;
+          }
+        }
+
+        // 2. Watch for changes and save them instantly
+        element.addEventListener('change', () => {
+          if (!element.id) return;
+          const valueToSave = element.type === 'checkbox' ? element.checked : element.value;
+          localStorage.setItem('setting_' + element.id, valueToSave);
+          
+          // Force immediate preview if it's a tab title or favicon change
+          if (element.id.toLowerCase().includes('title')) document.title = valueToSave;
+        });
+      });
+    </script>
+  </body>
 </html>
