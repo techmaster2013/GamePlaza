@@ -1,112 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Eggfish | GamePlaza</title>
-    <!-- Your Gameplaza stylesheet -->
+    <title>Eggfish Launcher</title>
+    <!-- Links your Gameplaza stylesheet -->
     <link rel="stylesheet" href="/GamePlaza/site/Styles.css"> 
-    
-    <!-- Your requested high-res favicon asset -->
+    <!-- High-res favicon asset -->
     <link rel="icon" type="image/png" sizes="any" href="https://img.itch.zone/aW1nLzI4MDI5NzE3LnBuZw==/original/FeXDc3.png">
-<style>
-    .launcher-btn {
-    /* Critical placement fixes */
-    position: fixed !important; /* Forces the button to lock to the window, ignoring elements around it */
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    
-    /* Clean, clicky styling rules */
-    padding: 20px 40px;
-    font-size: 24px;
-    font-family: sans-serif;
-    background-color: #ff2449; 
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    z-index: 999999 !important; /* Forces the button to sit on top of any background layers */
-}
-</style>
 </head>
 <body>
-    <!-- Ensure your button class matches your styles.css centering layout -->
+
+    <!-- Styled launcher button -->
     <button onclick="launchGame()" class="launcher-btn">Launch Eggfish on GamePlaza</button>
 
-    <!-- THE FIX: This script block must be completely valid and closed -->
     <script>
-function launchGame() {
-    const targetUrl = 'function launchGame() {
-    const targetUrl = 'https://itch.io';
-}
-    // 1. Ultraviolet's custom XOR encoding function
-    function uvEncode(str) {
-        if (!str) return str;
-        return encodeURIComponent(
-            str.toString()
-            .split('')
-            .map((char, ind) => ind % 2 ? String.fromCharCode(char.charCodeAt() ^ 2) : char)
-            .join('')
-        );
-    }
-    
-    // 2. FIXED: Added the mandatory '/' right after .app to prevent the ERR_NAME_NOT_RESOLVED crash
-    const uvEncodedUrl = 'https://prox-plaza.vercel.app/' + uvEncode(targetUrl);
-    
-    // 3. Fetches the page data natively through your proxy
-    fetch(uvEncodedUrl)
-    .then(response => {
-        if (response.ok) return response.text();
-        throw new Error('ProxyPlaza rejected the fetch call.');
-    })
-    .then(htmlString => {
-        // Matches the live, changing itch.zone link inside your proxy's text stream
-        const regex = /https:\/\/html-classic\.itch\.zone\/html\/[0-9\-]+\/index\.html/;
-        const match = htmlString.match(regex);
-    }
-        if (match) {
-            window.location.href = match[0]; // Forwards you directly to the unblocked game files
-        } else {
-            alert("Could not locate the live itch.zone update link inside the ProxyPlaza data.");
+        function launchGame() {
+            const targetUrl = 'https://burghbrain.itch.io/eggfish';
+            
+            // Replicates your proxy's exact base64 encoding standard
+            function uvEncode(str) {
+                if (!str) return str;
+                return encodeURIComponent(btoa(str.toString()));
+            }
+            
+            // Fixed configuration url mapping format
+            const uvEncodedUrl = 'https://proxy-plaza.vercel.app/' + uvEncode(targetUrl);
+            
+            // Fetches the page data directly through your unblocked proxy tunnel
+            fetch(uvEncodedUrl)
+            .then(response => {
+                if (response.ok) return response.text();
+                throw new Error('Proxy server rejected the network call.');
+            })
+            .then(htmlString => {
+                // Matches the live, changing itch.zone link inside your proxy's text stream
+                const regex = /https:\/\/html-classic\.itch\.zone\/html\/[0-9\-]+\/index\.html/;
+                const match = htmlString.match(regex);
+                
+                if (match && match[0]) {
+                    window.location.href = match[0]; // Forwards you directly to the unblocked game files
+                } else {
+                    alert("Could not locate the live itch.zone update link inside the proxy data.");
+                }
+            })
+            .catch(err => {
+                alert("Proxy Error: " + err.message);
+            });
         }
-    })
-    .catch(err => alert("ProxyPlaza Error: " + err.message));
-}
-';
-    
-    // 1. Ultraviolet's custom XOR encoding function
-    function uvEncode(str) {
-        if (!str) return str;
-        return encodeURIComponent(
-            str.toString()
-            .split('')
-            .map((char, ind) => ind % 2 ? String.fromCharCode(char.charCodeAt() ^ 2) : char)
-            .join('')
-        );
-    }
-    
-    // 2. FIXED: Added the mandatory '/' right after .app to prevent the ERR_NAME_NOT_RESOLVED crash
-    const uvEncodedUrl = 'https://vercel.app' + uvEncode(targetUrl);
-    
-    // 3. Fetches the page data natively through your proxy
-    fetch(uvEncodedUrl)
-    .then(response => {
-        if (response.ok) return response.text();
-        throw new Error('Your Vercel proxy server rejected the fetch call.');
-    })
-    .then(htmlString => {
-        // Matches the live, changing itch.zone link inside your proxy's text stream
-        const regex = /https:\/\/html-classic\.itch\.zone\/html\/[0-9\-]+\/index\.html/;
-        const match = htmlString.match(regex);
-        
-        if (match) {
-            window.location.href = match[0]; // Forwards you directly to the unblocked game files
-        } else {
-            alert("Could not locate the live itch.zone update link inside the proxy data.");
-        }
-    })
-    .catch(err => alert("Proxy Error: " + err.message));
-}
     </script>
 </body>
 </html>
