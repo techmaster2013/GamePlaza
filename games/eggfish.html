@@ -1,31 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eggfish | GamePlaza</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000;
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
 </head>
 <body>
-
-    <iframe 
-        src="https://proxy-plaza.vercel.app/uv/service/hvtrs8%2F-hvmn-alcsqia.ktah%2Czmng%2Fjtol-1%3A067304%2Fknfez.jtol%3Dv%3F1580214467" 
-        allow="autoplay; gamepad; fullscreen; keyboard; screen-wake-lock"
-        allowfullscreen>
-    </iframe>
-
+    <button onclick="launchGame()" style="padding: 20px; font-size: 20px;">Launch Eggfish on GamePlaza</button>
+    <script>
+        function launchGame() {
+            // Reaches out to the specific game page via the CORS proxy
+            fetch('https://allorigins.win' + encodeURIComponent('https://burghbrain.itch.io/eggfish'))
+            .then(response => response.json())
+            .then(data => {
+                // Finds the live changing itch.zone link inside the HTML text
+                const match = data.contents.match(/https:\/\/html-classic\.itch\.zone\/html\/\d+\/[^"]+/);
+                if (match) {
+                    window.location.href = match[0];
+                } else {
+                    alert("Could not find the update path. Check your proxy connection.");
+                }
+            });
+        }
+    </script>
 </body>
 </html>
