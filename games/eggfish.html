@@ -16,28 +16,32 @@
     <!-- THE FIX: This script block must be completely valid and closed -->
     <script>
         function launchGame() {
-            // Your exact working documentation fetch line
-            fetch(`https://allorigins.win{encodeURIComponent('https://burghbrain.itch.io/eggfish')}`)
-            .then(response => {
-                if (response.ok) return response.json();
-                throw new Error('Network response was not ok.');
-            })
-            .then(data => {
-                // Matches the live, changing itch.zone link inside the HTML text
-                const regex = /https:\/\/html-classic\.itch\.zone\/html\/[0-9\-]+\/index\.html/;
-                const match = data.contents.match(regex);
-                
-                if (match) {
-                    // Extract the clean URL string from the regex array match
-                    window.location.href = match[0]; 
-                } else {
-                    alert("Could not locate the live itch.zone update link.");
-                }
-            })
-            .catch(err => {
-                alert("Proxy Error: " + err.message);
-            });
+    // 1. Direct target game URL
+    const targetUrl = 'https://burghbrain.itch.io/eggfish';
+    
+    // 2. Encodes the URL into Ultraviolet's standard service path format
+    const uvEncodedUrl = 'https://proxy-plaza.vercel.app/' + __uv$config.encodeUrl(targetUrl);
+    
+    // 3. Fetches the page data directly through your unblocked Vercel proxy domain
+    fetch(uvEncodedUrl)
+    .then(response => {
+        if (response.ok) return response.text();
+        throw new Error('ProxyPlaza rejected the fetch call.');
+    })
+    .then(htmlString => {
+        // Matches the live, changing itch.zone link inside your proxy's text stream
+        const regex = /https:\/\/html-classic\.itch\.zone\/html\/[0-9\-]+\/index\.html/;
+        const match = htmlString.match(regex);
+        
+        if (match) {
+            // Forwards you directly to the unblocked game files
+            window.location.href = match[0]; 
+        } else {
+            alert("Could not locate the live itch.zone update link inside the proxy data.");
         }
+    })
+    .catch(err => alert("Proxy Error: " + err.message));
+}
     </script>
 </body>
 </html>
