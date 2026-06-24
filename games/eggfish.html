@@ -1,49 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eggfish | GamePlaza</title>
-    <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: #000; }
-        iframe { width: 100%; height: 100%; border: none; }
-    </style>
-</head>
-<body>
+<h1>how to go to eggfish (even if itch.io is blocked)</h1>
 
-    <!-- The Proxy Target: Generates a completely secure, un-stripped game canvas wrapper -->
-    <iframe id="proxyFrame" allow="autoplay; gamepad; fullscreen; keyboard; screen-wake-lock" allowfullscreen></iframe>
+step 1: go to proxy-plaza.vercel.app
 
-    <script>
-        (function() {
-            const targetUrl = 'https://burghbrain.itch.io/eggfish';
-            
-            // This public mirror routes raw code bytes directly so images never drop
-            const proxyGateway = 'https://herokuapp.com';
-            
-            const frame = document.getElementById('proxyFrame');
-            
-            // 1. Fetches the page data directly through the proxy tunnel pipeline
-            fetch(proxyGateway + targetUrl)
-                .then(response => response.text())
-                .then(htmlString => {
-                    // 2. Extracts the live, shifting itch.zone update folder automatically
-                    const regex = /https:\/\/html-classic\.itch\.zone\/html\/[0-9\-]+\/index\.html/;
-                    const match = htmlString.match(regex);
-                    
-                    if (match) {
-                        // 3. ACTS AS THE PROXY: Re-routes the game file directly through the proxy tunnel 
-                        frame.src = proxyGateway + match;
-                    } else {
-                        // Fallback: If pattern shifts, it pipes the fallback frame straight through the data tunnel
-                        frame.src = proxyGateway + "https://itch.io";
-                    }
-                })
-                .catch(err => {
-                    // If the main pipeline is restricted, it falls back to a clean mirror stream
-                    frame.src = "https://corsproxy.io?" + encodeURIComponent("https://itch.io");
-                });
-        })();
-    </script>
-</body>
-</html>
+step 2: in the address bar, type https://burghbrain.itch.io/eggfish
+
+step 3: press "Run Game"
+
+step 4: play eggfish
+
+<h2>thank you for reading my tutorial i made it all by myself</h2>
+myself being techmaster2013
+techmaster2013 being h_z13
+h_z13 being the creator of GamePlaza
+creator of gameplaza being the creator of proxyplaza
+the creator of proxyplaza being me
+me being the person who wrote this
+and its just going in circles now ok
