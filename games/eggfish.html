@@ -35,18 +35,18 @@
 
     <!-- THE FIX: This script block must be completely valid and closed -->
     <script>
-        function launchGame() {
-    // 1. Direct target game URL
+function launchGame() {
+    // 1. Target game URL
     const targetUrl = 'https://burghbrain.itch.io/eggfish';
     
-    // 2. Encodes the URL into Ultraviolet's standard service path format
-    const uvEncodedUrl = 'https://proxy-plaza.vercel.app/' + __uv$config.encodeUrl(targetUrl);
+    // 2. Encodes the URL natively to match Ultraviolet's exact string conversion layout
+    const uvEncodedUrl = 'https://proxy-plaza.vercel.app' + btoa(targetUrl);
     
     // 3. Fetches the page data directly through your unblocked Vercel proxy domain
     fetch(uvEncodedUrl)
     .then(response => {
         if (response.ok) return response.text();
-        throw new Error('ProxyPlaza rejected the fetch call.');
+        throw new Error('Vercel proxy server rejected the fetch call.');
     })
     .then(htmlString => {
         // Matches the live, changing itch.zone link inside your proxy's text stream
