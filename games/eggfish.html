@@ -2,10 +2,21 @@
 <html>
 <head>
     <title>Eggfish | GamePlaza</title>
+    <link rel="icon" type="image/png" href="https://proxy-plaza.vercel.app/uv/service/hvtrs8%2F-iog%2Civcj.xole-aU1lLxI6MFI7NxE1LlBwZu%3D%3F%2F12z30%2503-uAA%5BfZ.rne">
     <link rel="stylesheet" href="/GamePlaza/site/Styles.css">
 </head>
 <body>
-    <button onclick="launchGame()" style="padding: 20px; font-size: 20px;">Launch Eggfish on GamePlaza</button>
+    <button onclick="launchGame()" style="
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 40px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 9999;
+">Launch Eggfish on GamePlaza</button>
+
     <script>
 function launchGame() {
     fetch('https://allorigins.win' + encodeURIComponent('https://burghbrain.itch.io/eggfish'))
