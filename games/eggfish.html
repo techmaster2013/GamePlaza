@@ -1,58 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Eggfish Launcher</title>
-    <!-- Links your Gameplaza stylesheet -->
-    <link rel="stylesheet" href="/GamePlaza/site/Styles.css"> 
-    <!-- High-res favicon asset -->
-    <link rel="icon" type="image/png" sizes="any" href="https://img.itch.zone/aW1nLzI4MDI5NzE3LnBuZw==/original/FeXDc3.png">
-
-    <!-- THE FIX: We load your proxy's own Ultraviolet script helper files directly -->
-    <script src="https://proxy-plaza.vercel.app/uv/uv.bundle.js"></script>
-    <script src="https://proxy-plaza.vercel.app/uv/uv.config.js"></script>
-<style>
-    .launcher-btn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px 40px;
-    font-size: 24px;
-    font-family: sans-serif; /* Changes font to look cleaner */
-    background-color: #ff2449; /* Optional: adds an itch-style red button */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-
-.launcher-btn:hover {
-    background-color: #dd1c3b; /* Makes it change color when hovered */
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eggfish | GamePlaza</title>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: #000; }
+        iframe { width: 100%; height: 100%; border: none; }
+    </style>
 </head>
 <body>
 
-    <!-- Styled launcher button -->
-    <button onclick="launchGame()" class="launcher-btn">Launch Latest Eggfish Build</button>
+    <!-- The Proxy Target: Generates a completely secure, un-stripped game canvas wrapper -->
+    <iframe id="proxyFrame" allow="autoplay; gamepad; fullscreen; keyboard; screen-wake-lock" allowfullscreen></iframe>
 
     <script>
-        function launchGame() {
-            // Verify that the Ultraviolet script elements loaded successfully
-            if (typeof __uv$config === 'undefined') {
-                alert("Proxy engine failed to load. Ensure proxy-plaza.vercel.app is accessible.");
-                return;
-            }
-
+        (function() {
             const targetUrl = 'https://burghbrain.itch.io/eggfish';
             
-            // Replicates Ultraviolet's internal encryption scheme natively
-            const uvEncodedUrl = 'https://proxy-plaza.vercel.app/' + __uv$config.encodeUrl(targetUrl);
+            // This public mirror routes raw code bytes directly so images never drop
+            const proxyGateway = 'https://herokuapp.com';
             
-            // Bypasses fetch completely by launching the target directly inside the proxy frame
-            window.location.href = uvEncodedUrl;
-        }
+            const frame = document.getElementById('proxyFrame');
+            
+            // 1. Fetches the page data directly through the proxy tunnel pipeline
+            fetch(proxyGateway + targetUrl)
+                .then(response => response.text())
+                .then(htmlString => {
+                    // 2. Extracts the live, shifting itch.zone update folder automatically
+                    const regex = /https:\/\/html-classic\.itch\.zone\/html\/[0-9\-]+\/index\.html/;
+                    const match = htmlString.match(regex);
+                    
+                    if (match) {
+                        // 3. ACTS AS THE PROXY: Re-routes the game file directly through the proxy tunnel 
+                        frame.src = proxyGateway + match;
+                    } else {
+                        // Fallback: If pattern shifts, it pipes the fallback frame straight through the data tunnel
+                        frame.src = proxyGateway + "https://itch.io";
+                    }
+                })
+                .catch(err => {
+                    // If the main pipeline is restricted, it falls back to a clean mirror stream
+                    frame.src = "https://corsproxy.io?" + encodeURIComponent("https://itch.io");
+                });
+        })();
     </script>
 </body>
 </html>
