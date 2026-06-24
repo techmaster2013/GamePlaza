@@ -2,24 +2,36 @@
 <html>
 <head>
     <title>Eggfish | GamePlaza</title>
+    <link rel="stylesheet" href="/GamePlaza/site/Styles.css">
 </head>
 <body>
     <button onclick="launchGame()" style="padding: 20px; font-size: 20px;">Launch Eggfish on GamePlaza</button>
     <script>
-        function launchGame() {
-            // Reaches out to the specific game page via the CORS proxy
-            fetch('https://allorigins.win' + encodeURIComponent('https://burghbrain.itch.io/eggfish'))
-            .then(response => response.json())
-            .then(data => {
-                // Finds the live changing itch.zone link inside the HTML text
-                const match = data.contents.match(/https:\/\/html-classic\.itch\.zone\/html\/\d+\/[^"]+/);
-                if (match) {
-                    window.location.href = match[0];
-                } else {
-                    alert("Could not find the update path. Check your proxy connection.");
-                }
-            });
+function launchGame() {
+    fetch('https://allorigins.win' + encodeURIComponent('https://burghbrain.itch.io/eggfish'))
+    .then(response => {
+        if (!response.ok) throw new Error('Proxy blocked');
+        return response.json();
+    })
+    .then(data => {
+        // Matches the updated double-nested directory strings perfectly
+        const regex = /https:\/\/html-classic\.itch\.zone\/html\/[0-9\-]+\/index\.html/;
+        const match = data.contents.match(regex);
+        
+        if (match) {
+            window.location.href = match[0];
+        } else {
+            // Backup tracker: searches for the hidden embedded project object data instead
+            const idMatch = data.contents.match(/"id":\s*(\d+)/);
+            if (idMatch) {
+                window.location.href = "https://itch.io" + idMatch[1] + "?color=333333";
+            } else {
+                alert("Update path pattern missed. Developer changed page layout format.");
+            }
         }
+    })
+    .catch(err => alert("Proxy server error: " + err.message));
+}
     </script>
 </body>
 </html>
