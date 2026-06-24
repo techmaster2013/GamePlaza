@@ -6,6 +6,26 @@
     <link rel="stylesheet" href="/GamePlaza/site/Styles.css"> 
     <!-- High-res favicon asset -->
     <link rel="icon" type="image/png" sizes="any" href="https://img.itch.zone/aW1nLzI4MDI5NzE3LnBuZw==/original/FeXDc3.png">
+<style>.launcher-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 40px;
+    font-size: 24px;
+    font-family: sans-serif; /* Changes font to look cleaner */
+    background-color: #ff2449; /* Optional: adds an itch-style red button */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.launcher-btn:hover {
+    background-color: #dd1c3b; /* Makes it change color when hovered */
+}
+</style>
 </head>
 <body>
 
@@ -13,30 +33,25 @@
     <button onclick="launchGame()" class="launcher-btn">Launch Eggfish on GamePlaza</button>
 
     <script>
-        function launchGame() {
+function launchGame() {
+            // 1. Target game URL
             const targetUrl = 'https://burghbrain.itch.io/eggfish';
             
-            // Replicates your proxy's exact base64 encoding standard
-            function uvEncode(str) {
-                if (!str) return str;
-                return encodeURIComponent(btoa(str.toString()));
-            }
+            // 2. FIXED: Uses your exact /b/ Bare Server endpoint without any broken encryption strings
+            const bareProxyUrl = 'https://proxy-plaza.vercel.app/' + targetUrl;
             
-            // Fixed configuration url mapping format
-            const uvEncodedUrl = 'https://proxy-plaza.vercel.app/' + uvEncode(targetUrl);
-            
-            // Fetches the page data directly through your unblocked proxy tunnel
-            fetch(uvEncodedUrl)
+            // 3. Fetches the page data directly through your active Vercel server tunnel
+            fetch(bareProxyUrl)
             .then(response => {
                 if (response.ok) return response.text();
-                throw new Error('Proxy server rejected the network call.');
+                throw new Error('Your Vercel proxy server rejected the Bare network call.');
             })
             .then(htmlString => {
-                // Matches the live, changing itch.zone link inside your proxy's text stream
+                // Matches the live, changing itch.zone link inside the proxy text stream
                 const regex = /https:\/\/html-classic\.itch\.zone\/html\/[0-9\-]+\/index\.html/;
                 const match = htmlString.match(regex);
                 
-                if (match && match[0]) {
+                if (match) {
                     window.location.href = match[0]; // Forwards you directly to the unblocked game files
                 } else {
                     alert("Could not locate the live itch.zone update link inside the proxy data.");
