@@ -398,6 +398,7 @@
 }
 
     </style>
+
 </head>
 
 <body>
@@ -727,6 +728,31 @@ function playRandomGame() {
     }
 }
 </script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    // Read the settings from local storage
+    // NOTE: Change 'cloakTitleInput' and 'cloakIconInput' to match the actual IDs inside your settings.html
+    const savedTitle = localStorage.getItem('setting_cloakTitleInput'); 
+    const savedIcon = localStorage.getItem('setting_cloakIconInput');
+
+    // Apply the Tab Cloak Title if it exists
+    if (savedTitle) {
+      document.title = savedTitle;
+    }
+
+    // Apply the Tab Cloak Favicon Icon if it exists
+    if (savedIcon) {
+      let link = document.querySelector("link[rel~='icon']");
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.href = savedIcon;
+    }
+  });
+</script>
+
 </body>
 </html>
 
