@@ -7,6 +7,26 @@
     
     <!-- Your requested high-res favicon asset -->
     <link rel="icon" type="image/png" sizes="any" href="https://img.itch.zone/aW1nLzI4MDI5NzE3LnBuZw==/original/FeXDc3.png">
+<style>.launcher-btn {
+    /* Critical placement fixes */
+    position: fixed !important; /* Forces the button to lock to the window, ignoring elements around it */
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    
+    /* Clean, clicky styling rules */
+    padding: 20px 40px;
+    font-size: 24px;
+    font-family: sans-serif;
+    background-color: #ff2449; 
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    z-index: 999999 !important; /* Forces the button to sit on top of any background layers */
+}
+</style>
 </head>
 <body>
 
