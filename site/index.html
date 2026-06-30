@@ -5,29 +5,24 @@
     <title>GamePlaza</title>
     <link rel="icon" href="../Normal.png" type="image/x-icon" />
     <link rel="stylesheet" href="/GamePlaza/plaza.css">
-
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
 </head>
-
-<body>
-
+<body
     <h1>
         <span class="magic">
             <span class="magic-text">Welcome to GamePlaza</span>
         </span>
-    </h1>
-
+    </h1
     <h2>
         <span class=magic>
             <span class="magic-text">Update Summer 26</span>
             <div class="update-badge" id="update-trigger">Update Notes</div>
         </span>
-    </h2>
-
-    <!-- Update Modal -->
+    </h2
+    <!-- Changelog -->
     <div class="modal-overlay" id="updateModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -56,25 +51,19 @@
             </div>
         </div>
     </div>
-
     <!-- Search bar -->
     <input type="text" id="game-search" placeholder="Search games..." />
-
     <!-- Category filter chips (populated by plaza.js) -->
     <div id="category-bar" class="category-bar"></div>
-
     <!-- Featured / site links + Surprise Me (populated by plaza.js) -->
-    <div id="featured-container" class="button-container"></div>
-
+    <div id="featured-container" class="button-container"></div
     <!-- All Games Section (populated by plaza.js) -->
     <div class="button-container" id="button-container"></div>
-
     <!-- Data -->
     <script src="/GamePlaza/site/games.js"></script>
     <!-- Renderer -->
     <script src="/GamePlaza/site/plaza.js"></script>
-
-    <!-- Update Modal Logic -->
+    <!-- Changelog Logic -->
     <script>
         const updateModal = document.getElementById("updateModal");
         const updateTrigger = document.getElementById("update-trigger");
@@ -101,13 +90,10 @@
             }
         });
     </script>
-
     <footer>
         <a href="https://github.com/xxpwnxxx420lord">Original by Syntaxical</a>
     </footer>
-
     <canvas id="bg-canvas" style="position: fixed; top:0; left:0; min-width:100vw; min-height:100vh; z-index:-1; pointer-events:none;"></canvas>
-
     <script>
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
@@ -144,7 +130,6 @@
         }
         animate();
     </script>
-
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const savedTitle = localStorage.getItem('setting_cloakTitleInput');
@@ -165,6 +150,5 @@
             }
         });
     </script>
-
 </body>
 </html>
