@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<!--Thank you to the people at Barnical for keeping Barnical open-source!-->
-<!-- lol not anymore tho -->
 <head>
     <meta charset="UTF-8">
     <title>GamePlaza</title>
@@ -10,13 +8,8 @@
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-    <!-- CSS -->
-    <style>
-
-    </style>
-
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -29,7 +22,7 @@
 
     <h2>
         <span class=magic>
-            <span class="magic-text">Update LWOS 26</span>
+            <span class="magic-text">Update Summer 26</span>
             <div class="update-badge" id="update-trigger">Update Notes</div>
         </span>
     </h2>
@@ -38,33 +31,25 @@
     <div class="modal-overlay" id="updateModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Last Week of School 2026 Update</h2>
+                <h2>Summer Update</h2>
                 <button class="close-btn" id="closeBtn">&times;</button>
             </div>
             <div class="modal-body">
                 <h3>Update Notes</h3>
                 <p>give suggestions in the Update Requests button</p>
-                
+
                 <h3>Features Added</h3>
                 <ul>
-                    <li>added code for brotato at the bottom of the site (my friends, kswitch and s11myyy coded that)</li>
-                    <li>added proxyplaza</li>
-                    <li>Snake now hosted on repository</li>
-                    <li>zscaler.html, a fake Content Blocked page</li>
-                    <li>changed all css to be external files, keeps the html cleam</li>
+                    <li>Removed fake brotato code</li>
+                    <li>Switched games to external file</li>
                 </ul>
 
                 <h3>New Games</h3>
                 <ul>
-                    <li>Brotato (requested by k switch)</li>
-                    <li>Escape Road 3 (requested by k switch)</li>
-                    <li>Kindergarten 3</li>
-                    <li>Thats Not my Neighbor</li>
-                    <li>Eggfish (HOLY SHIT I DIDNT THINK I WOULD BE ABLE TO DO IT)</li>
-                    <li>Moo Moo (requested by solar)</li>
+                    <li>nun</li>
                 </ul>
 
-                <p><strong>Release Date:</strong> June 25th, 2026</p>
+                <p><strong>Release Date:</strong> June 30th, 2026</p>
             </div>
             <div class="modal-footer">
                 <button id="dismissBtn">Dismiss</button>
@@ -75,209 +60,31 @@
     <!-- Search bar -->
     <input type="text" id="game-search" placeholder="Search games..." />
 
-    <!-- Featured Games Section -->
-    <div id="featured-container" class="button-container">
-        <button data-action="action1">GSite GamePlaza</button>
-        <button data-action="action3">Update Requests</button>
-        <button data-action="action28">ProxyPlaza</button>
-        <button data-action="settings">Settings</button>
-        <button id="surprise-btn" onclick="playRandomGame()">Surprise Me!</button>
-    </div>
+    <!-- Category filter chips (populated by plaza.js) -->
+    <div id="category-bar" class="category-bar"></div>
 
-    <!-- All Games Section -->
-    <div class="button-container" id="button-container">
-        <button data-action="action2">T9 OS</button>
-        <button data-action="boing">Zombs Royale</button>
-        <button data-action="action676767676767676767676">DDLC+</button>
-        <button data-action="action4">KART BROS!</button>
-        <button data-action="action5">Slope Game</button>
-        <button data-action="action7">Online Racing Game</button>
-        <button data-action="action8">Cookie Clicker</button>
-        <button data-action="action9">slither.io</button>
-        <button data-action="action10">Snake Game</button>
-        <button data-action="action14">SAB</button>
-        <button data-action="action16">Bee Swarm Simulator</button>
-        <button data-action="action18">Minecraft</button>
-        <button data-action="action19">Geometry Dash</button>
-        <button data-action="action20">Clash Royale</button>
-        <button data-action="action22">Red Ball 4</button>
-        <button data-action="action23">Crazy Cattle 3D</button>
-        <button data-action="action24">Dino Game</button>
-        <button data-action="action26">Drift Boss</button>
-        <button data-action="action27">Baldi's Basics Classic Remastered</button>
-        <button data-action="action29">New York Times Games</button>
-        <button data-action="action30">Chess</button>
-        <button data-action="action31">eParkour</button>
-        <button data-action="action32">Papa's Freezeria</button>
-        <button data-action="action33">Chrome Music Lab</button>
-        <button data-action="action34">My Singing Monsters</button>
-        <button data-action="action35">Oregon Trail</button>
-        <button data-action="action36">Poki</button>
-        <button data-action="action67">Google Baseball Game</button>
-        <button data-action="action38">Bugswim</button>
-        <button data-action="action39">Stickman Hook</button>
-        <button data-action="action40">Brawl Stars</button>
-        <button data-action="action41">BERGENTRUCK_201X</button>
-        <button data-action="action42">Portal Remake</button>
-        <button data-action="action43">Mario Kart</button>
-        <button data-action="action44">Pac-Man</button>
-        <button data-action="action45">Tetris</button>
-        <button data-action="action46">Block Blast</button>
-        <button data-action="action47">Learn to Fly</button>
-        <button data-action="action48">R.E.P.O.</button>
-        <button data-action="action50">Bendy and the Ink Machine</button>
-        <button data-action="action52">Mahjong</button>
-        <button data-action="action53">Buckshot Roulette</button>
-        <button data-action="action54">Fortnite</button>
-        <button data-action="action55">Nut Simulator</button>
-        <button data-action="action56">Hollow Knight</button>
-        <button data-action="action57">People Playground</button>
-        <button data-action="action58">Brotato</button>
-        <button data-action="action59">Undertale Yellow</button>
-        <button data-action="action60">My Femboy Roommate</button>
-        <button data-action="action62">Cuphead</button>
-        <button data-action="action63">FNF</button>
-        <button data-action="action64">osu!</button>
-        <button data-action="action65">Rocket League</button>
-        <button data-action="action66">Superhot</button>
-        <button data-action="action676776">Ultrakill</button>
-        <button data-action="bazinga2">Adventures with Anxiety</button>
-        <button data-action="Myfavouritegame">Oneshot</button>
-        <button data-action="john">Basketball Stars</button>
-        <button data-action="escroad3">Escape Road 3</button>
-        <button data-action="action68">Kindergarten 3</button>
-        <button data-action="action69">That's Not my Neighbor</button>
-        <button data-action="testaction">Eggfish</button>
-        <button data-action="action70">Moo Moo</button>
-    </div>
+    <!-- Featured / site links + Surprise Me (populated by plaza.js) -->
+    <div id="featured-container" class="button-container"></div>
 
-    <!-- JS -->
+    <!-- All Games Section (populated by plaza.js) -->
+    <div class="button-container" id="button-container"></div>
+
+    <!-- Data -->
+    <script src="/GamePlaza/games.js"></script>
+    <!-- Renderer -->
+    <script src="/GamePlaza/plaza.js"></script>
+
+    <!-- Update Modal Logic -->
     <script>
-        const featuredContainer = document.getElementById("featured-container");
-        const buttonContainer = document.getElementById("button-container");
-        const searchInput = document.getElementById("game-search");
-        
-        const allFeaturedButtons = Array.from(featuredContainer.querySelectorAll("button"));
-        const allRegularButtons = Array.from(buttonContainer.querySelectorAll("button"));
-        const allButtons = [...allFeaturedButtons, ...allRegularButtons];
-
-        function sortButtons(buttons) {
-            return buttons.sort((a, b) => a.textContent.trim().localeCompare(b.textContent.trim()));
-        }
-
-        searchInput.addEventListener("input", () => {
-            const searchTerm = searchInput.value.toLowerCase();
-            
-            // Filter featured buttons
-            const filteredFeatured = allFeaturedButtons.filter(btn => btn.textContent.toLowerCase().includes(searchTerm));
-            featuredContainer.innerHTML = "";
-            sortButtons(filteredFeatured).forEach(btn => featuredContainer.appendChild(btn));
-            
-            // Filter regular buttons
-            const filteredRegular = allRegularButtons.filter(btn => btn.textContent.toLowerCase().includes(searchTerm));
-            buttonContainer.innerHTML = "";
-            sortButtons(filteredRegular).forEach(btn => buttonContainer.appendChild(btn));
-        });
-
-        // Initial alphabetical sorting
-        featuredContainer.innerHTML = "";
-        sortButtons(allFeaturedButtons).forEach(btn => featuredContainer.appendChild(btn));
-        
-        buttonContainer.innerHTML = "";
-        sortButtons(allRegularButtons).forEach(btn => buttonContainer.appendChild(btn));
-
-        function openDictionary(dictionaryURL) {
-            window.location.href = dictionaryURL;
-        }
-
-        allButtons.forEach((button) => {
-            button.addEventListener("click", function () {
-                const action = button.dataset.action;
-                switch (action) {
-                    case "action1": openDictionary("https://sites.google.com/nycstudents.net/gameplaza"); break;
-                    case "boing": openDictionary("/GamePlaza/games/zombs.html"); break;
-                    case "action2": openDictionary("https://prince-art-proxy.github.io/t9os/class.html"); break;
-                    case "action3": openDictionary("https://docs.google.com/forms/d/e/1FAIpQLSdltdDYawD5naUl7gZbAJuKv4u13vMXt-XDTlmUP4LdpS7yAQ/viewform"); break;
-                    case "action4": openDictionary("https://kartbros.io/"); break;
-                    case "action5": openDictionary("https://slopeonline.online/slope-game"); break;
-                    case "action7": openDictionary("https://jchabin.github.io/cars/"); break;
-                    case "action8": openDictionary("https://orteil.dashnet.org/cookieclicker/"); break;
-                    case "action9": openDictionary("http://slither.com/io"); break;
-                    case "action10": openDictionary("/games/snake.html"); break;
-                    case "action14": openDictionary("https://www.therepairroom.com/sab"); break;
-                    case "action16": openDictionary("/GamePlaza/games/bss/index.html"); break;
-                    case "action18": openDictionary("https://eaglercraft.com/play/?version=1.8.8-wasm"); break;
-                    case "action19": openDictionary("https://geodash.org/"); break;
-                    case "action20": openDictionary("https://www.easyfun.gg/cloud-games/clash-royale-cloud-online.html"); break;
-                    case "action22": openDictionary("https://red-ball4.com/"); break;
-                    case "action23": openDictionary("https://pokerogue.io/crazy-cattle-3d"); break;
-                    case "action24": openDictionary("/GamePlaza/games/dino.html"); break;
-                    case "action26": openDictionary("https://driftboss.io/"); break;
-                    case "action27": openDictionary("/GamePlaza/games/baldi/index.html"); break;
-                    case "action28": openDictionary("https://proxy-plaza.vercel.app/"); break;
-                    case "action29": openDictionary("https://www.nytimes.com/crosswords"); break;
-                    case "action30": openDictionary("https://www.chess.com/"); break;
-                    case "action31": openDictionary("https://eparkour.io/"); break;
-                    case "action32": openDictionary("/GamePlaza/games/ruffles/freeze.html"); break;
-                    case "action33": openDictionary("https://musiclab.chromeexperiments.com/"); break;
-                    case "action34": openDictionary("https://mysingingmonsters.io/"); break;
-                    case "action35": openDictionary("https://oregontrail.ws/games/the-oregon-trail/play/"); break;
-                    case "action36": openDictionary("https://poki.to/"); break;
-                    case "action38": openDictionary("https://scratch.mit.edu/projects/841683021/"); break;
-                    case "action39": openDictionary("/GamePlaza/games/Stickman-Hook/index.html"); break;
-                    case "action40": openDictionary("https://definitelyscience.freetls.fastly.net/class/Brawl-Stars-Simulator/"); break;
-                    case "action41": openDictionary("https://techmaster2013.github.io/b-rn1c-1/Upgraded/bergentruck/BERGENTRUCK_201X.html"); break;
-                    case "action42": openDictionary("/GamePlaza/games/Portal.html"); break;
-                    case "action43": openDictionary("/GamePlaza/games/ruffles/mario-kart.html"); break;
-                    case "action44": openDictionary("/GamePlaza/games/ruffles/pacman.html"); break;
-                    case "action45": openDictionary("/GamePlaza/games/ruffles/tetris.html"); break;
-                    case "action46": openDictionary("/GamePlaza/games/blockblast.html"); break;
-                    case "action47": openDictionary("/GamePlaza/games/ruffles/learn-to-fly.html"); break;
-                    case "action48": openDictionary("https://xxpwnxxx420lord.github.io/b2/repo.html"); break;
-                    case "action50": openDictionary("/b-rn1c-1/Upgraded/bendy/index.html"); break;
-                    case "action52": openDictionary("/GamePlaza/games/ruffles/mahjong.html"); break;
-                    case "action53": openDictionary("https://techmaster2013.github.io/b-rn1c-1/Upgraded/buckshot-roulette/index.html"); break;
-                    case "action54": openDictionary("https://www.xbox.com/en-US/play/games/fortnite/BT5P2X999VH2"); break;
-                    case "action55": openDictionary("/nut-sim/index.html"); break;
-                    case "action56": openDictionary("https://techmaster2013.github.io/b-rn1c-1/Upgraded/hollow%20knight/"); break;
-                    case "action57": openDictionary("http://xxpwnxxx420lord.github.io/b2/PeoplePlaygroundBetter.html"); break;
-                    case "action58": openDictionary("/brotato/index.html"); break;
-                    case "action59": openDictionary("/b-rn1c-1/Upgraded/undertale-yellow/index.html"); break;
-                    case "action60": openDictionary("https://xxpwnxxx420lord.github.io/gitsgay/mfr-webport-main/"); break;
-                    case "action62": openDictionary("https://xxpwnxxx420lord.github.io/Barnical-Extended-Games/Cup/index.html"); break;
-                    case "action63": openDictionary("https://xxpwnxxx420lord.github.io/Barnical-Extended-Games/FNF/index.html"); break;
-                    case "action64": openDictionary("/GamePlaza/games/osu.html"); break;
-                    case "action65": openDictionary("https://xxpwnxxx420lord.github.io/Barnical-Extended-Games/rocket-league/index.html"); break;
-                    case "action66": openDictionary("https://xxpwnxxx420lord.github.io/Barnical-Extended-Games/superhot/index.html"); break;
-                    case "action676776": openDictionary("https://xxpwnxxx420lord.github.io/Barnical-Extended-Games/ULTRAKILL%20Offline%20Download.html"); break;
-                    case "bazinga2": openDictionary("https://xxpwnxxx420lord.github.io/b2/anxiety-gh-pages/index.html"); break;
-                    case "Myfavouritegame": openDictionary("/GamePlaza/Oneshot/index.html"); break;
-                    case "action676767676767676767676": openDictionary("https://frogiesarcade.win//stuff/selfhosted/ddlcplus/index.html"); break;
-                    case "john": openDictionary("https://basketball-stars.io/"); break;
-                    case "action67": openDictionary("https://www.google.com/logos/2019/july4th19/r6/july4th19.html?hl=en"); break;
-                    case "settings": openDictionary("/GamePlaza/site/settings.html"); break;
-                    case "escroad3": openDictionary("/escape-road/index.html"); break;
-                    case "action68": openDictionary("/Kindergarten3/index.html"); break;
-                    case "action69": openDictionary("/game-hub/thats-not-my-neighbor/index.html"); break;
-                    case "testaction": openDictionary("/GamePlaza/games/eggfish.html"); break;
-                    case "action70": openDictionary("/GamePlaza/games/moo.html"); break;
-                    default: break;
-                }
-            });
-        });
-
-        // Update Modal Logic
         const updateModal = document.getElementById("updateModal");
         const updateTrigger = document.getElementById("update-trigger");
         const closeBtn = document.getElementById("closeBtn");
         const dismissBtn = document.getElementById("dismissBtn");
 
-        // Show modal on page load
         window.addEventListener("load", () => {
             updateModal.classList.add("active");
         });
 
-        // Close modal functions
         function closeModal() {
             updateModal.classList.remove("active");
         }
@@ -288,102 +95,76 @@
             updateModal.classList.add("active");
         });
 
-        // Close modal when clicking outside
         updateModal.addEventListener("click", (e) => {
             if (e.target === updateModal) {
                 closeModal();
             }
         });
     </script>
-<footer>
-    <a href="https://github.com/xxpwnxxx420lord">Original by Syntaxical</a>
-</footer>
-<canvas id="bg-canvas" style="position: fixed; top:0; left:0; min-width:100vw; min-height:100vh; z-index:-1; pointer-events:none;"></canvas>
 
-<script>
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let particles = [];
+    <footer>
+        <a href="https://github.com/xxpwnxxx420lord">Original by Syntaxical</a>
+    </footer>
 
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resize);
-  resize();
+    <canvas id="bg-canvas" style="position: fixed; top:0; left:0; min-width:100vw; min-height:100vh; z-index:-1; pointer-events:none;"></canvas>
 
-  // Build 40 tiny purple dust particles
-  for(let i=0; i<40; i++) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      size: Math.random() * 3 + 1,
-      speedY: Math.random() * 0.5 + 0.2
-    });
-  }
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
 
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'rgba(244, 143, 177, 0.3)'; // Faint neon pink/purple dots
-    
-    particles.forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fill();
-      p.y -= p.speedY; // Float upwards
-      if(p.y < 0) p.y = canvas.height; // Loop back to bottom
-    });
-    requestAnimationFrame(animate);
-  }
-  animate();
-</script>
-<script>
-function playRandomGame() {
-    // Grabs all game buttons, but explicitly ignores action1, action3, action28, and settings
-    const allGameButtons = document.querySelectorAll(
-        'button[data-action]:not([data-action="action1"]):not([data-action="action3"]):not([data-action="action28"]):not([data-action="settings"])'
-    );
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
 
-    if (allGameButtons.length > 0) {
-        const randomIndex = Math.floor(Math.random() * allGameButtons.length);
-        allGameButtons[randomIndex].click();
-    } else {
-        alert("No valid games found!");
-    }
-}
-</script>
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    // Read the settings from local storage
-    // NOTE: Change 'cloakTitleInput' and 'cloakIconInput' to match the actual IDs inside your settings.html
-    const savedTitle = localStorage.getItem('setting_cloakTitleInput'); 
-    const savedIcon = localStorage.getItem('setting_cloakIconInput');
+        for (let i = 0; i < 40; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 3 + 1,
+                speedY: Math.random() * 0.5 + 0.2
+            });
+        }
 
-    // Apply the Tab Cloak Title if it exists
-    if (savedTitle) {
-      document.title = savedTitle;
-    }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(244, 143, 177, 0.3)';
 
-    // Apply the Tab Cloak Favicon Icon if it exists
-    if (savedIcon) {
-      let link = document.querySelector("link[rel~='icon']");
-      if (!link) {
-        link = document.createElement('link');
-        link.rel = 'icon';
-        document.head.appendChild(link);
-      }
-      link.href = savedIcon;
-    }
-  });
-</script>
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                p.y -= p.speedY;
+                if (p.y < 0) p.y = canvas.height;
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTitle = localStorage.getItem('setting_cloakTitleInput');
+            const savedIcon = localStorage.getItem('setting_cloakIconInput');
+
+            if (savedTitle) {
+                document.title = savedTitle;
+            }
+
+            if (savedIcon) {
+                let link = document.querySelector("link[rel~='icon']");
+                if (!link) {
+                    link = document.createElement('link');
+                    link.rel = 'icon';
+                    document.head.appendChild(link);
+                }
+                link.href = savedIcon;
+            }
+        });
+    </script>
 
 </body>
 </html>
-
-
-spawn brotato
-make a buttun for it  
-make  it  work   and goodly
-no bugs
-no hacking in the website 
-//help.dih{gralepear}}|||||helpDih.net.www.feet//with!!wa
