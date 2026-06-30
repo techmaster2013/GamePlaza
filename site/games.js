@@ -1,7 +1,5 @@
-// GamePlaza game data
-// Add new games here as { label, url, thumbnail (optional), category (optional) }
-// No thumbnail? plaza.js falls back to an auto-generated placeholder card.
-
+// GamePlaza games are stored here
+// Add new games here as { label: "name", url: "https://www.example.com" }
 const games = [
   { label: "T9 OS", url: "https://prince-art-proxy.github.io/t9os/class.html" },
   { label: "Zombs Royale", url: "/GamePlaza/games/zombs.html" },
@@ -89,14 +87,15 @@ const CATEGORY_LABELS = {
   rhythm: "Rhythm",
   sports: "Sports",
   io: "IO Games",
+  misc: "Misc",
 };
 
 const GAME_CATEGORY_OVERRIDES = {
-  "T9 OS": "arcade",
-  "Chrome Music Lab": "arcade",
+  "T9 OS": "misc",
+  "Chrome Music Lab": "rhythm",
   "New York Times Games": "puzzle",
   "Bugswim": "arcade",
-  "My Femboy Roommate": "adventure",
+  "My Femboy Roommate": "simulation",
   "Google Baseball Game": "sports",
 };
 
