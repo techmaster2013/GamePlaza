@@ -12,6 +12,48 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
   <style>
+    .modal-overlay { 
+      position: fixed; 
+      inset: 0; 
+      display: grid; 
+      place-items: center; 
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 1000;
+    }
+    .modal-hidden { display: none; }
+    .modal-content {
+      background: var(--surface);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .modal-header h2 {
+      margin: 0;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .close-btn:hover {
+      opacity: 0.7;
+    }
+    .modal-footer {
+      text-align: right;
+      margin-top: 16px;
+    }
+    .modal-footer button {
+      cursor: pointer;
+    }
     .category-bar { 
       display: flex; 
       gap: 8px; 
@@ -43,7 +85,6 @@
       flex-wrap: wrap; 
       margin-top: 10px;
     }
-    .modal-hidden { display: none; }
     .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(1px,1px,1px,1px); white-space: nowrap; }
   </style>
 </head>
@@ -66,7 +107,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h2>Summer Update</h2>
-        <button class="close-btn" id="closeBtn">&times;</button>
+        <button class="close-btn" id="closeBtn" aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
         <h3>Update Notes</h3>
@@ -82,7 +123,7 @@
         <p><strong>Release Date:</strong> June 30th, 2026</p>
       </div>
       <div class="modal-footer">
-        <button id="dismissBtn">Dismiss</button>
+        <button id="dismissBtn" type="button">Dismiss</button>
       </div>
     </div>
   </div>
@@ -118,38 +159,41 @@
   <script defer src="/GamePlaza/site/games.js"></script>
   <script defer src="/GamePlaza/site/plaza.js"></script>
   <script>
-    // Update Modal Logic
-    const updateModal = document.getElementById("updateModal");
-    const updateTrigger = document.getElementById("update-trigger");
-    const closeBtn = document.getElementById("closeBtn");
-    const dismissBtn = document.getElementById("dismissBtn");
+    // Wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', () => {
+      // Update Modal Logic
+      const updateModal = document.getElementById("updateModal");
+      const updateTrigger = document.getElementById("update-trigger");
+      const closeBtn = document.getElementById("closeBtn");
+      const dismissBtn = document.getElementById("dismissBtn");
 
-    function closeModal() {
-      updateModal.classList.add("modal-hidden");
-    }
-
-    function openModal() {
-      updateModal.classList.remove("modal-hidden");
-    }
-
-    closeBtn.addEventListener("click", closeModal);
-    dismissBtn.addEventListener("click", closeModal);
-    updateTrigger.addEventListener("click", openModal);
-
-    // Close modal when clicking outside
-    updateModal.addEventListener("click", (e) => {
-      if (e.target === updateModal) {
-        closeModal();
+      function closeModal() {
+        updateModal.classList.add("modal-hidden");
       }
-    });
 
-    // Escape key to close
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeModal();
-    });
+      function openModal() {
+        updateModal.classList.remove("modal-hidden");
+      }
 
-    // Preserve site settings safely
-    window.addEventListener('DOMContentLoaded', () => {
+      if (closeBtn) closeBtn.addEventListener("click", closeModal);
+      if (dismissBtn) dismissBtn.addEventListener("click", closeModal);
+      if (updateTrigger) updateTrigger.addEventListener("click", openModal);
+
+      // Close modal when clicking outside
+      if (updateModal) {
+        updateModal.addEventListener("click", (e) => {
+          if (e.target === updateModal) {
+            closeModal();
+          }
+        });
+      }
+
+      // Escape key to close
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
+      });
+
+      // Preserve site settings safely
       try {
         const savedTitle = localStorage.getItem('setting_cloakTitleInput') || localStorage.getItem('gameplaza_custom_title') || localStorage.getItem('gameplaza_cloak_title');
         const savedIcon = localStorage.getItem('setting_cloakIconInput') || localStorage.getItem('gameplaza_custom_icon') || localStorage.getItem('gameplaza_cloak_icon');
