@@ -1,97 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>GamePlaza</title>
-    <link rel="icon" href="../Normal.png" type="image/x-icon" />
-    <link rel="stylesheet" href="/GamePlaza/plaza.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="GamePlaza — a small curated games portal. Browse, filter, and launch games.">
+  <title>GamePlaza</title>
+  <link rel="icon" href="/GamePlaza/site/Normal.png" type="image/png">
+
+  <!-- Site theme (keeps original look) -->
+  <link rel="stylesheet" href="/GamePlaza/plaza.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Small layout helpers so the existing plaza.css works well with the app-shell additions */
+    .app-shell { display:flex; min-height:100vh; }
+    .sidebar { width:260px; background: transparent; padding: 18px; border-right:1px solid rgba(255,255,255,0.04); }
+    .main { flex:1; padding: 22px; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px }
+    .presence-pill { padding:6px 10px; border-radius:999px; background:rgba(255,255,255,0.03); color:var(--muted); }
+    .category-bar { display:flex; gap:8px; margin:12px 0 18px; flex-wrap:wrap; }
+    .category-chip { padding:6px 10px; border-radius:999px; background:rgba(255,255,255,0.02); cursor:pointer; border:1px solid rgba(255,255,255,0.03); }
+    .category-chip.active { background:var(--accent-soft); color:var(--text-strong); }
+    .button-container { display:flex; gap:8px; flex-wrap:wrap; }
+    /* Make modal overlays match existing modal styles */
+    .modal-backdrop, .modal-overlay { position:fixed; inset:0; display:grid; place-items:center; background:rgba(0,0,0,0.55); }
+    .modal-hidden { display:none; }
+    .visually-hidden { position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap; }
+  </style>
 </head>
 <body>
-    <h1>
-        <span class="magic">
-            <span class="magic-text">Welcome to GamePlaza</span>
-        </span>
-    </h1>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Site navigation">
+      <div style="margin-bottom:14px">
+        <h1 style="margin:0; font-size:20px;"> <span class="magic"><span class="magic-text">Welcome to GamePlaza</span></span></h1>
+        <p style="margin:6px 0 0; color:var(--muted);">Curated games • lightweight • student-friendly</p>
+      </div>
 
-    <h2>
-        <span class="magic">
-            <span class="magic-text">Update Summer 2026</span>
-            <div class="update-badge" id="update-trigger">Update Notes</div>
-        </span>
-    </h2>
-    <!-- Changelog -->
-    <div class="modal-overlay" id="updateModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Summer Update</h2>
-                <button class="close-btn" id="closeBtn">&times;</button>
-            </div>
-            <div class="modal-body">
-                <h3>Update Notes</h3>
-                <p>give suggestions in the Update Requests button, lots of QOL updates expected this summer!</p>
+      <nav aria-label="Quick links" id="site-links" style="display:flex;flex-direction:column;gap:8px">
+        <!-- plaza.js will populate featured-container (including Surprise Me). Keep an update trigger here for accessibility. -->
+        <button type="button" id="update-trigger" class="update-badge" aria-haspopup="dialog" aria-controls="updateModal">Update Notes</button>
+        <a href="/GamePlaza/site/settings.html">Settings</a>
+        <a href="/GamePlaza/site/index.html#footer">Credits</a>
+      </nav>
 
-                <h3>Features Added</h3>
-                <ul>
-                    <li>Removed fake brotato code by friends</li>
-                    <li>Switched games to external file</li>
-                    <li>added categories</li>
-                    <li>lots of backend stuff changed</li>
-                </ul>
-
-                <h3>New Games</h3>
-                <ul>
-                    <li>nun</li>
-                </ul>
-
-                <p><strong>Release Date:</strong> June 30th, 2026</p>
-            </div>
-            <div class="modal-footer">
-                <button id="dismissBtn">Dismiss</button>
-            </div>
+      <div style="margin-top:16px; font-size:13px; color:var(--muted)">
+        <strong style="color:var(--text-strong)">Theme</strong>
+        <div style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap">
+          <button class="theme-option" data-theme="default">Default</button>
+          <button class="theme-option" data-theme="evil">Evil</button>
         </div>
+      </div>
+
+    </aside>
+
+    <main class="main" role="main">
+      <div class="topbar">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div id="breadcrumb" style="color:var(--muted)">All games</div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="presence-pill" id="presenceCount" aria-live="polite">0 online</div>
+          <button id="searchOpen" type="button" aria-label="Open search">Search</button>
+        </div>
+      </div>
+
+      <!-- Search input (plaza.js uses #game-search) -->
+      <label for="game-search" class="visually-hidden">Search games</label>
+      <input id="game-search" type="search" placeholder="Search games..." style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit;" />
+
+      <!-- Category chips -->
+      <div id="category-bar" class="category-bar" role="navigation" aria-label="Categories"></div>
+
+      <!-- Featured / utility buttons (plaza.js will populate this, including Surprise Me) -->
+      <div id="featured-container" class="button-container" style="margin-top:12px; margin-bottom:12px"></div>
+
+      <!-- Game grid (plaza.js will populate button-container) -->
+      <section id="button-container" class="button-container" style="margin-top:10px"></section>
+
+      <!-- Recent / footer -->
+      <footer id="footer" style="margin-top:28px; color:var(--muted)">
+        <a href="https://github.com/xxpwnxxx420lord" target="_blank" rel="noopener noreferrer">Original by Syntaxical</a>
+        <div style="margin-top:8px">Theme maintained: Ubuntu + original site style</div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Update modal (updt.js expects these IDs) -->
+  <div class="modal-overlay modal-hidden" id="updateModal" role="dialog" aria-modal="true" aria-labelledby="updateTitle">
+    <div class="modal-content" role="document" style="max-width:720px; background:var(--surface); padding:18px; border-radius:10px;">
+      <div class="modal-header" style="display:flex;justify-content:space-between;align-items:center">
+        <h2 id="updateTitle">Summer Update</h2>
+        <button class="close-btn" id="closeBtn" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h3>Update Notes</h3>
+        <p>Give suggestions in the Update Requests button — lots of QOL updates expected this summer!</p>
+        <h3>Features Added</h3>
+        <ul>
+          <li>Switched games to external file</li>
+          <li>Added categories & search improvements</li>
+          <li>Performance and accessibility improvements</li>
+        </ul>
+        <p><strong>Release Date:</strong> June 30th, 2026</p>
+      </div>
+      <div class="modal-footer" style="text-align:right; margin-top:12px">
+        <button id="dismissBtn" type="button">Dismiss</button>
+      </div>
     </div>
-    <!-- Search bar -->
-    <input type="text" id="game-search" placeholder="Search games..." />
-    <!-- Category filter chips (populated by plaza.js) -->
-    <div id="category-bar" class="category-bar"></div>
-    <!-- Featured / site links + Surprise Me (populated by plaza.js) -->
-    <div id="featured-container" class="button-container"></div>
-    <!-- All Games Section (populated by plaza.js) -->
-    <div class="button-container" id="button-container"></div>
-    <!-- Data -->
-    <script src="/GamePlaza/site/games.js"></script>
-    <!-- Renderer -->
-    <script src="/GamePlaza/site/plaza.js"></script>
-    <!-- Changelog Logic -->
-    <script src="/GamePlaza/site/updt.js"></script>
-    <footer>
-        <a href="https://github.com/xxpwnxxx420lord">Original by Syntaxical</a>
-    </footer>
-    <canvas id="bg-canvas" style="position: fixed; top:0; left:0; min-width:100vw; min-height:100vh; z-index:-1; pointer-events:none;"></canvas>
-    <script src="/GamePlaza/site/canvas.js"></script>
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedTitle = localStorage.getItem('setting_cloakTitleInput');
-            const savedIcon = localStorage.getItem('setting_cloakIconInput');
+  </div>
 
-            if (savedTitle) {
-                document.title = savedTitle;
-            }
+  <!-- Optional Feedback modal (kept simple) -->
+  <div id="feedback-backdrop" class="modal-backdrop modal-hidden" role="dialog" aria-modal="true" aria-labelledby="feedback-title">
+    <div class="modal-card" style="max-width:640px; padding:16px; background:var(--surface); border-radius:8px">
+      <h2 id="feedback-title">Send Feedback</h2>
+      <div class="meta">Suggestions, bugs, or requests — we read them.</div>
+      <div style="margin-top:8px">
+        <textarea id="feedback-message" placeholder="Write your feedback here..." style="width:100%;min-height:120px"></textarea>
+      </div>
+      <div style="margin-top:10px; text-align:right">
+        <button id="feedback-cancel" type="button">Cancel</button>
+        <button id="feedback-submit" type="button">Send</button>
+      </div>
+    </div>
+  </div>
 
-            if (savedIcon) {
-                let link = document.querySelector("link[rel~='icon']");
-                if (!link) {
-                    link = document.createElement('link');
-                    link.rel = 'icon';
-                    document.head.appendChild(link);
-                }
-                link.href = savedIcon;
-            }
+  <!-- Decorative canvas -->
+  <canvas id="bg-canvas" aria-hidden="true" style="position:fixed; inset:0; z-index:-1; pointer-events:none;"></canvas>
+
+  <!-- Data & renderer (defer so DOM loads first) -->
+  <script defer src="/GamePlaza/site/games.js"></script>
+  <script defer src="/GamePlaza/site/plaza.js"></script>
+  <script defer src="/GamePlaza/site/updt.js"></script>
+  <script defer src="/GamePlaza/site/canvas.js"></script>
+
+  <!-- Small helpers: theme toggles and feedback handling. Surprise Me is provided by plaza.js; if it's missing we fall back to a simple random pick. -->
+  <script>
+    // Theme toggle
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('.theme-option')) {
+        const theme = e.target.dataset.theme;
+        if (theme === 'evil') document.body.dataset.theme = 'evil';
+        else document.body.removeAttribute('data-theme');
+      }
+    });
+
+    // Hook into the Surprise Me button created by plaza.js (id: surprise-btn)
+    function ensureSurpriseHook() {
+      const surprise = document.getElementById('surprise-btn');
+      if (surprise) return; // plaza.js already created it inside featured-container
+      // If plaza.js didn't create it (older variant), create a fallback
+      const featured = document.getElementById('featured-container');
+      if (featured && !document.getElementById('surprise-btn')) {
+        const btn = document.createElement('button');
+        btn.id = 'surprise-btn';
+        btn.type = 'button';
+        btn.textContent = 'Surprise Me!';
+        btn.addEventListener('click', () => {
+          if (window.playRandomGame) window.playRandomGame();
+          else {
+            const pool = (window.games || []).filter(Boolean);
+            if (pool.length) window.location.href = pool[Math.floor(Math.random() * pool.length)].url;
+          }
         });
-    </script>
+        featured.appendChild(btn);
+      }
+    }
+
+    // Run after plaza.js has initialized
+    window.addEventListener('load', () => {
+      // try to wire or create the surprise button; plaza.js normally does this itself
+      setTimeout(ensureSurpriseHook, 200);
+    });
+
+    // feedback modal behavior
+    document.getElementById('feedback-submit')?.addEventListener('click', () => {
+      const msg = document.getElementById('feedback-message').value.trim();
+      if (!msg) { alert('Please write a message first'); return; }
+      const history = JSON.parse(localStorage.getItem('gameplaza_feedback') || '[]');
+      history.push({ message: msg, ts: Date.now() });
+      localStorage.setItem('gameplaza_feedback', JSON.stringify(history));
+      alert('Thanks — your feedback is saved locally.');
+      document.getElementById('feedback-message').value = '';
+      document.getElementById('feedback-backdrop')?.classList.add('modal-hidden');
+    });
+
+    document.getElementById('feedback-cancel')?.addEventListener('click', () => {
+      document.getElementById('feedback-backdrop')?.classList.add('modal-hidden');
+    });
+
+    // Basic update modal accessibility helpers (if updt.js doesn't already attach them)
+    const updateModal = document.getElementById('updateModal');
+    const updateTrigger = document.getElementById('update-trigger');
+    const closeBtn = document.getElementById('closeBtn');
+    const dismissBtn = document.getElementById('dismissBtn');
+    function openModal() { updateModal.classList.remove('modal-hidden'); updateModal.removeAttribute('aria-hidden'); updateModal.querySelector('.modal-content')?.focus(); }
+    function closeModal() { updateModal.classList.add('modal-hidden'); updateModal.setAttribute('aria-hidden','true'); }
+    updateTrigger?.addEventListener('click', openModal);
+    closeBtn?.addEventListener('click', closeModal);
+    dismissBtn?.addEventListener('click', closeModal);
+    updateModal?.addEventListener('click', (ev) => { if (ev.target === updateModal) closeModal(); });
+    document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeModal(); });
+
+    // Preserve site settings (title / icon) safely
+    window.addEventListener('DOMContentLoaded', () => {
+      try {
+        const savedTitle = localStorage.getItem('setting_cloakTitleInput') || localStorage.getItem('gameplaza_custom_title') || localStorage.getItem('gameplaza_cloak_title');
+        const savedIcon = localStorage.getItem('setting_cloakIconInput') || localStorage.getItem('gameplaza_custom_icon') || localStorage.getItem('gameplaza_cloak_icon');
+        if (savedTitle) document.title = String(savedTitle).slice(0,200);
+        if (savedIcon) {
+          try {
+            const url = new URL(savedIcon, location.href);
+            if (['http:','https:','data:'].includes(url.protocol)) {
+              let link = document.querySelector("link[rel~='icon']");
+              if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
+              link.href = url.href;
+            }
+          } catch (e) { /* ignore invalid icon */ }
+        }
+      } catch (e) { console.warn('Error applying saved settings', e); }
+
+      // Ensure surprise button exists after plaza.js runs
+      setTimeout(ensureSurpriseHook, 300);
+    });
+  </script>
+
 </body>
 </html>
