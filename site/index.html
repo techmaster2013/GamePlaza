@@ -6,15 +6,12 @@
   <meta name="description" content="GamePlaza — a small curated games portal. Browse, filter, and launch games.">
   <title>GamePlaza</title>
   <link rel="icon" href="/GamePlaza/site/Normal.png" type="image/png">
-
   <!-- Site theme (keeps original look) -->
   <link rel="stylesheet" href="/GamePlaza/plaza.css">
-
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-
   <style>
     /* Small layout helpers so the existing plaza.css works well with the app-shell additions */
     .app-shell { display:flex; min-height:100vh; }
@@ -39,14 +36,12 @@
         <h1 style="margin:0; font-size:20px;"> <span class="magic"><span class="magic-text">Welcome to GamePlaza</span></span></h1>
         <p style="margin:6px 0 0; color:var(--muted);">Curated games • lightweight • student-friendly</p>
       </div>
-
       <nav aria-label="Quick links" id="site-links" style="display:flex;flex-direction:column;gap:8px">
         <!-- plaza.js will populate featured-container (including Surprise Me). Keep an update trigger here for accessibility. -->
         <button type="button" id="update-trigger" class="update-badge" aria-haspopup="dialog" aria-controls="updateModal">Update Notes</button>
         <a href="/GamePlaza/site/settings.html">Settings</a>
         <a href="/GamePlaza/site/index.html#footer">Credits</a>
       </nav>
-
       <div style="margin-top:16px; font-size:13px; color:var(--muted)">
         <strong style="color:var(--text-strong)">Theme</strong>
         <div style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap">
