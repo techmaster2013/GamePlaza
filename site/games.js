@@ -64,6 +64,7 @@ const games = [
   { label: "That's Not my Neighbor", url: "/game-hub/thats-not-my-neighbor/index.html" },
   { label: "Eggfish", url: "/GamePlaza/games/eggfish.html" },
   { label: "Moo Moo", url: "/GamePlaza/games/moo.html" },
+  { label: "Granny", url: "/granny/index.html" },
 ];
 
 // Non-game site links (nav/utility) - kept separate, not part of the searchable game grid
@@ -105,7 +106,7 @@ const CATEGORY_RULES = [
     patterns: [
       /baldi/i, /bendy/i, /buckshot roulette/i, /people playground/i,
       /that's not my neighbor/i, /eggfish/i, /r\.e\.p\.o/i, /undertale yellow/i,
-      /adventures with anxiety/i, /kindergarten/i,
+      /adventures with anxiety/i, /kindergarten/i, /granny/i,
     ],
   },
   {
