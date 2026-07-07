@@ -65,6 +65,7 @@ const games = [
   { label: "Eggfish", url: "/GamePlaza/games/eggfish.html" },
   { label: "Moo Moo", url: "/GamePlaza/games/moo.html" },
   { label: "Granny", url: "/granny/index.html" },
+  { label: "Angry Birds 2", url: "/angry/index.html" },
 ];
 
 // Non-game site links (nav/utility) - kept separate, not part of the searchable game grid
