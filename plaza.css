@@ -381,31 +381,3 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--pink); /* Glows pink when grabbed */
 }
-.category-bar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  width: 90vw;
-  max-width: 1200px;
-  margin: 0 auto 20px auto;
-}
-
-.category-chip {
-  padding: 10px 16px;
-  border: 2px solid var(--violet);
-  border-radius: 999px;
-  background: #190f26;
-  color: #F9F6EF;
-  font-family: "Ubuntu", sans-serif;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.category-chip:hover,
-.category-chip.active {
-  border-color: var(--pink);
-  background: linear-gradient(135deg, var(--purple), var(--violet));
-  box-shadow: 0 0 15px rgba(244, 143, 177, 0.35);
-}
