@@ -1,416 +1,84 @@
-        :root {
-            --purple: rgb(123, 31, 162);
-            --violet: rgb(103, 58, 183);
-            --pink: rgb(244, 143, 177);
-        }
+/* ===========================
+   ROOT VARIABLES
+   =========================== */
+:root {
+  --purple: rgb(123, 31, 162);
+  --violet: rgb(103, 58, 183);
+  --pink: rgb(244, 143, 177);
 
-        body {
-            background: linear-gradient(-45deg, #1a0f2e, #0f0820, #1f1240, #0d0619);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            margin: 0px;
-            overflow: auto;
-            user-select: none;
-            font-family: 'Ubuntu', medium;
-            color: #F9F6EF;
-            display: grid;
-            place-content: center;
-            min-height: 100vh;
-            opacity: 0;
-            animation: gradientShift 15s ease infinite, fadeIn 1s ease-out forwards;
-        }
+  /* Missing variables restored */
+  --text: #F9F6EF;
+  --text-strong: #ffffff;
+  --accent: var(--pink);
+  --accent-soft: rgba(244, 143, 177, 0.2);
+}
 
-        @keyframes gradientShift {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        canvas {
-            width: 100%;
-            height: 100%;
-        }
-
-        h1 {
-            color: white;
-            font-family: "Ubuntu", sans-serif;
-            font-size: clamp(2em, 2vw, 4em);
-            font-weight: 400;
-            margin: 0px;
-            padding: 150px;
-            text-align: center;
-        }
-
-        h1>.magic {
-            display: inline-block;
-            position: relative;
-        }
-
-        h1>.magic>.magic-text {
-            background: linear-gradient(to right, var(--purple), var(--violet), var(--pink), var(--purple));
-            background-size: 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            white-space: nowrap;
-            animation: background-pan 3s linear infinite;
-        }
-
-        @keyframes background-pan {
-            from {
-                background-position: 0% center;
-            }
-
-            to {
-                background-position: -200% center;
-            }
-        }
-
-  .button-container {
+/* ===========================
+   GLOBAL STYLES
+   =========================== */
+body {
+  background: linear-gradient(-45deg, #1a0f2e, #0f0820, #1f1240, #0d0619);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite, fadeIn 1s ease-out forwards;
+  margin: 0;
+  overflow: auto;
+  user-select: none;
+  font-family: 'Ubuntu', sans-serif;
+  color: var(--text);
   display: grid;
-  /* Automatically builds columns based on screen width */
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-  gap: 15px;
-  width: 90vw; /* Keeps the grid nicely centered on the screen */
-  max-width: 1200px; 
-  margin: 0 auto;
-  padding: 20px;
-  box-sizing: border-box;
-  justify-content: center;
+  place-content: center;
+  min-height: 100vh;
+  opacity: 0;
 }
 
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-.button-container button {
-  margin: 0px; /* Reset margins since 'gap' handles spacing now */
-  padding: 18px 20px; 
-  border: 2px solid var(--purple); 
-  border-radius: 12px;
-  font-family: 'Ubuntu', sans-serif; 
-  font-size: 16px;
-  font-weight: 500;
-  color: #F9F6EF; 
-  background: #190f26; 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* ===========================
+   HEADERS
+   =========================== */
+h1 {
+  color: white;
+  font-size: clamp(2em, 2vw, 4em);
+  font-weight: 400;
+  margin: 0;
+  padding: 150px;
   text-align: center;
-  cursor: pointer;
-  box-sizing: border-box;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-       .button-container button:hover {
-  transform: translateY(-4px); /* Lifts the text card cleanly */
-  background: #25163a; /* Brightens the dark background slightly */
-  border-color: var(--pink); /* Sharp flash to your neon pink variable */
-  
-  /* Layered glowing shadow effect */
-  box-shadow: 0 0 15px rgba(123, 31, 162, 0.7), 
-              0 0 30px rgba(244, 143, 177, 0.3); 
+h1 .magic {
+  display: inline-block;
+  position: relative;
 }
 
-
-        .button-container button:active {
-            transform: scale(0.95);
-        }
-
-        #featured-container {
-            background-color: rgba(244, 143, 177, 0.1);
-            padding: 15px;
-            border-left: 4px solid var(--pink);
-            margin-bottom: 20px;
-        }
-
-        .update-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--purple), var(--violet));
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(123, 31, 162, 0.4);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .update-badge:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(123, 31, 162, 0.6);
-        }
-
-        /* Update Modal Styles */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 999;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #242424 0%, #1a1a1a 100%);
-            border: 2px solid var(--pink);
-            border-radius: 15px;
-            padding: 40px;
-            max-width: 600px;
-            width: 90%;
-            box-shadow: 0 10px 40px rgba(244, 143, 177, 0.3);
-            animation: slideUp 0.4s ease;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--pink);
-            padding-bottom: 15px;
-        }
-
-        .modal-header h2 {
-            margin: 0;
-            background: linear-gradient(to right, var(--purple), var(--violet), var(--pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 28px;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: var(--pink);
-            font-size: 28px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .close-btn:hover {
-            transform: scale(1.2);
-        }
-
-        .modal-body {
-            color: #F9F6EF;
-            line-height: 1.6;
-            font-size: 16px;
-        }
-
-        .modal-body h3 {
-            color: var(--pink);
-            margin-top: 15px;
-            margin-bottom: 8px;
-        }
-
-        .modal-body ul, .modal-body ol {
-            margin: 10px 0;
-            padding-left: 20px;
-        }
-
-        .modal-body li {
-            margin: 8px 0;
-        }
-
-        .modal-footer {
-            margin-top: 25px;
-            text-align: right;
-        }
-
-        .modal-footer button {
-            background: linear-gradient(135deg, var(--purple), var(--violet));
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .modal-footer button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(123, 31, 162, 0.4);
-        }
-
-        .modal-footer button:active {
-            transform: translateY(0);
-        }
-
-        @media (max-width: 768px) {
-            .button-container button {
-                flex-basis: calc(50% - 10px);
-            }
-            
-            .modal-content {
-                padding: 25px;
-                margin: 20px;
-            }
-
-            .modal-header h2 {
-                font-size: 22px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .button-container button {
-                flex-basis: calc(100% - 10px);
-            }
-
-            .modal-content {
-                padding: 20px;
-            }
-
-            .update-badge {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-        }
-
-        @media (min-width: 1920px) {
-            .button-container button {
-                flex-basis: calc(20% - 10px);
-            }
-        }
-
-        @media (min-width: 3840px) {
-            .button-container button {
-                flex-basis: calc(15% - 10px);
-            }
-        }
-
-        #game-search {
-            width: 60vh;
-            padding: 10px;
-            font-size: 15px;
-            background-color: #242424;
-            border: none;
-            color: #7d7d7d;
-            box-shadow: 0px 0px 5px rgba(84, 78, 78, 0.8);
-            margin: 1vh auto 3vh auto;
-            display: block;
-        }
-
-        #game-search::placeholder {
-            color: #555;
-        }
-/* Keeps images inside your buttons looking sharp and completely uniform */
-.button-container button img {
-  width: 100%;             /* Stretches the image safely to fill the button width */
-  height: 120px;           /* Locks every single image to the exact same height */
-  object-fit: cover;       /* Cleanly crops your image so it never stretches or looks squished */
-  border-radius: 6px;      /* Slightly rounds the image edges to match your layout */
-  margin-bottom: 10px;     /* Leaves a perfect gap between the image and your button text */
-  display: block;          /* Forces the text down beneath the picture */
+h1 .magic .magic-text {
+  background: linear-gradient(to right, var(--purple), var(--violet), var(--pink), var(--purple));
+  background-size: 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  white-space: nowrap;
+  animation: background-pan 3s linear infinite;
 }
 
-/* Tweaks your existing button styling to handle images gracefully */
-.button-container button {
-  height: auto;            /* Allows the button to naturally grow to fit the picture */
-  padding: 12px;           /* Gives an even frame of space around the inside contents */
-}
-/* On desktop viewports, lock the grid strictly into 3 equal columns */
-@media (min-width: 900px) {
-  .button-container {
-    grid-template-columns: repeat(3, 1fr);
-  }
+@keyframes background-pan {
+  from { background-position: 0% center; }
+  to { background-position: -200% center; }
 }
 
-/* On mobile viewports, stack buttons vertically in 1 column */
-@media (max-width: 600px) {
-  .button-container {
-    grid-template-columns: 1fr;
-  }
-}
-/* Custom Neon Scrollbar Layout */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0d0619; /* Matches your dark background */
-}
-::-webkit-scrollbar-thumb {
-  background: var(--purple); 
-  border-radius: 10px;
-  border: 2px solid #0d0619; /* Creates a clean gap outline */
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--pink); /* Glows pink when grabbed */
-}
-   }
-    .category-bar { 
-      display: flex; 
-      gap: 8px; 
-      margin: 16px 0; 
-      flex-wrap: wrap; 
-    }
-    .category-chip { 
-      padding: 8px 14px; 
-      border-radius: 6px; 
-      background: rgba(255, 255, 255, 0.05); 
-      cursor: pointer; 
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--text);
-      font-size: 14px;
-      transition: all 0.2s ease;
-    }
-    .category-chip:hover { 
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-    .category-chip.active { 
-      background: var(--accent-soft); 
-      color: var(--text-strong);
-      border-color: var(--accent);
-    }
-    .button-container { 
-      display: flex; 
-      gap: 8px; 
-      flex-wrap: wrap; 
-      margin-top: 10px;
-    }
-    .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(1px,1px,1px,1px); white-space: nowrap; }
+/* ===========================
+   BUTTON GRID
+   =========================== */
+.button
