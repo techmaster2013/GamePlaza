@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="GamePlaza — a curated neon‑style game portal.">
+  <title>GamePlaza</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="/GamePlaza/site/Normal.png" type="image/png">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="/GamePlaza/plaza.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- TOP NAV -->
+  <nav class="top-nav">
+    <span class="logo">GamePlaza</span>
+    <span class="nav-right">Unblocked Portal</span>
+  </nav>
+
+  <!-- HERO HEADER -->
+  <header class="hero">
+    <h1>
+      <span class="magic">
+        <span class="magic-text">GamePlaza</span>
+      </span>
+    </h1>
+    <p class="tagline">A clean, fast, neon‑powered game hub.</p>
+  </header>
+
+  <!-- SEARCH BAR -->
+  <input type="text" id="game-search" placeholder="Search games...">
+
+  <!-- CATEGORY BAR -->
+  <div class="category-bar">
+    <div class="category-chip active" data-category="all">All</div>
+    <div class="category-chip" data-category="action">Action</div>
+    <div class="category-chip" data-category="adventure">Adventure</div>
+    <div class="category-chip" data-category="horror">Horror</div>
+    <div class="category-chip" data-category="retro">Retro</div>
+  </div>
+
+  <!-- FEATURED UPDATE -->
+  <div id="featured-container">
+    <div class="update-badge" onclick="openModal()">Latest Update</div>
+  </div>
+
+  <!-- GAME GRID -->
+  <div class="button-container">
+
+    <button data-category="action">
+      <img src="https://via.placeholder.com/300x150" alt="Game">
+      Action Game
+    </button>
+
+    <button data-category="adventure">
+      <img src="https://via.placeholder.com/300x150" alt="Game">
+      Adventure Game
+    </button>
+
+    <button data-category="horror">
+      <img src="https://via.placeholder.com/300x150" alt="Game">
+      Horror Game
+    </button>
+
+    <button data-category="retro">
+      <img src="https://via.placeholder.com/300x150" alt="Game">
+      Retro Game
+    </button>
+
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Latest Update</h2>
+        <button class="close-btn" onclick="closeModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <h3>New Features</h3>
+        <ul>
+          <li>Neon UI overhaul</li>
+          <li>Faster game loading</li>
+          <li>Improved search</li>
+        </ul>
+
+        <h3>Fixes</h3>
+        <ul>
+          <li>Layout stability</li>
+          <li>Mobile grid improvements</li>
+        </ul>
+      </div>
+
+      <div class="modal-footer">
+        <button onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    © 2026 GamePlaza — Neon Edition
+  </footer>
+
+  <!-- JS -->
+  <script>
+    function openModal() {
+      document.getElementById("modal").classList.add("active");
+    }
+
+    function closeModal() {
+      document.getElementById("modal").classList.remove("active");
+    }
+
+    // Category filter
+    const chips = document.querySelectorAll(".category-chip");
+    const buttons = document.querySelectorAll(".button-container button");
+
+    chips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        chips.forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+
+        const category = chip.dataset.category;
+
+        buttons.forEach(btn => {
+          btn.style.display =
+            category === "all" || btn.dataset.category === category
+              ? "block"
+              : "none";
+        });
+      });
+    });
+
+    // Search filter
+    document.getElementById("game-search").addEventListener("input", function () {
+      const term = this.value.toLowerCase();
+      buttons.forEach(btn => {
+        btn.style.display = btn.innerText.toLowerCase().includes(term)
+          ? "block"
+          : "none";
+      });
+    });
+  </script>
+
+</body>
+</html>
