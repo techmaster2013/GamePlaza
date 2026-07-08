@@ -3,54 +3,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="GamePlaza — a curated neon‑style game portal.">
-  <title>GamePlaza</title>
+  <title>GamePlaza — Neon Edition</title>
 
-  <!-- Favicon -->
-  <link rel="icon" href="/GamePlaza/site/Normal.png" type="image/png">
-
-  <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="/GamePlaza/plaza.css">
-
-  <!-- Google Fonts -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Neon CSS -->
+  <link rel="stylesheet" href="/GamePlaza/plaza.css">
 </head>
 
 <body>
 
-  <!-- TOP NAV -->
+  <!-- NAV -->
   <nav class="top-nav">
-    <span class="logo">GamePlaza</span>
-    <span class="nav-right">Unblocked Portal</span>
+    <span class="logo">GamePlaza Neon</span>
+    <span class="nav-right">Games Portal</span>
   </nav>
 
-  <!-- HERO HEADER -->
+  <!-- HERO -->
   <header class="hero">
     <h1>
       <span class="magic">
-        <span class="magic-text">GamePlaza</span>
+        <span class="magic-text">GamePlaza Neon</span>
       </span>
     </h1>
-    <p class="tagline">A clean, fast, neon‑powered game hub.</p>
+    <p class="tagline">A glowing, animated, neon‑powered game hub.</p>
   </header>
 
-  <!-- SEARCH BAR -->
+  <!-- SEARCH -->
   <input type="text" id="game-search" placeholder="Search games...">
 
-  <!-- CATEGORY BAR -->
+  <!-- CATEGORIES -->
   <div class="category-bar">
     <div class="category-chip active" data-category="all">All</div>
     <div class="category-chip" data-category="action">Action</div>
     <div class="category-chip" data-category="adventure">Adventure</div>
     <div class="category-chip" data-category="horror">Horror</div>
     <div class="category-chip" data-category="retro">Retro</div>
-  </div>
-
-  <!-- FEATURED UPDATE -->
-  <div id="featured-container">
-    <div class="update-badge" onclick="openModal()">Latest Update</div>
   </div>
 
   <!-- GAME GRID -->
@@ -78,46 +69,17 @@
 
   </div>
 
-  <!-- MODAL -->
-  <div class="modal-overlay" id="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Latest Update</h2>
-        <button class="close-btn" onclick="closeModal()">×</button>
-      </div>
-
-      <div class="modal-body">
-        <h3>New Features</h3>
-        <ul>
-          <li>Neon UI overhaul</li>
-          <li>Faster game loading</li>
-          <li>Improved search</li>
-        </ul>
-
-        <h3>Fixes</h3>
-        <ul>
-          <li>Layout stability</li>
-          <li>Mobile grid improvements</li>
-        </ul>
-      </div>
-
-      <div class="modal-footer">
-        <button onclick="closeModal()">Close</button>
-      </div>
-    </div>
-  </div>
-
   <!-- FOOTER -->
   <footer class="footer">
-    © 2026 GamePlaza — Neon Edition
+    © 2026 GamePlaza Neon Edition
   </footer>
 
   <!-- JS -->
   <script>
+    // Modal functions (if you add modal later)
     function openModal() {
       document.getElementById("modal").classList.add("active");
     }
-
     function closeModal() {
       document.getElementById("modal").classList.remove("active");
     }
