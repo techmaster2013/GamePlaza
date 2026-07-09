@@ -38,7 +38,7 @@ function animate() {
 }
 animate();
 
-// GLOBAL SETTINGS APPLY
+/* GLOBAL SETTINGS APPLY */
 window.addEventListener("load", () => {
   const title = localStorage.getItem("gp_cloak_title");
   const icon  = localStorage.getItem("gp_cloak_icon");
@@ -64,74 +64,67 @@ window.addEventListener("load", () => {
   if (modal) modal.classList.add("active");
 });
 
-// INDEX PAGE LOGIC
+/* INDEX PAGE LOGIC */
 if (document.getElementById("game-grid")) {
   let favorites = JSON.parse(localStorage.getItem("gp_favorites") || "[]");
   let recent    = JSON.parse(localStorage.getItem("gp_recent") || "[]");
   let allGames  = [];
 
-// Load games directly from games.js (no fetch)
-allGames = window.games || [];
+  // Load games directly from games.js (no fetch)
+  allGames = window.games || [];
 
-buildCategories(allGames);
-renderGames(allGames);
-
-
-function renderGames(list) {
-  const grid = document.getElementById("game-grid");
-  grid.innerHTML = "";
-
-  list.forEach(game => {
-    const btn = document.createElement("button");
-
-    if (game.img) {
-      const img = document.createElement("img");
-      img.src = game.img;
-      btn.appendChild(img);
-    }
-
-    const gameName = game.name || game.label || "Unknown";
-
-    const title = document.createElement("div");
-    title.className = "game-title";
-    title.innerHTML = `${gameName} ${favorites.includes(gameName) ? "★" : "☆"}`;
-
-    title.onclick = (e) => {
-      e.stopPropagation();
-      toggleFavorite(gameName);
-    };
-
-    btn.onclick = () => {
-      addRecent(gameName);
-      window.location.href = game.url;
-    };
-
-    btn.appendChild(title);
-    grid.appendChild(btn);
-  });
-
-  updateCounts();
-
-  // ⭐ HIDE LOADING HERE ⭐
-  const loading = document.getElementById("loading");
-  if (loading) loading.style.display = "none";
-}
-
-
-
-
-function toggleFavorite(name) {
-  const gameName = name || "";
-  if (favorites.includes(gameName)) {
-    favorites = favorites.filter(x => x !== gameName);
-  } else {
-    favorites.push(gameName);
-  }
-  localStorage.setItem("gp_favorites", JSON.stringify(favorites));
+  buildCategories(allGames);
   renderGames(allGames);
-}
 
+  function renderGames(list) {
+    const grid = document.getElementById("game-grid");
+    grid.innerHTML = "";
 
+    list.forEach(game => {
+      const btn = document.createElement("button");
+
+      if (game.img) {
+        const img = document.createElement("img");
+        img.src = game.img;
+        btn.appendChild(img);
+      }
+
+      const gameName = game.name || game.label || "Unknown";
+
+      const title = document.createElement("div");
+      title.className = "game-title";
+      title.innerHTML = `${gameName} ${favorites.includes(gameName) ? "★" : "☆"}`;
+
+      title.onclick = (e) => {
+        e.stopPropagation();
+        toggleFavorite(gameName);
+      };
+
+      btn.onclick = () => {
+        addRecent(gameName);
+        window.location.href = game.url;
+      };
+
+      btn.appendChild(title);
+      grid.appendChild(btn);
+    });
+
+    updateCounts();
+
+    const loading = document.getElementById("loading");
+    if (loading) loading.style.display = "none";
+  }
+
+  function toggleFavorite(name) {
+    const gameName = name || "";
+    if (favorites.includes(gameName)) {
+      favorites = favorites.filter(x => x !== gameName);
+    } else {
+      favorites.push(gameName);
+    }
+    localStorage.setItem("gp_favorites", JSON.stringify(favorites));
+    renderGames(allGames);
+  }
 
   function addRecent(name) {
     recent = recent.filter(x => x !== name);
@@ -158,51 +151,66 @@ function toggleFavorite(name) {
     const allChip = document.createElement("div");
     allChip.className = "chip";
     allChip.textContent = "All";
-    allChip.onclick = () => renderGames(allGames);
+    allChip.onclick = () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      allChip.classList.add('active');
+      renderGames(allGames);
+    };
     row.appendChild(allChip);
 
     cats.forEach(cat => {
       const chip = document.createElement("div");
       chip.className = "chip";
       chip.textContent = cat;
-      chip.onclick = () => renderGames(allGames.filter(g => g.category === cat));
+      chip.onclick = () => {
+        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        renderGames(allGames.filter(g => g.category === cat));
+      };
       row.appendChild(chip);
     });
   }
 
-const searchInput = document.getElementById("game-search");
-if (searchInput) {
-  searchInput.addEventListener("input", (e) => {
-    const q = e.target.value.toLowerCase();
+  const searchInput = document.getElementById("game-search");
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      const q = e.target.value.toLowerCase();
 
-    renderGames(
-      allGames.filter(g => {
-        const gameName = (g.name || g.label || "").toLowerCase();
-        return gameName.includes(q);
-      })
-    );
-  });
-}
-
+      renderGames(
+        allGames.filter(g => {
+          const gameName = (g.name || g.label || "").toLowerCase();
+          return gameName.includes(q);
+        })
+      );
+    });
+  }
 
   const chipFav    = document.getElementById("chip-fav");
   const chipRecent = document.getElementById("chip-recent");
   const chipAll    = document.getElementById("chip-all");
 
   if (chipFav) {
-    chipFav.onclick = () =>
+    chipFav.onclick = () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chipFav.classList.add('active');
       renderGames(allGames.filter(g => favorites.includes(g.name || g.label)));
-
+    };
   }
 
   if (chipRecent) {
-    chipRecent.onclick = () =>
+    chipRecent.onclick = () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chipRecent.classList.add('active');
       renderGames(allGames.filter(g => recent.includes(g.name || g.label)));
-
+    };
   }
 
   if (chipAll) {
-    chipAll.onclick = () => renderGames(allGames);
+    chipAll.onclick = () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chipAll.classList.add('active');
+      renderGames(allGames);
+    };
   }
 
   const trigger = document.getElementById("update-trigger");
@@ -221,9 +229,30 @@ if (searchInput) {
       }
     };
   }
+
+  const surpriseBtn = document.getElementById("surprise-btn");
+  if (surpriseBtn) {
+    surpriseBtn.onclick = () => {
+      surpriseBtn.classList.add("flash");
+      setTimeout(() => surpriseBtn.classList.remove("flash"), 400);
+
+      if (allGames.length > 0) {
+        const random = allGames[Math.floor(Math.random() * allGames.length)];
+        if (random && random.url) {
+          addRecent(random.name || random.label || "Unknown");
+          window.location.href = random.url;
+        }
+      }
+    };
+  }
+
+  const backTop = document.getElementById("backTop");
+  if (backTop) {
+    backTop.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 }
 
-// SETTINGS PAGE LOGIC
+/* SETTINGS PAGE LOGIC */
 if (document.title.includes("Settings")) {
   const clearFav    = document.getElementById("clearFav");
   const clearRecent = document.getElementById("clearRecent");
@@ -307,11 +336,3 @@ if (document.title.includes("Settings")) {
     window.location.replace("about:blank");
   };
 }
-document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-chip.classList.add('active');
-
-const btn = document.getElementById("surprise-btn");
-btn.classList.add("flash");
-setTimeout(() => btn.classList.remove("flash"), 400);
-
-document.getElementById("backTop").onclick = () => window.scrollTo({top: 0, behavior: "smooth"});
