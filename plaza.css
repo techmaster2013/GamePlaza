@@ -437,3 +437,6 @@
   box-shadow: 0 0 12px rgba(123, 31, 162, 0.7),
               0 0 24px rgba(244, 143, 177, 0.3);
 }
+.modal-hidden {
+  display: none;
+}
