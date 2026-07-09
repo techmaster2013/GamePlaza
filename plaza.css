@@ -432,3 +432,24 @@ h1 .magic .magic-text {
         flex-basis: calc(15% - 10px);
     }
 }
+.chip.active {
+  background: #25163a;
+  border-color: var(--pink);
+  box-shadow: 0 0 15px rgba(123, 31, 162, 0.7),
+              0 0 30px rgba(244, 143, 177, 0.3);
+}
+#loading {
+  text-align: center;
+  font-size: 18px;
+  opacity: 0.7;
+  margin-top: 20px;
+}
+#surprise-btn.flash {
+  animation: flash 0.4s ease;
+}
+
+@keyframes flash {
+  0% { box-shadow: 0 0 0px var(--pink); }
+  50% { box-shadow: 0 0 20px var(--pink); }
+  100% { box-shadow: 0 0 0px var(--pink); }
+}
