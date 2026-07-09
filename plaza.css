@@ -453,3 +453,20 @@ h1 .magic .magic-text {
   50% { box-shadow: 0 0 20px var(--pink); }
   100% { box-shadow: 0 0 0px var(--pink); }
 }
+#backTop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #190f26;
+  border: 2px solid var(--purple);
+  border-radius: 50%;
+  padding: 10px 14px;
+  color: #F9F6EF;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#backTop:hover {
+  background: #25163a;
+  border-color: var(--pink);
+  box-shadow: 0 0 15px rgba(123, 31, 162, 0.7);
+}
