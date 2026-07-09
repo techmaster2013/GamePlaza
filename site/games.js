@@ -12,7 +12,7 @@ const games = [
   { label: "Snake Game", url: "/games/snake.html" },
   { label: "SAB", url: "https://www.therepairroom.com/sab" },
   { label: "Bee Swarm Simulator", url: "/GamePlaza/games/bss/index.html" },
-  { label: "Minecraft", url: "https://eaglercraft.com/play/?version=1.8.8-wasm" },
+  { label: "Minecraft", url: "/GamePlaza/games/mc.html" },
   { label: "Geometry Dash", url: "https://geodash.org/" },
   { label: "Clash Royale", url: "https://www.easyfun.gg/cloud-games/clash-royale-cloud-online.html" },
   { label: "Red Ball 4", url: "https://red-ball4.com/" },
@@ -66,6 +66,7 @@ const games = [
   { label: "Moo Moo", url: "/GamePlaza/games/moo.html" },
   { label: "Granny", url: "/granny/index.html" },
   { label: "Angry Birds 2", url: "/angry/index.html" },
+  { label: "Run 3", url: "/GamePlaza/games/run3.html" },
 ];
 
 // Non-game site links (nav/utility) - kept separate, not part of the searchable game grid
