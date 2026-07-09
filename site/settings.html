@@ -3,11 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Settings | GamePlaza</title>
-
-  <!-- Main CSS -->
   <link rel="stylesheet" href="/GamePlaza/plaza.css">
 
-  <!-- Toggle Switch Styling -->
   <style>
     .toggle {
       position: relative;
@@ -61,6 +58,31 @@
       -webkit-text-fill-color: transparent;
     }
 
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .preset-grid button {
+      background: #190f26;
+      border: 2px solid var(--purple);
+      border-radius: 10px;
+      padding: 10px;
+      color: #F9F6EF;
+      cursor: pointer;
+      transition: .3s;
+      font-family: Ubuntu;
+    }
+
+    .preset-grid button:hover {
+      background: #25163a;
+      border-color: var(--pink);
+      box-shadow: 0 0 12px rgba(123,31,162,0.7);
+      transform: translateY(-3px);
+    }
+
     .settings-section input {
       display: block;
       width: 100%;
@@ -98,31 +120,44 @@
       <button id="clearRecent">Clear Recently Played</button>
     </div>
 
-    <!-- TAB CLOAK -->
+    <!-- PRESET CLOAKS -->
     <div class="settings-section">
-      <h2>Tab Cloak</h2>
+      <h2>Preset Cloaks</h2>
 
-      <label class="toggle">
-        <input id="cloakGoogle" type="checkbox">
-        <span class="slider"></span>
-      </label>
-      Google
+      <div class="preset-grid">
+        <button onclick="applyPreset('Google','https://www.google.com/favicon.ico')">Google</button>
+        <button onclick="applyPreset('Google Drive','https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png')">Drive</button>
+        <button onclick="applyPreset('Google Classroom','https://ssl.gstatic.com/classroom/favicon.png')">Classroom</button>
+        <button onclick="applyPreset('Gmail','https://mail.google.com/favicon.ico')">Gmail</button>
+        <button onclick="applyPreset('Canvas','https://canvas.instructure.com/favicon.ico')">Canvas</button>
+        <button onclick="applyPreset('Zoom','https://zoom.us/favicon.ico')">Zoom</button>
+        <button onclick="applyPreset('Google Docs','https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png')">Docs</button>
+        <button onclick="applyPreset('Google Sheets','https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico')">Sheets</button>
+        <button onclick="applyPreset('Google Meet','https://meet.google.com/favicon.ico')">Meet</button>
+        <button onclick="applyPreset('Google Calendar','https://calendar.google.com/googlecalendar/images/favicon.ico')">Calendar</button>
+        <button onclick="applyPreset('Microsoft Word','https://static-00.iconduck.com/assets.00/microsoft-word-icon-512x512-8zj6z1xv.png')">Word</button>
+        <button onclick="applyPreset('PowerPoint','https://static-00.iconduck.com/assets.00/powerpoint-icon-512x512-1o5x7x1t.png')">PowerPoint</button>
+        <button onclick="applyPreset('YouTube','https://www.youtube.com/s/desktop/fe2f3e9b/img/favicon.ico')">YouTube</button>
+        <button onclick="applyPreset('Khan Academy','https://www.khanacademy.org/favicon.ico')">Khan Academy</button>
+        <button onclick="applyPreset('Search','https://www.google.com/favicon.ico')">Fake Search</button>
+      </div>
+    </div>
 
-      <br><br>
+    <!-- CUSTOM CLOAK -->
+    <div class="settings-section">
+      <h2>Custom Cloak</h2>
 
       <label class="toggle">
         <input id="cloakCustom" type="checkbox">
         <span class="slider"></span>
       </label>
-      Custom Cloak
+      Enable Custom Cloak
 
       <input id="cloakTitle" placeholder="Custom Title">
       <input id="cloakIcon" placeholder="Favicon URL">
-
-      <button id="applyCustom">Apply Custom</button>
     </div>
 
-    <!-- MOBILE SIZER -->
+    <!-- MOBILE -->
     <div class="settings-section">
       <h2>Mobile Screen Sizer</h2>
 
@@ -144,14 +179,45 @@
       Enable Anti-Deledao
     </div>
 
-    <!-- ABOUT:BLANK -->
+    <!-- ABOUT BLANK -->
     <div class="settings-section">
       <h2>About:blank Cloaker</h2>
-      <button ondblclick="cloakBlank()">Cloak (Double-click)</button>
+      <button onclick="cloakBlankReal()">Cloak GamePlaza</button>
     </div>
 
-  </div> <!-- END MAIN -->
+  </div>
 
   <script src="/GamePlaza/site/plaza.js"></script>
+
+  <script>
+    function applyPreset(title, icon) {
+      localStorage.setItem("gp_cloak_title", title);
+      localStorage.setItem("gp_cloak_icon", icon);
+      alert("Preset applied!");
+    }
+
+    function cloakBlankReal() {
+      const win = window.open("about:blank", "_blank");
+      const doc = win.document;
+
+      doc.title = localStorage.getItem("gp_cloak_title") || "Google";
+      const link = doc.createElement("link");
+      link.rel = "icon";
+      link.href = localStorage.getItem("gp_cloak_icon") || "https://www.google.com/favicon.ico";
+      doc.head.appendChild(link);
+
+      const iframe = doc.createElement("iframe");
+      iframe.src = window.location.href;
+      iframe.style.position = "fixed";
+      iframe.style.top = "0";
+      iframe.style.left = "0";
+      iframe.style.width = "100%";
+      iframe.style.height = "100%";
+      iframe.style.border = "none";
+
+      doc.body.appendChild(iframe);
+    }
+  </script>
+
 </body>
 </html>
