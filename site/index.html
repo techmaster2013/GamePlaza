@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>GamePlaza</title>
 
-  <!-- Ubuntu Font -->
+  <!-- Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -13,11 +13,12 @@
   <link rel="stylesheet" href="/GamePlaza/plaza.css">
 
   <meta property="og:title" content="GamePlaza">
-  <meta property="og:description" content="A beautiful game hub built by Mohammed.">
-  <meta property="og:image" content="/GamePlaza/preview.png">
+  <meta property="og:description" content="A website created by a Staten Island middle schooler who wanted an easy way to find games that are unblocked, without any VPNs or proxies. It comes with a proxy, a favorites system, and over 60 games!">
+  <meta property="og:image" content="/GamePlaza/Normal.png">
   <meta name="theme-color" content="#7B1FA2">
 </head>
 <body>
+  <!-- particles -->
   <canvas id="particles"></canvas>
 
   <div id="main">
@@ -35,8 +36,10 @@
       </span>
     </h2>
 
+    <!-- Search box -->
     <input type="text" id="game-search" placeholder="🔍︎ Search games...">
 
+    <!-- your activity -->
     <div class="settings-section" style="margin-top:20px; margin-bottom:25px;">
       <h2>Your Activity</h2>
       <p style="color:#ccc; margin-bottom:12px;">
@@ -44,7 +47,6 @@
         &nbsp;&nbsp;&nbsp;&nbsp;
         ⏱ Recently Played: <span id="recentCount">0</span>
       </p>
-
       <div class="chip-row">
         <div class="chip" id="chip-fav">Favorites</div>
         <div class="chip" id="chip-recent">History</div>
@@ -52,9 +54,10 @@
       </div>
     </div>
 
+    <!-- pinned buttons -->
     <div id="featured-container" class="button-container">
-      <button onclick="window.location.href='requests.html'">Update Requests</button>
-      <button onclick="window.location.href='proxy.html'">ProxyPlaza</button>
+      <button onclick="window.location.href='requests.html'">Feedback</button>
+      <button onclick="window.location.href='https://proxy-plaza.vercel.app'">ProxyPlaza</button>
       <button onclick="window.location.href='settings.html'">Settings</button>
       <button id="surprise-btn">Surprise Me!</button>
     </div>
@@ -81,16 +84,18 @@
 
       <div class="modal-body">
         <h3>Update Notes</h3>
-        <p>give suggestions by pressing the Update Requests button — lots of QOL updates expected this summer!</p>
+        <p>give suggestions by pressing the feedback button — lots of QOL updates expected this summer!</p>
 
         <h3>Features Added</h3>
         <ul>
-          <li>Switched games to external file</li>
+          <li>Switched games and most javascript to external file</li>
           <li>Added categories & search improvements</li>
           <li>Performance and accessibility improvements</li>
           <li>UI overhaul</li>
-          <li>Your activity section:</li>
+          <li>Your activity section: view your favorites and your game history</li>
           <li>Favorites - Press the star next to a button to favorite it.</li>
+          <li>History - View games that were played on your device before.</li>
+          <li>renamed update requests to feedback</li>
           <li>removed GSite GamePlaza due to irrelevancy</li>
         </ul>
 
