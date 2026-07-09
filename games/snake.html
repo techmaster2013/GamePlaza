@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game | GamePlaza</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000;
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+  <title>Snake Game | GamePlaza</title>
+  <link rel="stylesheet" href="/GamePlaza/plaza.css">
 </head>
 <body>
-    <!-- The source URL pulls Google's standalone arcade game -->
-    <iframe src="https://www.google.com/fbx?fbx=snake_arcade" allow="clipboard-write *; fullscreen 'none'; web-share *" tabindex="0"></iframe>
+
+  <h1>
+    <span class="magic">
+      <span class="magic-text">Snake on GamePlaza</span>
+    </span>
+  </h1>
+
+  <a href="/GamePlaza/index.html" class="chip" style="margin-bottom:20px; display:inline-block;">
+    ← Back to GamePlaza
+  </a>
+
+  <iframe 
+    src="https://www.google.com/fbx?fbx=snake_arcade"
+    style="width:100%; height:90vh; border:none; border-radius:12px;">
+  </iframe>
+
 </body>
 </html>
