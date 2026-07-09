@@ -507,3 +507,44 @@
   z-index: -1;
   pointer-events: none;
 }
+/* GamePlaza Category + Activity Buttons (matching Update Notes style) */
+.chip,
+#chip-fav,
+#chip-recent,
+#chip-all {
+  padding: 12px 20px;
+  background: #190f26;
+  border: 2px solid var(--purple);
+  border-radius: 12px;
+  color: #F9F6EF;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 6px;
+}
+
+/* Hover effect identical to Update Notes buttons */
+.chip:hover,
+#chip-fav:hover,
+#chip-recent:hover,
+#chip-all:hover {
+  transform: translateY(-4px);
+  background: #25163a;
+  border-color: var(--pink);
+  box-shadow: 
+    0 0 15px rgba(123, 31, 162, 0.7),
+    0 0 30px rgba(244, 143, 177, 0.3);
+}
+
+/* Active press effect */
+.chip:active,
+#chip-fav:active,
+#chip-recent:active,
+#chip-all:active {
+  transform: scale(0.95);
+}
