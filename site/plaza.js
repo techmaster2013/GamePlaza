@@ -76,15 +76,17 @@ function renderGames(list) {
 
 
 
-  function toggleFavorite(name) {
-    if (favorites.includes(name)) {
-      favorites = favorites.filter(x => x !== name);
-    } else {
-      favorites.push(name);
-    }
-    localStorage.setItem("gp_favorites", JSON.stringify(favorites));
-    renderGames(allGames);
+function toggleFavorite(name) {
+  const gameName = name || "";
+  if (favorites.includes(gameName)) {
+    favorites = favorites.filter(x => x !== gameName);
+  } else {
+    favorites.push(gameName);
   }
+  localStorage.setItem("gp_favorites", JSON.stringify(favorites));
+  renderGames(allGames);
+}
+
 
   function addRecent(name) {
     recent = recent.filter(x => x !== name);
