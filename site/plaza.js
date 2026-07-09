@@ -1,3 +1,36 @@
+// APPLY SETTINGS FROM LOCALSTORAGE
+window.addEventListener("load", () => {
+
+    // Cloak
+    const title = localStorage.getItem("gp_cloak_title");
+    const icon = localStorage.getItem("gp_cloak_icon");
+
+    if (title) document.title = title;
+    if (icon) {
+        let link = document.querySelector("link[rel~='icon']");
+        if (!link) {
+            link = document.createElement("link");
+            link.rel = "icon";
+            document.head.appendChild(link);
+        }
+        link.href = icon;
+    }
+
+    // Mobile Sizer
+    if (localStorage.getItem("gp_mobile_sizer") === "enabled") {
+        document.body.style.width = "480px";
+    }
+
+    // Anti-Deledao
+    if (localStorage.getItem("gp_deledao") === "enabled") {
+        console.log("Anti-Deledao active");
+    }
+
+    // Auto-open modal
+    const modal = document.getElementById("updateModal");
+    if (modal) modal.classList.add("active");
+});
+
 // Load games
 fetch("games.js")
     .then(res => res.json())
@@ -85,11 +118,6 @@ function updateCounts() {
 document.getElementById("game-search").addEventListener("input", (e) => {
     const q = e.target.value.toLowerCase();
     renderGames(window.allGames.filter(g => g.name.toLowerCase().includes(q)));
-});
-
-// Modal auto-open
-window.addEventListener("load", () => {
-    document.getElementById("updateModal").classList.add("active");
 });
 
 // Modal open
