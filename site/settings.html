@@ -1,124 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Settings | GamePlaza</title>
-<link rel="stylesheet" href="/GamePlaza/plaza.css">
-<style>
-.toggle {
-  position: relative;
-  width: 55px;
-  height: 28px;
-  display: inline-block;
-  margin: 10px 0;
-}
-.toggle input { display: none; }
-.slider {
-  position: absolute;
-  cursor: pointer;
-  background: #3a2a55;
-  border-radius: 34px;
-  top: 0; left: 0; right: 0; bottom: 0;
-  transition: .3s;
-  border: 2px solid var(--purple);
-}
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 20px;
-  width: 20px;
-  left: 4px;
-  bottom: 3px;
-  background: var(--pink);
-  border-radius: 50%;
-  transition: .3s;
-}
-input:checked + .slider {
-  background: var(--violet);
-  border-color: var(--pink);
-}
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
-.settings-section button {
-  background: #190f26;
-  border: 2px solid var(--purple);
-  border-radius: 12px;
-  padding: 12px 20px;
-  color: #F9F6EF;
-  font-family: 'Ubuntu', sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  margin: 8px 8px 8px 0;
-  transition: all 0.3s;
-}
-.settings-section button:hover {
-  transform: translateY(-3px);
-  background: #25163a;
-  border-color: var(--pink);
-  box-shadow: 0 0 15px rgba(123,31,162,0.7),
-              0 0 30px rgba(244,143,177,0.3);
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Settings | GamePlaza</title>
+  <link rel="stylesheet" href="/GamePlaza/plaza.css">
+  <style>
+    .toggle {
+      position: relative;
+      width: 55px;
+      height: 28px;
+      display: inline-block;
+      margin: 10px 0;
+    }
+    .toggle input { display: none; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      background: #3a2a55;
+      border-radius: 34px;
+      top: 0; left: 0; right: 0; bottom: 0;
+      transition: .3s;
+      border: 2px solid var(--purple);
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 3px;
+      background: var(--pink);
+      border-radius: 50%;
+      transition: .3s;
+    }
+    input:checked + .slider {
+      background: var(--violet);
+      border-color: var(--pink);
+    }
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    .settings-section button {
+      background: #190f26;
+      border: 2px solid var(--purple);
+      border-radius: 12px;
+      padding: 12px 20px;
+      color: #F9F6EF;
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      margin: 8px 8px 8px 0;
+      transition: all 0.3s;
+    }
+    .settings-section button:hover {
+      transform: translateY(-3px);
+      background: #25163a;
+      border-color: var(--pink);
+      box-shadow: 0 0 15px rgba(123,31,162,0.7),
+                  0 0 30px rgba(244,143,177,0.3);
+    }
+  </style>
 </head>
 <body>
 
-<h1>
-  <span class="magic">
-    <span class="magic-text">Settings</span>
-  </span>
-</h1>
+  <h1>
+    <span class="magic">
+      <span class="magic-text">Settings</span>
+    </span>
+  </h1>
 
-<a href="index.html" class="chip" style="margin-bottom:20px; display:inline-block;">← Back to GamePlaza</a>
+  <a href="index.html" class="chip" style="margin-bottom:20px; display:inline-block;">← Back to GamePlaza</a>
 
-<div class="settings-section">
-  <h2>Your Activity</h2>
-  <button id="clearFav">Clear Favorites</button>
-  <button id="clearRecent">Clear Recently Played</button>
-</div>
+  <div class="settings-section">
+    <h2>Your Activity</h2>
+    <button id="clearFav">Clear Favorites</button>
+    <button id="clearRecent">Clear Recently Played</button>
+  </div>
 
-<div class="settings-section">
-  <h2>Tab Cloak</h2>
+  <div class="settings-section">
+    <h2>Tab Cloak</h2>
 
-  <label class="toggle">
-    <input id="cloakGoogle" type="checkbox">
-    <span class="slider"></span>
-  </label> Google
+    <label class="toggle">
+      <input id="cloakGoogle" type="checkbox">
+      <span class="slider"></span>
+    </label> Google
 
-  <br>
+    <br>
 
-  <label class="toggle">
-    <input id="cloakCustom" type="checkbox">
-    <span class="slider"></span>
-  </label> Custom Cloak
+    <label class="toggle">
+      <input id="cloakCustom" type="checkbox">
+      <span class="slider"></span>
+    </label> Custom Cloak
 
-  <input id="cloakTitle" placeholder="Custom Title">
-  <input id="cloakIcon" placeholder="Favicon URL">
-  <button id="applyCustom">Apply Custom</button>
-</div>
+    <input id="cloakTitle" placeholder="Custom Title">
+    <input id="cloakIcon" placeholder="Favicon URL">
+    <button id="applyCustom">Apply Custom</button>
+  </div>
 
-<div class="settings-section">
-  <h2>Mobile Screen Sizer</h2>
-  <label class="toggle">
-    <input id="mobileSizer" type="checkbox">
-    <span class="slider"></span>
-  </label> Enable Mobile Mode
-</div>
+  <div class="settings-section">
+    <h2>Mobile Screen Sizer</h2>
+    <label class="toggle">
+      <input id="mobileSizer" type="checkbox">
+      <span class="slider"></span>
+    </label> Enable Mobile Mode
+  </div>
 
-<div class="settings-section">
-  <h2>Anti-Deledao</h2>
-  <label class="toggle">
-    <input id="antiDeledao" type="checkbox">
-    <span class="slider"></span>
-  </label> Enable Anti-Deledao
-</div>
+  <div class="settings-section">
+    <h2>Anti-Deledao</h2>
+    <label class="toggle">
+      <input id="antiDeledao" type="checkbox">
+      <span class="slider"></span>
+    </label> Enable Anti-Deledao
+  </div>
 
-<div class="settings-section">
-  <h2>About:blank Cloaker</h2>
-  <button ondblclick="cloakBlank()">Cloak (Double-click)</button>
-</div>
+  <div class="settings-section">
+    <h2>About:blank Cloaker</h2>
+    <button ondblclick="cloakBlank()">Cloak (Double-click)</button>
+  </div>
 
-<script src="/GamePlaza/site/plaza.js"></script>
+  <script src="/GamePlaza/site/plaza.js"></script>
 </body>
 </html>
