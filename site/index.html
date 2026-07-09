@@ -1,145 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="GamePlaza — a small curated games portal. Browse, filter, and launch games.">
-  <title>GamePlaza</title>
-  <link rel="icon" href="/GamePlaza/site/Normal.png" type="image/png">
-  <link rel="stylesheet" href="/GamePlaza/plaza.css">
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<title>GamePlaza</title>
+
+<!-- Ubuntu Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- Main CSS -->
+<link rel="stylesheet" href="/GamePlaza/plaza.css">
 </head>
 <body>
-  <h1>
-    <span class="magic">
-      <span class="magic-text">Welcome to GamePlaza</span>
-    </span>
-  </h1>
 
-  <h2>
-    <span class="magic">
-      <span class="magic-text">Summer 2026</span>
-      <div class="update-badge" id="update-trigger">Update Notes</div>
-    </span>
-  </h2>
+<h1>
+  <span class="magic">
+    <span class="magic-text">Welcome to GamePlaza</span>
+  </span>
+</h1>
 
-  <!-- Update Modal -->
-  <div class="modal-overlay modal-hidden" id="updateModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Summer Update</h2>
-        <button class="close-btn" id="closeBtn" aria-label="Close">&times;</button>
-      </div>
-      <div class="modal-body">
-        <h3>Update Notes</h3>
-        <p>Give suggestions in the Update Requests button — lots of QOL updates expected this summer!</p>
-        
-        <h3>Features Added</h3>
-        <ul>
-          <li>Switched games to external file</li>
-          <li>Added categories & search improvements</li>
-          <li>Performance and accessibility improvements</li>
-        </ul>
+<h2>
+  <span class="magic">
+    <span class="magic-text">Summer Update</span>
+    <div class="update-badge" id="update-trigger">Update Notes</div>
+  </span>
+</h2>
 
-        <h3>New Games</h3>
-        <ul>
+<input type="text" id="game-search" placeholder="Search games...">
+
+<div class="settings-section" style="margin-top:20px; margin-bottom:25px;">
+  <h2>Your Activity</h2>
+  <p style="color:#ccc; margin-bottom:12px;">
+    ⭐ Favorites: <span id="favCount">0</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    ⏱ Recently Played: <span id="recentCount">0</span>
+  </p>
+
+  <div class="chip-row">
+    <div class="chip" id="chip-fav">Favorites</div>
+    <div class="chip" id="chip-recent">History</div>
+    <div class="chip" id="chip-all">All</div>
+  </div>
+</div>
+
+<div id="featured-container" class="button-container">
+  <button onclick="window.location.href='featured.html'">GSite GamePlaza</button>
+  <button onclick="window.location.href='requests.html'">Update Requests</button>
+  <button onclick="window.location.href='proxy.html'">ProxyPlaza</button>
+  <button onclick="window.location.href='settings.html'">Settings</button>
+  <button id="surprise-btn">Surprise Me!</button>
+</div>
+
+<div class="chip-row" id="category-row"></div>
+
+<div class="button-container" id="game-grid"></div>
+
+<footer style="text-align:center; margin-top:40px; opacity:0.8;">
+  <p>GamePlaza © 2026 — Built by Mohammed</p>
+</footer>
+
+<div class="modal-overlay" id="updateModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Summer Update</h2>
+      <button class="close-btn" id="closeBtn" aria-label="Close">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <h3>Update Notes</h3>
+      <p>Give suggestions in the Update Requests button — lots of QOL updates expected this summer!</p>
+
+      <h3>Features Added</h3>
+      <ul>
+        <li>Switched games to external file</li>
+        <li>Added categories & search improvements</li>
+        <li>Performance and accessibility improvements</li>
+        <li>UI overhaul</li>
+        <li>Your activity section</li>
+      </ul>
+
+      <h3>New Games</h3>
+      <ul>
         <li>Granny</li>
         <li>Angry Birds 2</li>
-        </ul>
-        <p><strong>Release Date:</strong> July 7th, 2026</p>
-      </div>
-      <div class="modal-footer">
-        <button id="dismissBtn" type="button">Dismiss</button>
-      </div>
+      </ul>
+
+      <p><strong>Release Date:</strong> July 7th, 2026</p>
+    </div>
+
+    <div class="modal-footer">
+      <button id="dismissBtn" type="button">Dismiss</button>
     </div>
   </div>
+</div>
 
-  <!-- Search bar -->
-  <label for="game-search" class="visually-hidden">Search games</label>
-  <input type="search" id="game-search" placeholder="Search games..." />
-
-  <!-- Category chips -->
-  <div id="category-bar" class="category-bar" role="navigation" aria-label="Categories"></div>
-
-  <!-- Featured Games Section -->
-  <div id="featured-container" class="button-container">
-    <button data-action="action1">GSite GamePlaza</button>
-    <button data-action="action3">Update Requests</button>
-    <button data-action="action28">ProxyPlaza</button>
-    <button data-action="settings">Settings</button>
-    <button id="surprise-btn">Surprise Me!</button>
-  </div>
-
-  <!-- All Games Section -->
-  <div class="button-container" id="button-container"></div>
-
-  <!-- Footer -->
-  <footer style="margin-top: 28px; color: var(--muted)">
-    <a href="https://github.com/xxpwnxxx420lord" target="_blank" rel="noopener noreferrer">Original by Syntaxical</a>
-  </footer>
-
-  <!-- Decorative canvas -->
-  <canvas id="bg-canvas" aria-hidden="true" style="position: fixed; inset: 0; z-index: -1; pointer-events: none;"></canvas>
-
-  <!-- Data & renderer -->
-  <script defer src="/GamePlaza/site/games.js"></script>
-  <script defer src="/GamePlaza/site/plaza.js"></script>
-  <script>
-    // Wait for DOM to be ready
-    document.addEventListener('DOMContentLoaded', () => {
-      // Update Modal Logic
-      const updateModal = document.getElementById("updateModal");
-      const updateTrigger = document.getElementById("update-trigger");
-      const closeBtn = document.getElementById("closeBtn");
-      const dismissBtn = document.getElementById("dismissBtn");
-
-      function closeModal() {
-        updateModal.classList.add("modal-hidden");
-      }
-
-      function openModal() {
-        updateModal.classList.remove("modal-hidden");
-      }
-
-      if (closeBtn) closeBtn.addEventListener("click", closeModal);
-      if (dismissBtn) dismissBtn.addEventListener("click", closeModal);
-      if (updateTrigger) updateTrigger.addEventListener("click", openModal);
-
-      // Close modal when clicking outside
-      if (updateModal) {
-        updateModal.addEventListener("click", (e) => {
-          if (e.target === updateModal) {
-            closeModal();
-          }
-        });
-      }
-
-      // Escape key to close
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeModal();
-      });
-
-      // Preserve site settings safely
-      try {
-        const savedTitle = localStorage.getItem('setting_cloakTitleInput') || localStorage.getItem('gameplaza_custom_title') || localStorage.getItem('gameplaza_cloak_title');
-        const savedIcon = localStorage.getItem('setting_cloakIconInput') || localStorage.getItem('gameplaza_custom_icon') || localStorage.getItem('gameplaza_cloak_icon');
-        if (savedTitle) document.title = String(savedTitle).slice(0, 200);
-        if (savedIcon) {
-          try {
-            const url = new URL(savedIcon, location.href);
-            if (['http:', 'https:', 'data:'].includes(url.protocol)) {
-              let link = document.querySelector("link[rel~='icon']");
-              if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
-              link.href = url.href;
-            }
-          } catch (e) { /* ignore invalid icon */ }
-        }
-      } catch (e) { console.warn('Error applying saved settings', e); }
-    });
-  </script>
-
+<script src="/GamePlaza/site/plaza.js"></script>
 </body>
 </html>
