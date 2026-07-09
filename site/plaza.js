@@ -52,7 +52,9 @@ renderGames(allGames);
 
       const title = document.createElement("div");
       title.className = "game-title";
-      title.innerHTML = `${game.name} ${favorites.includes(game.name) ? "★" : "☆"}`;
+const gameName = game.name || game.label;
+title.innerHTML = `${gameName} ${favorites.includes(gameName) ? "★" : "☆"}`;
+
       title.onclick = (e) => {
         e.stopPropagation();
         toggleFavorite(game.name);
@@ -60,10 +62,12 @@ renderGames(allGames);
 
       btn.appendChild(title);
 
-      btn.onclick = () => {
-        addRecent(game.name);
-        window.location.href = game.url;
-      };
+const gameName = game.name || game.label;
+btn.onclick = () => {
+    addRecent(gameName);
+    window.location.href = game.url;
+};
+
 
       grid.appendChild(btn);
     });
@@ -132,12 +136,14 @@ renderGames(allGames);
 
   if (chipFav) {
     chipFav.onclick = () =>
-      renderGames(allGames.filter(g => favorites.includes(g.name)));
+      renderGames(allGames.filter(g => favorites.includes(g.name || g.label)));
+
   }
 
   if (chipRecent) {
     chipRecent.onclick = () =>
-      renderGames(allGames.filter(g => recent.includes(g.name)));
+      renderGames(allGames.filter(g => recent.includes(g.name || g.label)));
+
   }
 
   if (chipAll) {
