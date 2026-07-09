@@ -1,4 +1,4 @@
-// APPLY SETTINGS FROM LOCALSTORAGE ON ANY PAGE
+// GLOBAL SETTINGS APPLY
 window.addEventListener("load", () => {
   const title = localStorage.getItem("gp_cloak_title");
   const icon  = localStorage.getItem("gp_cloak_icon");
@@ -24,7 +24,7 @@ window.addEventListener("load", () => {
   if (modal) modal.classList.add("active");
 });
 
-// ONLY RUN GAME LOGIC IF GAME GRID EXISTS
+// INDEX PAGE LOGIC
 if (document.getElementById("game-grid")) {
   let favorites = JSON.parse(localStorage.getItem("gp_favorites") || "[]");
   let recent    = JSON.parse(localStorage.getItem("gp_recent") || "[]");
@@ -150,17 +150,9 @@ if (document.getElementById("game-grid")) {
   const close   = document.getElementById("closeBtn");
   const dismiss = document.getElementById("dismissBtn");
 
-  if (trigger && modal) {
-    trigger.onclick = () => modal.classList.add("active");
-  }
-
-  if (close && modal) {
-    close.onclick = () => modal.classList.remove("active");
-  }
-
-  if (dismiss && modal) {
-    dismiss.onclick = () => modal.classList.remove("active");
-  }
+  if (trigger && modal) trigger.onclick = () => modal.classList.add("active");
+  if (close && modal)   close.onclick   = () => modal.classList.remove("active");
+  if (dismiss && modal) dismiss.onclick = () => modal.classList.remove("active");
 
   if (modal) {
     modal.onclick = (e) => {
