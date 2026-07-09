@@ -3,141 +3,201 @@
 <head>
 <meta charset="UTF-8">
 <title>Settings | GamePlaza</title>
-
-<!-- Correct CSS path -->
 <link rel="stylesheet" href="/GamePlaza/plaza.css">
-
+<style>
+/* Toggle Switch */
+.toggle {
+  position: relative;
+  width: 55px;
+  height: 28px;
+  display: inline-block;
+  margin: 10px 0;
+}
+.toggle input {
+  display: none;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background: #3a2a55;
+  border-radius: 34px;
+  top: 0; left: 0; right: 0; bottom: 0;
+  transition: .3s;
+  border: 2px solid var(--purple);
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 3px;
+  background: var(--pink);
+  border-radius: 50%;
+  transition: .3s;
+}
+input:checked + .slider {
+  background: var(--violet);
+  border-color: var(--pink);
+}
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+.settings-section button {
+  background: #190f26;
+  border: 2px solid var(--purple);
+  border-radius: 12px;
+  padding: 12px 20px;
+  color: #F9F6EF;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 8px 8px 8px 0;
+  transition: all 0.3s;
+}
+.settings-section button:hover {
+  transform: translateY(-3px);
+  background: #25163a;
+  border-color: var(--pink);
+  box-shadow: 0 0 15px rgba(123,31,162,0.7),
+              0 0 30px rgba(244,143,177,0.3);
+}
+</style>
 </head>
+
 <body>
 
 <h1>
-    <span class="magic">
-        <span class="magic-text">Settings</span>
-    </span>
+  <span class="magic">
+    <span class="magic-text">Settings</span>
+  </span>
 </h1>
 
-<!-- Back Button -->
 <a href="index.html" class="chip" style="margin-bottom:20px; display:inline-block;">← Back to GamePlaza</a>
 
-<!-- ⭐ ACTIVITY SETTINGS -->
+<!-- ACTIVITY -->
 <div class="settings-section">
-    <h2>Your Activity</h2>
-
-    <p>Manage your Favorites and Recently Played lists.</p>
-
-    <button class="chip" id="clearFav">Clear Favorites</button>
-    <button class="chip" id="clearRecent">Clear Recently Played</button>
+  <h2>Your Activity</h2>
+  <button id="clearFav">Clear Favorites</button>
+  <button id="clearRecent">Clear Recently Played</button>
 </div>
 
-<!-- ⭐ TAB CLOAK -->
+<!-- TAB CLOAK -->
 <div class="settings-section">
-    <h2>Tab Cloak</h2>
+  <h2>Tab Cloak</h2>
 
-    <div class="chip-row">
-        <button class="chip" onclick="presetCloak('Google')">Google</button>
-        <button class="chip" onclick="presetCloak('Set')">Set Cloak</button>
-        <button class="chip" onclick="resetCloak()">Reset Cloak</button>
-    </div>
+  <label class="toggle">
+    <input id="cloakGoogle" type="checkbox">
+    <span class="slider"></span>
+  </label> Google
 
-    <h3>Custom Cloak</h3>
-    <input id="cloakTitle" placeholder="Custom tab title">
-    <input id="cloakIcon" placeholder="Favicon URL">
+  <br>
 
-    <button class="chip" onclick="applyCustomCloak()">Apply Custom</button>
+  <label class="toggle">
+    <input id="cloakCustom" type="checkbox">
+    <span class="slider"></span>
+  </label> Custom Cloak
+
+  <input id="cloakTitle" placeholder="Custom Title">
+  <input id="cloakIcon" placeholder="Favicon URL">
+
+  <button id="applyCustom">Apply Custom</button>
 </div>
 
-<!-- ⭐ MOBILE SIZER -->
+<!-- MOBILE SIZER -->
 <div class="settings-section">
-    <h2>Mobile Screen Sizer</h2>
+  <h2>Mobile Screen Sizer</h2>
 
-    <button class="chip" onclick="enableSizer()">Enable</button>
-    <button class="chip" onclick="disableSizer()">Disable</button>
+  <label class="toggle">
+    <input id="mobileSizer" type="checkbox">
+    <span class="slider"></span>
+  </label> Enable Mobile Mode
 </div>
 
-<!-- ⭐ ANTI DELEDAO -->
+<!-- ANTI DELEDAO -->
 <div class="settings-section">
-    <h2>Anti-Deledao</h2>
+  <h2>Anti-Deledao</h2>
 
-    <button class="chip" onclick="enableDeledao()">Enable</button>
-    <button class="chip" onclick="disableDeledao()">Disable</button>
+  <label class="toggle">
+    <input id="antiDeledao" type="checkbox">
+    <span class="slider"></span>
+  </label> Enable Anti-Deledao
 </div>
 
-<!-- ⭐ ABOUT:BLANK CLOAKER -->
+<!-- ABOUT:BLANK -->
 <div class="settings-section">
-    <h2>About:blank Cloaker</h2>
-
-    <button class="chip" ondblclick="cloakBlank()">Cloak (Double-click)</button>
+  <h2>About:blank Cloaker</h2>
+  <button ondblclick="cloakBlank()">Cloak (Double-click)</button>
 </div>
 
-<!-- Load plaza.js -->
 <script src="plaza.js"></script>
 
 <script>
-// Activity
-document.getElementById("clearFav").onclick = () => {
-    localStorage.removeItem("gp_favorites");
-    alert("Favorites cleared!");
+// Load saved settings into toggles
+window.onload = () => {
+  document.getElementById("mobileSizer").checked =
+    localStorage.getItem("gp_mobile_sizer") === "enabled";
+
+  document.getElementById("antiDeledao").checked =
+    localStorage.getItem("gp_deledao") === "enabled";
+
+  document.getElementById("cloakGoogle").checked =
+    localStorage.getItem("gp_cloak_title") === "Google";
+
+  document.getElementById("cloakCustom").checked =
+    localStorage.getItem("gp_cloak_title") &&
+    localStorage.getItem("gp_cloak_title") !== "Google";
 };
 
-document.getElementById("clearRecent").onclick = () => {
-    localStorage.removeItem("gp_recent");
-    alert("Recently Played cleared!");
+// Activity
+clearFav.onclick = () => {
+  localStorage.removeItem("gp_favorites");
+  alert("Favorites cleared!");
+};
+clearRecent.onclick = () => {
+  localStorage.removeItem("gp_recent");
+  alert("Recently Played cleared!");
 };
 
 // Cloak
-function presetCloak(type) {
-    if (type === "Google") {
-        localStorage.setItem("gp_cloak_title", "Google");
-        localStorage.setItem("gp_cloak_icon", "https://www.google.com/favicon.ico");
-    }
-    if (type === "Set") {
-        localStorage.setItem("gp_cloak_title", "Set");
-        localStorage.setItem("gp_cloak_icon", "/GamePlaza/icon.png");
-    }
-    alert("Cloak applied!");
-}
-
-function resetCloak() {
+cloakGoogle.onchange = () => {
+  if (cloakGoogle.checked) {
+    localStorage.setItem("gp_cloak_title", "Google");
+    localStorage.setItem("gp_cloak_icon", "https://www.google.com/favicon.ico");
+  } else {
     localStorage.removeItem("gp_cloak_title");
     localStorage.removeItem("gp_cloak_icon");
-    alert("Cloak reset!");
-}
+  }
+};
 
-function applyCustomCloak() {
-    const title = document.getElementById("cloakTitle").value;
-    const icon = document.getElementById("cloakIcon").value;
-
-    if (title) localStorage.setItem("gp_cloak_title", title);
-    if (icon) localStorage.setItem("gp_cloak_icon", icon);
-
-    alert("Custom cloak applied!");
-}
+applyCustom.onclick = () => {
+  const t = cloakTitle.value;
+  const i = cloakIcon.value;
+  if (t) localStorage.setItem("gp_cloak_title", t);
+  if (i) localStorage.setItem("gp_cloak_icon", i);
+  alert("Custom cloak applied!");
+};
 
 // Mobile Sizer
-function enableSizer() {
+mobileSizer.onchange = () => {
+  if (mobileSizer.checked)
     localStorage.setItem("gp_mobile_sizer", "enabled");
-    alert("Mobile Sizer Enabled");
-}
-
-function disableSizer() {
+  else
     localStorage.removeItem("gp_mobile_sizer");
-    alert("Mobile Sizer Disabled");
-}
+};
 
-// Anti Deledao
-function enableDeledao() {
+// Anti-Deledao
+antiDeledao.onchange = () => {
+  if (antiDeledao.checked)
     localStorage.setItem("gp_deledao", "enabled");
-    alert("Anti-Deledao Enabled");
-}
-
-function disableDeledao() {
+  else
     localStorage.removeItem("gp_deledao");
-    alert("Anti-Deledao Disabled");
-}
+};
 
-// About:blank Cloaker
+// About:blank
 function cloakBlank() {
-    window.location.replace("about:blank");
+  window.location.replace("about:blank");
 }
 </script>
 
