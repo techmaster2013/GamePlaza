@@ -37,43 +37,44 @@ buildCategories(allGames);
 renderGames(allGames);
 
 
-  function renderGames(list) {
-    const grid = document.getElementById("game-grid");
-    grid.innerHTML = "";
+function renderGames(list) {
+  const grid = document.getElementById("game-grid");
+  grid.innerHTML = "";
 
-    list.forEach(game => {
-      const btn = document.createElement("button");
+  list.forEach(game => {
+    const btn = document.createElement("button");
 
-      if (game.img) {
-        const img = document.createElement("img");
-        img.src = game.img;
-        btn.appendChild(img);
-      }
+    if (game.img) {
+      const img = document.createElement("img");
+      img.src = game.img;
+      btn.appendChild(img);
+    }
 
-      const title = document.createElement("div");
-      title.className = "game-title";
-const gameName = game.name || game.label;
-title.innerHTML = `${gameName} ${favorites.includes(gameName) ? "★" : "☆"}`;
+    const gameName = game.name || game.label;
 
-      title.onclick = (e) => {
-        e.stopPropagation();
-        toggleFavorite(game.name);
-      };
+    const title = document.createElement("div");
+    title.className = "game-title";
+    title.innerHTML = `${gameName} ${favorites.includes(gameName) ? "★" : "☆"}`;
 
-      btn.appendChild(title);
+    title.onclick = (e) => {
+      e.stopPropagation();
+      toggleFavorite(gameName);
+    };
 
-const gameName = game.name || game.label;
-btn.onclick = () => {
-    addRecent(gameName);
-    window.location.href = game.url;
-};
+    btn.appendChild(title);
+
+    btn.onclick = () => {
+      addRecent(gameName);
+      window.location.href = game.url;
+    };
+
+    grid.appendChild(btn);
+  });
+
+  updateCounts();
+}
 
 
-      grid.appendChild(btn);
-    });
-
-    updateCounts();
-  }
 
   function toggleFavorite(name) {
     if (favorites.includes(name)) {
