@@ -409,3 +409,9 @@
   background: linear-gradient(135deg, var(--purple), var(--violet));
   box-shadow: 0 0 15px rgba(244, 143, 177, 0.35);
 }
+.footer {
+  margin-top: 28px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+}
