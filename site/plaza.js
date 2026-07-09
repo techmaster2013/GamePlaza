@@ -50,7 +50,7 @@ function renderGames(list) {
       btn.appendChild(img);
     }
 
-    const gameName = game.name || game.label;
+    const gameName = game.name || game.label || "Unknown";
 
     const title = document.createElement("div");
     title.className = "game-title";
@@ -61,18 +61,18 @@ function renderGames(list) {
       toggleFavorite(gameName);
     };
 
-    btn.appendChild(title);
-
     btn.onclick = () => {
       addRecent(gameName);
       window.location.href = game.url;
     };
 
+    btn.appendChild(title);
     grid.appendChild(btn);
   });
 
   updateCounts();
 }
+
 
 
 
@@ -86,6 +86,7 @@ function toggleFavorite(name) {
   localStorage.setItem("gp_favorites", JSON.stringify(favorites));
   renderGames(allGames);
 }
+
 
 
   function addRecent(name) {
