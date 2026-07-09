@@ -1,137 +1,257 @@
-// APPLY SETTINGS FROM LOCALSTORAGE
+// APPLY SETTINGS FROM LOCALSTORAGE ON ANY PAGE
 window.addEventListener("load", () => {
+  const title = localStorage.getItem("gp_cloak_title");
+  const icon  = localStorage.getItem("gp_cloak_icon");
+  const sizer = localStorage.getItem("gp_mobile_sizer");
 
-    // Cloak
-    const title = localStorage.getItem("gp_cloak_title");
-    const icon = localStorage.getItem("gp_cloak_icon");
+  if (title) document.title = title;
 
-    if (title) document.title = title;
-    if (icon) {
-        let link = document.querySelector("link[rel~='icon']");
-        if (!link) {
-            link = document.createElement("link");
-            link.rel = "icon";
-            document.head.appendChild(link);
-        }
-        link.href = icon;
+  if (icon) {
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "icon";
+      document.head.appendChild(link);
     }
+    link.href = icon;
+  }
 
-    // Mobile Sizer
-    if (localStorage.getItem("gp_mobile_sizer") === "enabled") {
-        document.body.style.width = "480px";
-    }
+  if (sizer === "enabled") {
+    document.body.style.width = "480px";
+  }
 
-    // Anti-Deledao
-    if (localStorage.getItem("gp_deledao") === "enabled") {
-        console.log("Anti-Deledao active");
-    }
-
-    // Auto-open modal
-    const modal = document.getElementById("updateModal");
-    if (modal) modal.classList.add("active");
+  const modal = document.getElementById("updateModal");
+  if (modal) modal.classList.add("active");
 });
 
-// Load games
-fetch("games.js")
+// ONLY RUN GAME LOGIC IF GAME GRID EXISTS
+if (document.getElementById("game-grid")) {
+  let favorites = JSON.parse(localStorage.getItem("gp_favorites") || "[]");
+  let recent    = JSON.parse(localStorage.getItem("gp_recent") || "[]");
+  let allGames  = [];
+
+  fetch("/GamePlaza/site/games.js")
     .then(res => res.json())
     .then(games => {
-        window.allGames = games;
-        renderGames(games);
+      allGames = games;
+      buildCategories(games);
+      renderGames(games);
     });
 
-// Favorites + Recently Played
-let favorites = JSON.parse(localStorage.getItem("gp_favorites") || "[]");
-let recent = JSON.parse(localStorage.getItem("gp_recent") || "[]");
-
-// Render game grid
-function renderGames(list) {
+  function renderGames(list) {
     const grid = document.getElementById("game-grid");
     grid.innerHTML = "";
 
     list.forEach(game => {
-        const btn = document.createElement("button");
+      const btn = document.createElement("button");
 
-        if (game.img) {
-            const img = document.createElement("img");
-            img.src = game.img;
-            btn.appendChild(img);
-        }
+      if (game.img) {
+        const img = document.createElement("img");
+        img.src = game.img;
+        btn.appendChild(img);
+      }
 
-        const title = document.createElement("div");
-        title.className = "game-title";
-        title.innerHTML = `${game.name} ${favorites.includes(game.name) ? "★" : "☆"}`;
-        title.onclick = (e) => {
-            e.stopPropagation();
-            toggleFavorite(game.name);
-        };
+      const title = document.createElement("div");
+      title.className = "game-title";
+      title.innerHTML = `${game.name} ${favorites.includes(game.name) ? "★" : "☆"}`;
+      title.onclick = (e) => {
+        e.stopPropagation();
+        toggleFavorite(game.name);
+      };
 
-        btn.appendChild(title);
+      btn.appendChild(title);
 
-        btn.onclick = () => {
-            addRecent(game.name);
-            window.location.href = game.url;
-        };
+      btn.onclick = () => {
+        addRecent(game.name);
+        window.location.href = game.url;
+      };
 
-        grid.appendChild(btn);
+      grid.appendChild(btn);
     });
 
     updateCounts();
-}
+  }
 
-// Favorite toggle
-function toggleFavorite(name) {
+  function toggleFavorite(name) {
     if (favorites.includes(name)) {
-        favorites = favorites.filter(x => x !== name);
+      favorites = favorites.filter(x => x !== name);
     } else {
-        favorites.push(name);
+      favorites.push(name);
     }
     localStorage.setItem("gp_favorites", JSON.stringify(favorites));
-    renderGames(window.allGames);
-}
+    renderGames(allGames);
+  }
 
-// Recently played
-function addRecent(name) {
+  function addRecent(name) {
     recent = recent.filter(x => x !== name);
     recent.unshift(name);
     recent = recent.slice(0, 20);
     localStorage.setItem("gp_recent", JSON.stringify(recent));
     updateCounts();
+  }
+
+  function updateCounts() {
+    const favEl    = document.getElementById("favCount");
+    const recentEl = document.getElementById("recentCount");
+    if (favEl)    favEl.textContent    = favorites.length;
+    if (recentEl) recentEl.textContent = recent.length;
+  }
+
+  function buildCategories(games) {
+    const row = document.getElementById("category-row");
+    if (!row) return;
+
+    const cats = [...new Set(games.map(g => g.category).filter(Boolean))];
+    row.innerHTML = "";
+
+    const allChip = document.createElement("div");
+    allChip.className = "chip";
+    allChip.textContent = "All";
+    allChip.onclick = () => renderGames(allGames);
+    row.appendChild(allChip);
+
+    cats.forEach(cat => {
+      const chip = document.createElement("div");
+      chip.className = "chip";
+      chip.textContent = cat;
+      chip.onclick = () => renderGames(allGames.filter(g => g.category === cat));
+      row.appendChild(chip);
+    });
+  }
+
+  const searchInput = document.getElementById("game-search");
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      const q = e.target.value.toLowerCase();
+      renderGames(allGames.filter(g => g.name.toLowerCase().includes(q)));
+    });
+  }
+
+  const chipFav    = document.getElementById("chip-fav");
+  const chipRecent = document.getElementById("chip-recent");
+  const chipAll    = document.getElementById("chip-all");
+
+  if (chipFav) {
+    chipFav.onclick = () =>
+      renderGames(allGames.filter(g => favorites.includes(g.name)));
+  }
+
+  if (chipRecent) {
+    chipRecent.onclick = () =>
+      renderGames(allGames.filter(g => recent.includes(g.name)));
+  }
+
+  if (chipAll) {
+    chipAll.onclick = () => renderGames(allGames);
+  }
+
+  const trigger = document.getElementById("update-trigger");
+  const modal   = document.getElementById("updateModal");
+  const close   = document.getElementById("closeBtn");
+  const dismiss = document.getElementById("dismissBtn");
+
+  if (trigger && modal) {
+    trigger.onclick = () => modal.classList.add("active");
+  }
+
+  if (close && modal) {
+    close.onclick = () => modal.classList.remove("active");
+  }
+
+  if (dismiss && modal) {
+    dismiss.onclick = () => modal.classList.remove("active");
+  }
+
+  if (modal) {
+    modal.onclick = (e) => {
+      if (e.target.id === "updateModal") {
+        modal.classList.remove("active");
+      }
+    };
+  }
 }
 
-// Filters
-document.getElementById("chip-fav").onclick = () =>
-    renderGames(window.allGames.filter(g => favorites.includes(g.name)));
+// SETTINGS PAGE LOGIC
+if (document.title.includes("Settings")) {
+  const clearFav    = document.getElementById("clearFav");
+  const clearRecent = document.getElementById("clearRecent");
+  const cloakGoogle = document.getElementById("cloakGoogle");
+  const cloakCustom = document.getElementById("cloakCustom");
+  const cloakTitle  = document.getElementById("cloakTitle");
+  const cloakIcon   = document.getElementById("cloakIcon");
+  const applyCustom = document.getElementById("applyCustom");
+  const mobileSizer = document.getElementById("mobileSizer");
+  const antiDeledao = document.getElementById("antiDeledao");
 
-document.getElementById("chip-recent").onclick = () =>
-    renderGames(window.allGames.filter(g => recent.includes(g.name)));
+  window.addEventListener("load", () => {
+    if (mobileSizer)
+      mobileSizer.checked = localStorage.getItem("gp_mobile_sizer") === "enabled";
 
-document.getElementById("chip-all").onclick = () =>
-    renderGames(window.allGames);
+    if (antiDeledao)
+      antiDeledao.checked = localStorage.getItem("gp_deledao") === "enabled";
 
-// Counters
-function updateCounts() {
-    document.getElementById("favCount").textContent = favorites.length;
-    document.getElementById("recentCount").textContent = recent.length;
+    const t = localStorage.getItem("gp_cloak_title");
+    if (cloakGoogle)
+      cloakGoogle.checked = t === "Google";
+    if (cloakCustom)
+      cloakCustom.checked = t && t !== "Google";
+  });
+
+  if (clearFav) {
+    clearFav.onclick = () => {
+      localStorage.removeItem("gp_favorites");
+      alert("Favorites cleared!");
+    };
+  }
+
+  if (clearRecent) {
+    clearRecent.onclick = () => {
+      localStorage.removeItem("gp_recent");
+      alert("Recently Played cleared!");
+    };
+  }
+
+  if (cloakGoogle) {
+    cloakGoogle.onchange = () => {
+      if (cloakGoogle.checked) {
+        localStorage.setItem("gp_cloak_title", "Google");
+        localStorage.setItem("gp_cloak_icon", "https://www.google.com/favicon.ico");
+      } else {
+        localStorage.removeItem("gp_cloak_title");
+        localStorage.removeItem("gp_cloak_icon");
+      }
+    };
+  }
+
+  if (applyCustom) {
+    applyCustom.onclick = () => {
+      const t = cloakTitle ? cloakTitle.value : "";
+      const i = cloakIcon ? cloakIcon.value : "";
+      if (t) localStorage.setItem("gp_cloak_title", t);
+      if (i) localStorage.setItem("gp_cloak_icon", i);
+      alert("Custom cloak applied!");
+    };
+  }
+
+  if (mobileSizer) {
+    mobileSizer.onchange = () => {
+      if (mobileSizer.checked)
+        localStorage.setItem("gp_mobile_sizer", "enabled");
+      else
+        localStorage.removeItem("gp_mobile_sizer");
+    };
+  }
+
+  if (antiDeledao) {
+    antiDeledao.onchange = () => {
+      if (antiDeledao.checked)
+        localStorage.setItem("gp_deledao", "enabled");
+      else
+        localStorage.removeItem("gp_deledao");
+    };
+  }
+
+  window.cloakBlank = function () {
+    window.location.replace("about:blank");
+  };
 }
-
-// Search
-document.getElementById("game-search").addEventListener("input", (e) => {
-    const q = e.target.value.toLowerCase();
-    renderGames(window.allGames.filter(g => g.name.toLowerCase().includes(q)));
-});
-
-// Modal open
-document.getElementById("update-trigger").onclick = () =>
-    document.getElementById("updateModal").classList.add("active");
-
-// Modal close
-document.getElementById("closeBtn").onclick =
-document.getElementById("dismissBtn").onclick = () =>
-    document.getElementById("updateModal").classList.remove("active");
-
-// Overlay close
-document.getElementById("updateModal").onclick = (e) => {
-    if (e.target.id === "updateModal") {
-        document.getElementById("updateModal").classList.remove("active");
-    }
-};
