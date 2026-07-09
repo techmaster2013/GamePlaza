@@ -111,6 +111,10 @@ function renderGames(list) {
   });
 
   updateCounts();
+
+  // ⭐ HIDE LOADING HERE ⭐
+  const loading = document.getElementById("loading");
+  if (loading) loading.style.display = "none";
 }
 
 
