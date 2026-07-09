@@ -284,7 +284,9 @@ h1 .magic .magic-text {
     font-size: 15px;
     transition: 0.25s ease;
     box-shadow: 0 0 0 2px #1a1a1a;
+    display: block;   /* ⭐ THIS FIXES CENTERING */
 }
+
 
 #game-search:focus {
     background: #151515;
@@ -465,7 +467,4 @@ h1 .magic .magic-text {
     .button-container {
         grid-template-columns: 1fr;
     }
-}
-#game-search {
-    display: block;
 }
