@@ -305,7 +305,7 @@ if (document.title.includes("Settings")) {
 }
 document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
 chip.classList.add('active');
-document.getElementById("loading").style.display = "none";
+
 const btn = document.getElementById("surprise-btn");
 btn.classList.add("flash");
 setTimeout(() => btn.classList.remove("flash"), 400);
