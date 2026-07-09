@@ -126,13 +126,20 @@ function toggleFavorite(name) {
     });
   }
 
-  const searchInput = document.getElementById("game-search");
-  if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
-      const q = e.target.value.toLowerCase();
-      renderGames(allGames.filter(g => g.name.toLowerCase().includes(q)));
-    });
-  }
+const searchInput = document.getElementById("game-search");
+if (searchInput) {
+  searchInput.addEventListener("input", (e) => {
+    const q = e.target.value.toLowerCase();
+
+    renderGames(
+      allGames.filter(g => {
+        const gameName = (g.name || g.label || "").toLowerCase();
+        return gameName.includes(q);
+      })
+    );
+  });
+}
+
 
   const chipFav    = document.getElementById("chip-fav");
   const chipRecent = document.getElementById("chip-recent");
