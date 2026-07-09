@@ -3,14 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <title>Settings | GamePlaza</title>
+
+  <!-- Main CSS -->
   <link rel="stylesheet" href="/GamePlaza/plaza.css">
+
+  <!-- Toggle Switch Styling -->
   <style>
     .toggle {
       position: relative;
       width: 55px;
       height: 28px;
       display: inline-block;
-      margin: 10px 0;
+      margin-right: 10px;
     }
     .toggle input { display: none; }
     .slider {
@@ -40,84 +44,113 @@
     input:checked + .slider:before {
       transform: translateX(26px);
     }
-    .settings-section button {
-      background: #190f26;
-      border: 2px solid var(--purple);
-      border-radius: 12px;
-      padding: 12px 20px;
-      color: #F9F6EF;
-      font-family: 'Ubuntu', sans-serif;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      margin: 8px 8px 8px 0;
-      transition: all 0.3s;
+
+    .settings-section {
+      background: rgba(255,255,255,0.03);
+      padding: 20px;
+      border-left: 4px solid var(--purple);
+      margin-bottom: 25px;
+      border-radius: 10px;
     }
-    .settings-section button:hover {
-      transform: translateY(-3px);
-      background: #25163a;
-      border-color: var(--pink);
-      box-shadow: 0 0 15px rgba(123,31,162,0.7),
-                  0 0 30px rgba(244,143,177,0.3);
+
+    .settings-section h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      background: linear-gradient(to right, var(--purple), var(--violet), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .settings-section input {
+      display: block;
+      width: 100%;
+      max-width: 400px;
+      margin: 10px 0;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #0f0f0f;
+      border: 1px solid #1f1f1f;
+      color: #e5e5e5;
+      font-family: Ubuntu;
     }
   </style>
 </head>
+
 <body>
+  <canvas id="particles"></canvas>
 
-  <h1>
-    <span class="magic">
-      <span class="magic-text">Settings</span>
-    </span>
-  </h1>
+  <div id="main">
 
-  <a href="index.html" class="chip" style="margin-bottom:20px; display:inline-block;">← Back to GamePlaza</a>
+    <h1>
+      <span class="magic">
+        <span class="magic-text">Settings</span>
+      </span>
+    </h1>
 
-  <div class="settings-section">
-    <h2>Your Activity</h2>
-    <button id="clearFav">Clear Favorites</button>
-    <button id="clearRecent">Clear Recently Played</button>
-  </div>
+    <a href="index.html" class="chip" style="margin-bottom:20px; display:inline-block;">
+      ← Back to GamePlaza
+    </a>
 
-  <div class="settings-section">
-    <h2>Tab Cloak</h2>
+    <!-- ACTIVITY -->
+    <div class="settings-section">
+      <h2>Your Activity</h2>
+      <button id="clearFav">Clear Favorites</button>
+      <button id="clearRecent">Clear Recently Played</button>
+    </div>
 
-    <label class="toggle">
-      <input id="cloakGoogle" type="checkbox">
-      <span class="slider"></span>
-    </label> Google
+    <!-- TAB CLOAK -->
+    <div class="settings-section">
+      <h2>Tab Cloak</h2>
 
-    <br>
+      <label class="toggle">
+        <input id="cloakGoogle" type="checkbox">
+        <span class="slider"></span>
+      </label>
+      Google
 
-    <label class="toggle">
-      <input id="cloakCustom" type="checkbox">
-      <span class="slider"></span>
-    </label> Custom Cloak
+      <br><br>
 
-    <input id="cloakTitle" placeholder="Custom Title">
-    <input id="cloakIcon" placeholder="Favicon URL">
-    <button id="applyCustom">Apply Custom</button>
-  </div>
+      <label class="toggle">
+        <input id="cloakCustom" type="checkbox">
+        <span class="slider"></span>
+      </label>
+      Custom Cloak
 
-  <div class="settings-section">
-    <h2>Mobile Screen Sizer</h2>
-    <label class="toggle">
-      <input id="mobileSizer" type="checkbox">
-      <span class="slider"></span>
-    </label> Enable Mobile Mode
-  </div>
+      <input id="cloakTitle" placeholder="Custom Title">
+      <input id="cloakIcon" placeholder="Favicon URL">
 
-  <div class="settings-section">
-    <h2>Anti-Deledao</h2>
-    <label class="toggle">
-      <input id="antiDeledao" type="checkbox">
-      <span class="slider"></span>
-    </label> Enable Anti-Deledao
-  </div>
+      <button id="applyCustom">Apply Custom</button>
+    </div>
 
-  <div class="settings-section">
-    <h2>About:blank Cloaker</h2>
-    <button ondblclick="cloakBlank()">Cloak (Double-click)</button>
-  </div>
+    <!-- MOBILE SIZER -->
+    <div class="settings-section">
+      <h2>Mobile Screen Sizer</h2>
+
+      <label class="toggle">
+        <input id="mobileSizer" type="checkbox">
+        <span class="slider"></span>
+      </label>
+      Enable Mobile Mode
+    </div>
+
+    <!-- ANTI DELEDAO -->
+    <div class="settings-section">
+      <h2>Anti-Deledao</h2>
+
+      <label class="toggle">
+        <input id="antiDeledao" type="checkbox">
+        <span class="slider"></span>
+      </label>
+      Enable Anti-Deledao
+    </div>
+
+    <!-- ABOUT:BLANK -->
+    <div class="settings-section">
+      <h2>About:blank Cloaker</h2>
+      <button ondblclick="cloakBlank()">Cloak (Double-click)</button>
+    </div>
+
+  </div> <!-- END MAIN -->
 
   <script src="/GamePlaza/site/plaza.js"></script>
 </body>
