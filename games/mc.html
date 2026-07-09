@@ -1,126 +1,36 @@
-<html><head>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
-          <title>Release 1.8.8 (WebAssembly)</title>
-          <link rel="icon" href="/favicon.png">
-          <style>
-            body, html { margin: 0px; width: 100%; height: 100%; overflow: hidden; background-color: black; }
-            #game_frame { width: 100vw; height: 100vh; }
-          </style>
-          
-        <script type="text/javascript" src="blob:https://eaglercraft.com/b4b4026b-746d-4711-bf5d-c3b1107bd068"></script><script type="text/javascript" src="blob:https://eaglercraft.com/3b33445b-bdc2-498b-94ac-4787651d4485"></script></head>
-        <body>
-          <div id="game_frame" style="margin:0px;width:100%;height:100%;overflow:hidden;background-color:black;" class="_eaglercraftX_root_element"><div class="_eaglercraftX_wrapper_element" style="position: relative; width: 100%; height: 100%; overflow: hidden; background-color: black;"><canvas class="_eaglercraftX_canvas_element" width="1280" height="720" style="width: 100%; height: 100%; z-index: 1; touch-action: pan-x pan-y; -webkit-tap-highlight-color: rgba(255, 255, 255, 0); image-rendering: pixelated; cursor: default;"></canvas><div class="_eaglercraftX_keyboard_open_zone" style="display: none; position: absolute; background-color: transparent; top: 0px; left: 0px; width: 0px; height: 0px; z-index: 100; touch-action: pan-x pan-y; -webkit-tap-highlight-color: rgba(255, 255, 255, 0);"></div><audio class="_eaglercraftX_keepalive_hack" style="display:none;" loop=""><source type="audio/wav" src="blob:https://eaglercraft.com/82c5390e-70a6-42d5-8c2b-9aeb078629fb"></audio></div></div>
-          <script>
-            (function() {
-              const baseDomain = "https://eaglercraft.com";
-              const prefix = "EaglercraftX 1.8 WebAssembly_";
-              const raw = window.localStorage;
-              
-              const proxy = new Proxy(raw, {
-                get(t, p) {
-                  if (p === "setItem") return (k, v) => t.setItem(prefix + k, v);
-                  if (p === "getItem") return (k) => t.getItem(prefix + k);
-                  if (p === "removeItem") return (k) => t.removeItem(prefix + k);
-                  if (p === "clear") return () => {
-                    Object.keys(t).forEach(k => { if(k.startsWith(prefix)) t.removeItem(k); });
-                  };
-                  if (typeof p === "string" && !t[p]) return t.getItem(prefix + p);
-                  return t[p];
-                },
-                set(t, p, v) { if (typeof p === "string") { t.setItem(prefix + p, String(v)); return true; } return false; }
-              });
-              Object.defineProperty(window, "localStorage", { value: proxy });
-              
-              window.addEventListener("message", (e) => {
-                if (e.data.type === "EAGLER_TOGGLE_FULLSCREEN") {
-                  const el = document.documentElement;
-                  if (!document.fullscreenElement) {
-                    el.requestFullscreen().catch(err => console.error("Fullscreen Error:", err));
-                  } else {
-                    document.exitFullscreen();
-                  }
-                }
-              });
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Eaglercraft | GamePlaza</title>
+  <link rel="stylesheet" href="/GamePlaza/plaza.css">
+</head>
+<body>
 
-              const token = "e65bebf6-42bd-4cdf-bc44-8b2b9dc06e1e";
-              const parent = window.opener;
-              
-              
-              
-              // idle screen tracking
-              const idleScreens = ["net.minecraft.client.gui.GuiMainMenu","net.minecraft.client.gui.GuiMultiplayer","net.minecraft.client.gui.GuiSelectWorld","net.minecraft.client.gui.GuiDisconnected"];
-              const maxIdleTime = 3600000;
-              let idleTimeout = null;
-              
-              window.addEventListener("gameScreenChanged", (event) => {
-                if (event.detail && event.detail.screenName) {
-                  const screenName = event.detail.screenName;
-                  
-                  if (parent && !parent.closed) {
-                    parent.postMessage({ 
-                      type: "gameScreenChanged", 
-                      screenName: screenName 
-                    }, baseDomain);
-                  }
-                  
-                  if (idleTimeout) {
-                    clearTimeout(idleTimeout);
-                    idleTimeout = null;
-                  }
-                  
-                  if (idleScreens.includes(screenName)) {
-                    idleTimeout = setTimeout(() => {
-                      window.onbeforeunload = null;
-                      window.location.href = baseDomain;
-                      if (parent && !parent.closed) {
-                        parent.postMessage({ type: "gameClientIdleClosed", screenName: screenName }, baseDomain);
-                      }
-                    }, maxIdleTime);
-                  }
-                }
-              });
+  <h1>
+    <span class="magic">
+      <span class="magic-text">Eaglercraft on GamePlaza</span>
+    </span>
+  </h1>
 
-              // ws stuff
-              const wsUrl = "wss://eaglercraft-counter.eaglercraft-99f.workers.dev/api/live-player-count/ws?role=player";
-              let wsAttempts = 0;
-              function connectWS() {
-                const ws = new WebSocket(wsUrl);
-                ws.onopen = () => { wsAttempts = 0; };
-                ws.onmessage = (e) => {
-                  try {
-                    const data = JSON.parse(e.data);
-                    if (data.type === "ping") {
-                      ws.send(JSON.stringify({ type: "pong" }));
-                    }
-                  } catch(err){}
-                };
-                ws.onclose = () => {
-                  const delay = Math.min(
-                    1000 * Math.pow(2, wsAttempts),
-                    30000
-                  );
-                  wsAttempts++;
-                  setTimeout(connectWS, delay);
-                };
-              }
-              connectWS();
-              
-              window.addEventListener("message", (e) => {
-                if (e.data.type === "EAGLER_LAUNCH") {
-                  const s = document.createElement("script");
-                  s.src = "blob:https://eaglercraft.com/f42855dc-e96b-4844-a24e-a5139ec38fb0";
-                  
-                  document.body.appendChild(s);
-                  
-                  window.dispatchEvent(new Event("boot_client"));
-                }
-              });
+  <a href="/GamePlaza/index.html" class="chip" style="margin-bottom:20px; display:inline-block;">
+    ← Back to GamePlaza
+  </a>
+<!-- yes this is javascript -->
+<h2>Reccomended servers:</h2>
+  { name: "Axiom SMP", ip: "wss://play.axiommc.xyz" },
+  { name: "Eaglercraft Central", ip: "wss://wss.eaglercraft.com" },
+  { name: "Eaglercraft Hub", ip: "wss://hub.eaglercraft.net" },
+  { name: "VoidPVP", ip: "wss://play.voidpvp.net" },
+  { name: "Galaxy SMP", ip: "wss://play.galaxymc.xyz" },
+  { name: "Eaglercraft Survival", ip: "wss://survival.eaglercraft.net" },
+  { name: "Eaglercraft Factions", ip: "wss://factions.eaglercraft.net" },
+  { name: "Eaglercraft Skyblock", ip: "wss://skyblock.eaglercraft.net" },
+  { name: "Eaglercraft Creative", ip: "wss://creative.eaglercraft.net" },
+  { name: "Eaglercraft Minigames", ip: "wss://minigames.eaglercraft.net" }
+  <iframe 
+    src="https://player03.com/run/3/beta/"
+    style="width:100%; height:90vh; border:none; border-radius:12px;">
+  </iframe>
 
-              if (parent && !parent.closed) {
-                parent.postMessage({ type: "EAGLER_IFRAME_READY", token: token }, baseDomain);
-              }
-            })();
-          </script>
-        
-      
-    <script src="blob:https://eaglercraft.com/f42855dc-e96b-4844-a24e-a5139ec38fb0"></script></body></html>
+</body>
+</html>
