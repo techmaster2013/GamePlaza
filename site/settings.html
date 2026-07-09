@@ -1,377 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Settings | GamePlaza</title>
-    <link rel="icon" href="../Normal.png" type="image/x-icon" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-    <style>
-        :root { --purple: rgb(123,31,162); --violet: rgb(103,58,183); --pink: rgb(244,143,177); }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { background: linear-gradient(-45deg,#1a0f2e,#0f0820,#1f1240,#0d0619); background-size:400% 400%; animation: gradientShift 15s ease infinite; font-family:'Ubuntu',sans-serif; color:#F9F6EF; min-height:100vh; padding:20px; }
-        @keyframes gradientShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-        .container { max-width:800px; margin:0 auto; }
-        .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; padding:20px; background:rgba(244,143,177,0.1); border-left:4px solid var(--pink); border-radius:8px; }
-        .header h1 { background:linear-gradient(to right,var(--purple),var(--violet),var(--pink)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-size:32px; font-weight:400; }
-        .back-btn { background:linear-gradient(135deg,var(--purple),var(--violet)); color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:600; }
-        .settings-section { background:rgba(36,36,36,0.8); border:1px solid rgba(244,143,177,0.2); border-radius:8px; padding:20px; margin-bottom:20px; }
-        .settings-section h2 { color:var(--pink); margin-bottom:15px; font-size:18px; font-weight:600; }
-        label { display:block; color:#ccc; font-size:14px; margin-bottom:8px; font-weight:500; }
-        select, input[type="text"], textarea { width:100%; padding:10px; background-color:#1a1a1a; border:1px solid rgba(244,143,177,0.3); color:#F9F6EF; border-radius:5px; font-size:14px; }
-        .buttons { display:flex; gap:10px; margin-top:8px; }
-        button { background-color:#242424; border:2px solid rgba(244,143,177,0.4); color:#7d7d7d; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:600; }
-        .success-message { display:none; background:rgba(76,175,80,0.2); color:#4CAF50; padding:12px; border-radius:5px; border-left:3px solid #4CAF50; margin-top:10px; font-size:13px; }
-        .success-message.show { display:block; animation: slideIn 0.28s ease; }
-        @keyframes slideIn { from { opacity:0; transform:translateX(-10px) } to { opacity:1; transform:translateX(0) } }
-        @media (max-width:600px) { .header { flex-direction:column; gap:15px; text-align:center } .buttons { flex-direction:column } button { width:100% } }
-    </style>
+<meta charset="UTF-8">
+<title>Settings | GamePlaza</title>
+
+<!-- Correct CSS path -->
+<link rel="stylesheet" href="/GamePlaza/plaza.css">
+
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Settings</h1>
-            <button class="back-btn" onclick="window.location.href='/GamePlaza/site/index.html';">← Back to GamePlaza</button>
-        </div>
 
-        <!-- Tab Cloak Section -->
-        <div class="settings-section">
-            <h2>Tab Cloak</h2>
-            <p>Choose a quick preset to change tab title + favicon.</p>
-            <div class="setting-control">
-                <label for="cloakSelect">Preset Cloaks:</label>
-                <select id="cloakSelect">
-                    <option value="search">Google</option>
-                    <option value="drive">Google Drive</option>
-                    <option value="classroom">Google Classroom</option>
-                    <option value="fakesearch">Fake Google Search</option>
-                    <option value="gmail">Gmail</option>
-                    <option value="word">Word</option>
-                    <option value="powerpoint">Powerpoint</option>
-                    <option value="youtube">YouTube</option>
-                    <option value="calendar">Google Calendar</option>
-                    <option value="meets">Google Meet</option>
-                    <option value="canvas">Canvas</option>
-                    <option value="zoom">Zoom</option>
-                    <option value="khan">Khan Academy</option>
-                </select>
-            </div>
-            <div class="buttons">
-                <button id="setCloakBtn" type="button">Set Cloak</button>
-                <button id="resetCloakBtn" type="button">Reset Cloak</button>
-            </div>
-            <div id="cloakMessage" class="success-message" role="status" aria-live="polite"></div>
-        </div>
+<h1>
+    <span class="magic">
+        <span class="magic-text">Settings</span>
+    </span>
+</h1>
 
-        <!-- Custom Cloak Section -->
-        <div class="settings-section">
-            <h2>Custom Cloak</h2>
-            <p>Set your own tab title and favicon.</p>
-            <div class="setting-control">
-                <label for="titleInput">Tab Title:</label>
-                <input id="titleInput" type="text" placeholder="Enter custom tab title" />
-            </div>
-            <div class="setting-control">
-                <label for="iconInput">Favicon URL:</label>
-                <input id="iconInput" type="text" placeholder="https://example.com/favicon.ico" />
-            </div>
-            <div class="buttons">
-                <button id="applyCustomBtn" type="button">Apply Custom</button>
-            </div>
-            <div id="customCloakMessage" class="success-message" role="status" aria-live="polite"></div>
-        </div>
+<!-- Back Button -->
+<a href="index.html" class="chip" style="margin-bottom:20px; display:inline-block;">← Back to GamePlaza</a>
 
-        <!-- Mobile Screen Sizer Section -->
-        <div class="settings-section">
-            <h2>Mobile Screen Sizer</h2>
-            <p>Adjust the page width to emulate a mobile viewport (applies immediately).</p>
-            <div class="buttons">
-                <button id="enableMobileBtn" type="button">Enable</button>
-                <button id="disableMobileBtn" type="button">Disable</button>
-            </div>
-            <div id="mobileMessage" class="success-message" role="status" aria-live="polite"></div>
-        </div>
+<!-- ⭐ ACTIVITY SETTINGS -->
+<div class="settings-section">
+    <h2>Your Activity</h2>
 
-        <!-- Anti Deledao Section -->
-        <div class="settings-section">
-            <h2>Anti Deledao</h2>
-            <p>Toggle an overlay/flag used for your local privacy experiments.</p>
-            <div class="buttons">
-                <button id="enableDeledaoBtn" type="button">Enable</button>
-                <button id="disableDeledaoBtn" type="button">Disable</button>
-            </div>
-            <div id="deledaoMessage" class="success-message" role="status" aria-live="polite"></div>
-        </div>
+    <p>Manage your Favorites and Recently Played lists.</p>
 
-        <!-- About Blank Cloaker Section -->
-        <div class="settings-section">
-            <h2>About:blank Cloaker</h2>
-            <p>Double-click the button to open a cloaked about:blank page and move your site into an iframe.</p>
-            <button id="cloakerBtn" class="button-action" type="button">Cloak (Double-click)</button>
-        </div>
+    <button class="chip" id="clearFav">Clear Favorites</button>
+    <button class="chip" id="clearRecent">Clear Recently Played</button>
+</div>
+
+<!-- ⭐ TAB CLOAK -->
+<div class="settings-section">
+    <h2>Tab Cloak</h2>
+
+    <div class="chip-row">
+        <button class="chip" onclick="presetCloak('Google')">Google</button>
+        <button class="chip" onclick="presetCloak('Set')">Set Cloak</button>
+        <button class="chip" onclick="resetCloak()">Reset Cloak</button>
     </div>
 
+    <h3>Custom Cloak</h3>
+    <input id="cloakTitle" placeholder="Custom tab title">
+    <input id="cloakIcon" placeholder="Favicon URL">
+
+    <button class="chip" onclick="applyCustomCloak()">Apply Custom</button>
+</div>
+
+<!-- ⭐ MOBILE SIZER -->
+<div class="settings-section">
+    <h2>Mobile Screen Sizer</h2>
+
+    <button class="chip" onclick="enableSizer()">Enable</button>
+    <button class="chip" onclick="disableSizer()">Disable</button>
+</div>
+
+<!-- ⭐ ANTI DELEDAO -->
+<div class="settings-section">
+    <h2>Anti-Deledao</h2>
+
+    <button class="chip" onclick="enableDeledao()">Enable</button>
+    <button class="chip" onclick="disableDeledao()">Disable</button>
+</div>
+
+<!-- ⭐ ABOUT:BLANK CLOAKER -->
+<div class="settings-section">
+    <h2>About:blank Cloaker</h2>
+
+    <button class="chip" ondblclick="cloakBlank()">Cloak (Double-click)</button>
+</div>
+
+<!-- Load plaza.js -->
+<script src="plaza.js"></script>
+
 <script>
-/* Utility: safe favicon setter (validates protocol) */
-function safeSetFavicon(url) {
-  try {
-    const parsed = new URL(url, location.href);
-    if (!['http:', 'https:', 'data:'].includes(parsed.protocol)) throw new Error('Unsupported protocol');
-    let link = document.querySelector("link[rel~='icon']");
-    if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
-    link.href = parsed.href;
-    return parsed.href;
-  } catch (err) {
-    console.warn('Invalid favicon URL:', err);
-    return null;
-  }
-}
-
-/* Broadcast to other contexts (storage event is observed by other tabs; postMessage helps opener) */
-function broadcastSettingsChange(payload = {}) {
-  try {
-    // write a timestamped key so other tabs receive a storage event (they won't for same-window changes)
-    localStorage.setItem('gameplaza_settings_updated', String(Date.now()));
-    // mirror the payload keys to localStorage for compatibility
-    if (payload.title !== undefined) localStorage.setItem('setting_cloakTitleInput', payload.title);
-    if (payload.icon !== undefined) localStorage.setItem('setting_cloakIconInput', payload.icon);
-    // additional compatibility keys
-    if (payload.title !== undefined) {
-      localStorage.setItem('gameplaza_custom_title', payload.title);
-      localStorage.setItem('gameplaza_cloak_title', payload.title);
-    }
-    if (payload.icon !== undefined) {
-      localStorage.setItem('gameplaza_custom_icon', payload.icon);
-      localStorage.setItem('gameplaza_cloak_icon', payload.icon);
-    }
-  } catch (e) {
-    console.warn('Could not write broadcast keys', e);
-  }
-
-  // Try to notify opener directly (if this page was opened from the site)
-  try {
-    if (window.opener && !window.opener.closed) {
-      window.opener.postMessage({ type: 'gameplaza-settings', ...payload }, '*');
-    }
-  } catch (e) { /* ignore cross-origin errors */ }
-}
-
-/* Preset cloaks */
-const CLOAKS = {
-  search:  { title: 'Google', icon: 'https://www.google.com/favicon.ico' },
-  drive:   { title: 'Google Drive', icon: 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png' },
-  classroom:{ title: 'Google Classroom', icon: 'https://ssl.gstatic.com/images/branding/product/1x/classroom_2020q4_32dp.png' },
-  fakesearch:{ title: 'Google', icon: 'https://www.google.com/favicon.ico' },
-  gmail:   { title: 'Gmail', icon: 'https://ssl.gstatic.com/ui/v1/icons/mail/rfresh4/gmail.ico' },
-  word:    { title: 'Microsoft Word', icon: 'https://www.microsoft.com/favicon.ico' },
-  powerpoint:{ title: 'Microsoft PowerPoint', icon: 'https://www.microsoft.com/favicon.ico' },
-  youtube: { title: 'YouTube', icon: 'https://www.youtube.com/favicon.ico' },
-  calendar:{ title: 'Google Calendar', icon: 'https://ssl.gstatic.com/images/branding/product/1x/calendar_2020q4_32dp.png' },
-  meets:   { title: 'Google Meet', icon: 'https://ssl.gstatic.com/images/branding/product/1x/meet_2020q4_32dp.png' },
-  canvas:  { title: 'Canvas', icon: 'https://canvas.instructure.com/favicon.ico' },
-  zoom:    { title: 'Zoom', icon: 'https://www.zoom.us/favicon.ico' },
-  khan:    { title: 'Khan Academy', icon: 'https://www.khanacademy.org/favicon.ico' }
+// Activity
+document.getElementById("clearFav").onclick = () => {
+    localStorage.removeItem("gp_favorites");
+    alert("Favorites cleared!");
 };
 
-/* DOM helpers */
-const setCloakBtn = document.getElementById('setCloakBtn');
-const resetCloakBtn = document.getElementById('resetCloakBtn');
-const applyCustomBtn = document.getElementById('applyCustomBtn');
-const titleInput = document.getElementById('titleInput');
-const iconInput = document.getElementById('iconInput');
-const cloakMessage = document.getElementById('cloakMessage');
-const customCloakMessage = document.getElementById('customCloakMessage');
+document.getElementById("clearRecent").onclick = () => {
+    localStorage.removeItem("gp_recent");
+    alert("Recently Played cleared!");
+};
 
-function showMessage(el, txt) {
-  if (!el) return;
-  el.textContent = txt;
-  el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2800);
+// Cloak
+function presetCloak(type) {
+    if (type === "Google") {
+        localStorage.setItem("gp_cloak_title", "Google");
+        localStorage.setItem("gp_cloak_icon", "https://www.google.com/favicon.ico");
+    }
+    if (type === "Set") {
+        localStorage.setItem("gp_cloak_title", "Set");
+        localStorage.setItem("gp_cloak_icon", "/GamePlaza/icon.png");
+    }
+    alert("Cloak applied!");
 }
 
-/* Apply preset cloak */
-function applyPresetCloak(selectedKey) {
-  const cloak = CLOAKS[selectedKey];
-  if (!cloak) { showMessage(cloakMessage, 'Invalid cloak'); return; }
-  // preview
-  document.title = cloak.title;
-  const safeIcon = safeSetFavicon(cloak.icon);
-  // persist & broadcast (writes multiple keys for compatibility)
-  broadcastSettingsChange({ title: cloak.title, icon: safeIcon || '' });
-  showMessage(cloakMessage, '✓ Cloak applied successfully!');
-}
-
-/* Reset to defaults */
 function resetCloak() {
-  const defaultTitle = 'GamePlaza';
-  const defaultIcon = '../Normal.png';
-  document.title = defaultTitle;
-  let link = document.querySelector("link[rel~='icon']");
-  if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
-  link.href = defaultIcon;
-
-  // remove compatibility keys and broadcast default
-  localStorage.removeItem('setting_cloakTitleInput');
-  localStorage.removeItem('setting_cloakIconInput');
-  localStorage.removeItem('gameplaza_custom_title');
-  localStorage.removeItem('gameplaza_custom_icon');
-  localStorage.removeItem('gameplaza_cloak_title');
-  localStorage.removeItem('gameplaza_cloak_icon');
-
-  broadcastSettingsChange({ title: defaultTitle, icon: defaultIcon });
-  showMessage(cloakMessage, '✓ Cloak reset to default!');
+    localStorage.removeItem("gp_cloak_title");
+    localStorage.removeItem("gp_cloak_icon");
+    alert("Cloak reset!");
 }
 
-/* Custom title/icon */
 function applyCustomCloak() {
-  const title = (titleInput.value || '').trim();
-  const icon = (iconInput.value || '').trim();
+    const title = document.getElementById("cloakTitle").value;
+    const icon = document.getElementById("cloakIcon").value;
 
-  if (title) {
-    const safeTitle = String(title).slice(0, 200);
-    document.title = safeTitle;
-    localStorage.setItem('setting_cloakTitleInput', safeTitle);
-    localStorage.setItem('gameplaza_custom_title', safeTitle);
-    localStorage.setItem('gameplaza_cloak_title', safeTitle);
-  }
+    if (title) localStorage.setItem("gp_cloak_title", title);
+    if (icon) localStorage.setItem("gp_cloak_icon", icon);
 
-  let safeIcon = null;
-  if (icon) {
-    safeIcon = safeSetFavicon(icon);
-    if (safeIcon) {
-      localStorage.setItem('setting_cloakIconInput', safeIcon);
-      localStorage.setItem('gameplaza_custom_icon', safeIcon);
-      localStorage.setItem('gameplaza_cloak_icon', safeIcon);
-    } else {
-      showMessage(customCloakMessage, '⚠️ Invalid icon URL');
-      return;
-    }
-  }
-
-  broadcastSettingsChange({ title: title || undefined, icon: safeIcon || undefined });
-  showMessage(customCloakMessage, '✓ Custom cloak updated!');
+    alert("Custom cloak applied!");
 }
 
-/* Mobile sizer and deledao toggles */
-function enableMobileScreen() {
-  localStorage.setItem('gameplaza_mobile_sizer', 'true');
-  document.body.style.width = '375px';
-  document.body.style.margin = '0 auto';
-  broadcastSettingsChange({ mobileSizer: true });
-  showMessage(document.getElementById('mobileMessage'), '✓ Mobile screen sizer enabled!');
+// Mobile Sizer
+function enableSizer() {
+    localStorage.setItem("gp_mobile_sizer", "enabled");
+    alert("Mobile Sizer Enabled");
 }
-function disableMobileScreen() {
-  localStorage.setItem('gameplaza_mobile_sizer', 'false');
-  document.body.style.width = 'auto';
-  showMessage(document.getElementById('mobileMessage'), '✓ Mobile screen sizer disabled!');
-  broadcastSettingsChange({ mobileSizer: false });
+
+function disableSizer() {
+    localStorage.removeItem("gp_mobile_sizer");
+    alert("Mobile Sizer Disabled");
 }
+
+// Anti Deledao
 function enableDeledao() {
-  localStorage.setItem('gameplaza_anti_deledao', 'true');
-  showMessage(document.getElementById('deledaoMessage'), '✓ Anti Deledao enabled!');
-  broadcastSettingsChange({ antiDeledao: true });
+    localStorage.setItem("gp_deledao", "enabled");
+    alert("Anti-Deledao Enabled");
 }
+
 function disableDeledao() {
-  localStorage.setItem('gameplaza_anti_deledao', 'false');
-  showMessage(document.getElementById('deledaoMessage'), '✓ Anti Deledao disabled!');
-  broadcastSettingsChange({ antiDeledao: false });
+    localStorage.removeItem("gp_deledao");
+    alert("Anti-Deledao Disabled");
 }
 
-/* About:blank cloaker (keeps your existing behavior) */
-let cloakerWindow = null;
-document.getElementById('cloakerBtn')?.addEventListener('dblclick', () => {
-  if (cloakerWindow) { cloakerWindow.focus(); return; }
-  cloakerWindow = window.open();
-  cloakerWindow.document.body.style.margin = '0';
-  cloakerWindow.document.title = document.title;
-  const faviconElement = document.querySelector('link[rel="icon"]');
-  const faviconURL = faviconElement ? faviconElement.href : '';
-  if (faviconURL) {
-    const f = cloakerWindow.document.createElement('link');
-    f.rel = 'icon';
-    f.href = faviconURL;
-    cloakerWindow.document.head.appendChild(f);
-  }
-  const iframe = cloakerWindow.document.createElement('iframe');
-  iframe.style.border = 'none';
-  iframe.style.width = '100%';
-  iframe.style.height = '100%';
-  iframe.src = window.location.href;
-  cloakerWindow.document.body.appendChild(iframe);
-  window.location.replace('about:blank');
-
-  const iv = setInterval(() => {
-    if (!cloakerWindow || cloakerWindow.closed) {
-      clearInterval(iv);
-      cloakerWindow = null;
-    }
-  }, 500);
-});
-
-/* Hook up buttons */
-setCloakBtn?.addEventListener('click', () => applyPresetCloak(document.getElementById('cloakSelect').value));
-resetCloakBtn?.addEventListener('click', resetCloak);
-applyCustomBtn?.addEventListener('click', applyCustomCloak);
-document.getElementById('enableMobileBtn')?.addEventListener('click', enableMobileScreen);
-document.getElementById('disableMobileBtn')?.addEventListener('click', disableMobileScreen);
-document.getElementById('enableDeledaoBtn')?.addEventListener('click', enableDeledao);
-document.getElementById('disableDeledaoBtn')?.addEventListener('click', disableDeledao);
-
-/* Auto-save inputs (maps to canonical keys) */
-document.querySelectorAll('input, select, textarea').forEach(element => {
-  if (!element.id) return;
-
-  // load previously saved
-  const mappingKey = (element.id === 'titleInput') ? 'setting_cloakTitleInput'
-                   : (element.id === 'iconInput') ? 'setting_cloakIconInput'
-                   : 'setting_' + element.id;
-  const saved = localStorage.getItem(mappingKey);
-  if (saved !== null) {
-    if (element.type === 'checkbox') element.checked = saved === 'true';
-    else element.value = saved;
-  }
-
-  element.addEventListener('change', () => {
-    const valueToSave = element.type === 'checkbox' ? element.checked : element.value;
-    localStorage.setItem(mappingKey, valueToSave);
-    // mirror compatibility keys
-    if (mappingKey === 'setting_cloakTitleInput') {
-      localStorage.setItem('gameplaza_custom_title', valueToSave);
-      localStorage.setItem('gameplaza_cloak_title', valueToSave);
-      broadcastSettingsChange({ title: valueToSave });
-    }
-    if (mappingKey === 'setting_cloakIconInput') {
-      // validate and persist canonical icon
-      const safe = safeSetFavicon(valueToSave);
-      if (safe) {
-        localStorage.setItem('gameplaza_custom_icon', safe);
-        localStorage.setItem('gameplaza_cloak_icon', safe);
-        broadcastSettingsChange({ icon: safe });
-      }
-    }
-    // immediate preview for title fields
-    if (element.id.toLowerCase().includes('title')) document.title = valueToSave;
-  });
-});
-
-/* Make sure index can receive our updates when it's open: postMessage listener on unload isn't necessary because broadcastSettingsChange posts immediately.
-   But we add an unload hook to ensure other contexts can read the latest keys if needed. */
-window.addEventListener('beforeunload', () => {
-  try { localStorage.setItem('gameplaza_settings_last_unload', String(Date.now())); } catch (e) {}
-});
-
-/* Optional: respond to messages from index (not necessary but helpful if index queries settings) */
-window.addEventListener('message', (ev) => {
-  if (!ev.data) return;
-  if (ev.data && ev.data.type === 'request-gameplaza-settings' && ev.source) {
-    const payload = {
-      title: localStorage.getItem('setting_cloakTitleInput') || localStorage.getItem('gameplaza_custom_title') || null,
-      icon: localStorage.getItem('setting_cloakIconInput') || localStorage.getItem('gameplaza_custom_icon') || null
-    };
-    try { ev.source.postMessage({ type: 'gameplaza-settings-response', ...payload }, '*'); } catch (e) {}
-  }
-});
+// About:blank Cloaker
+function cloakBlank() {
+    window.location.replace("about:blank");
+}
 </script>
+
 </body>
 </html>
