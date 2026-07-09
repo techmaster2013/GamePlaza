@@ -30,13 +30,12 @@ if (document.getElementById("game-grid")) {
   let recent    = JSON.parse(localStorage.getItem("gp_recent") || "[]");
   let allGames  = [];
 
-  fetch("/GamePlaza/site/games.js")
-    .then(res => res.json())
-    .then(games => {
-      allGames = games;
-      buildCategories(games);
-      renderGames(games);
-    });
+// Load games directly from games.js (no fetch)
+allGames = window.games || [];
+
+buildCategories(allGames);
+renderGames(allGames);
+
 
   function renderGames(list) {
     const grid = document.getElementById("game-grid");
