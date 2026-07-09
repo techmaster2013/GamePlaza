@@ -1,0 +1,126 @@
+<html><head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+          <title>Minecraft 1.8.8 | GamePlaza</title>
+          <link rel="icon" href="/favicon.png">
+          <style>
+            body, html { margin: 0px; width: 100%; height: 100%; overflow: hidden; background-color: black; }
+            #game_frame { width: 100vw; height: 100vh; }
+          </style>
+          
+        <script type="text/javascript" src="blob:https://eaglercraft.com/fb5559ce-6476-4982-80c9-083046bfbda7"></script><script type="text/javascript" src="blob:https://eaglercraft.com/4139d47f-faa3-4d0b-9ebf-fa6f3423fe8f"></script></head>
+        <body>
+          <div id="game_frame" style="margin:0px;width:100%;height:100%;overflow:hidden;background-color:black;" class="_eaglercraftX_root_element"><div class="_eaglercraftX_wrapper_element" style="position: relative; width: 100%; height: 100%; overflow: hidden; background-color: black;"><canvas class="_eaglercraftX_canvas_element" width="1280" height="720" style="width: 100%; height: 100%; z-index: 1; touch-action: pan-x pan-y; -webkit-tap-highlight-color: rgba(255, 255, 255, 0); image-rendering: pixelated; cursor: default;"></canvas><div class="_eaglercraftX_keyboard_open_zone" style="display: none; position: absolute; background-color: transparent; top: 0px; left: 0px; width: 0px; height: 0px; z-index: 100; touch-action: pan-x pan-y; -webkit-tap-highlight-color: rgba(255, 255, 255, 0);"></div><audio class="_eaglercraftX_keepalive_hack" style="display:none;" loop=""><source type="audio/wav" src="blob:https://eaglercraft.com/f9b1c8fd-819e-4735-ad19-603b30652cbb"></audio></div></div>
+          <script>
+            (function() {
+              const baseDomain = "https://eaglercraft.com";
+              const prefix = "EaglercraftX 1.8 WebAssembly_";
+              const raw = window.localStorage;
+              
+              const proxy = new Proxy(raw, {
+                get(t, p) {
+                  if (p === "setItem") return (k, v) => t.setItem(prefix + k, v);
+                  if (p === "getItem") return (k) => t.getItem(prefix + k);
+                  if (p === "removeItem") return (k) => t.removeItem(prefix + k);
+                  if (p === "clear") return () => {
+                    Object.keys(t).forEach(k => { if(k.startsWith(prefix)) t.removeItem(k); });
+                  };
+                  if (typeof p === "string" && !t[p]) return t.getItem(prefix + p);
+                  return t[p];
+                },
+                set(t, p, v) { if (typeof p === "string") { t.setItem(prefix + p, String(v)); return true; } return false; }
+              });
+              Object.defineProperty(window, "localStorage", { value: proxy });
+              
+              window.addEventListener("message", (e) => {
+                if (e.data.type === "EAGLER_TOGGLE_FULLSCREEN") {
+                  const el = document.documentElement;
+                  if (!document.fullscreenElement) {
+                    el.requestFullscreen().catch(err => console.error("Fullscreen Error:", err));
+                  } else {
+                    document.exitFullscreen();
+                  }
+                }
+              });
+
+              const token = "c30e5f45-6549-441f-8687-e0fb0954567c";
+              const parent = window.opener;
+              
+              
+              
+              // idle screen tracking
+              const idleScreens = ["net.minecraft.client.gui.GuiMainMenu","net.minecraft.client.gui.GuiMultiplayer","net.minecraft.client.gui.GuiSelectWorld","net.minecraft.client.gui.GuiDisconnected"];
+              const maxIdleTime = 3600000;
+              let idleTimeout = null;
+              
+              window.addEventListener("gameScreenChanged", (event) => {
+                if (event.detail && event.detail.screenName) {
+                  const screenName = event.detail.screenName;
+                  
+                  if (parent && !parent.closed) {
+                    parent.postMessage({ 
+                      type: "gameScreenChanged", 
+                      screenName: screenName 
+                    }, baseDomain);
+                  }
+                  
+                  if (idleTimeout) {
+                    clearTimeout(idleTimeout);
+                    idleTimeout = null;
+                  }
+                  
+                  if (idleScreens.includes(screenName)) {
+                    idleTimeout = setTimeout(() => {
+                      window.onbeforeunload = null;
+                      window.location.href = baseDomain;
+                      if (parent && !parent.closed) {
+                        parent.postMessage({ type: "gameClientIdleClosed", screenName: screenName }, baseDomain);
+                      }
+                    }, maxIdleTime);
+                  }
+                }
+              });
+
+              // ws stuff
+              const wsUrl = "wss://eaglercraft-counter.eaglercraft-99f.workers.dev/api/live-player-count/ws?role=player";
+              let wsAttempts = 0;
+              function connectWS() {
+                const ws = new WebSocket(wsUrl);
+                ws.onopen = () => { wsAttempts = 0; };
+                ws.onmessage = (e) => {
+                  try {
+                    const data = JSON.parse(e.data);
+                    if (data.type === "ping") {
+                      ws.send(JSON.stringify({ type: "pong" }));
+                    }
+                  } catch(err){}
+                };
+                ws.onclose = () => {
+                  const delay = Math.min(
+                    1000 * Math.pow(2, wsAttempts),
+                    30000
+                  );
+                  wsAttempts++;
+                  setTimeout(connectWS, delay);
+                };
+              }
+              connectWS();
+              
+              window.addEventListener("message", (e) => {
+                if (e.data.type === "EAGLER_LAUNCH") {
+                  const s = document.createElement("script");
+                  s.src = "blob:https://eaglercraft.com/640a1d0b-87c7-4d2c-8612-7ef0aa137acf";
+                  
+                  document.body.appendChild(s);
+                  
+                  window.dispatchEvent(new Event("boot_client"));
+                }
+              });
+
+              if (parent && !parent.closed) {
+                parent.postMessage({ type: "EAGLER_IFRAME_READY", token: token }, baseDomain);
+              }
+            })();
+          </script>
+        
+      
+    <script src="blob:https://eaglercraft.com/640a1d0b-87c7-4d2c-8612-7ef0aa137acf"></script></body></html>
