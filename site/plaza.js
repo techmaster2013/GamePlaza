@@ -303,3 +303,11 @@ if (document.title.includes("Settings")) {
     window.location.replace("about:blank");
   };
 }
+document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+chip.classList.add('active');
+document.getElementById("loading").style.display = "none";
+const btn = document.getElementById("surprise-btn");
+btn.classList.add("flash");
+setTimeout(() => btn.classList.remove("flash"), 400);
+
+document.getElementById("backTop").onclick = () => window.scrollTo({top: 0, behavior: "smooth"});
