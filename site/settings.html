@@ -5,7 +5,6 @@
 <title>Settings | GamePlaza</title>
 <link rel="stylesheet" href="/GamePlaza/plaza.css">
 <style>
-/* Toggle Switch */
 .toggle {
   position: relative;
   width: 55px;
@@ -13,9 +12,7 @@
   display: inline-block;
   margin: 10px 0;
 }
-.toggle input {
-  display: none;
-}
+.toggle input { display: none; }
 .slider {
   position: absolute;
   cursor: pointer;
@@ -65,7 +62,6 @@ input:checked + .slider:before {
 }
 </style>
 </head>
-
 <body>
 
 <h1>
@@ -76,14 +72,12 @@ input:checked + .slider:before {
 
 <a href="index.html" class="chip" style="margin-bottom:20px; display:inline-block;">← Back to GamePlaza</a>
 
-<!-- ACTIVITY -->
 <div class="settings-section">
   <h2>Your Activity</h2>
   <button id="clearFav">Clear Favorites</button>
   <button id="clearRecent">Clear Recently Played</button>
 </div>
 
-<!-- TAB CLOAK -->
 <div class="settings-section">
   <h2>Tab Cloak</h2>
 
@@ -101,105 +95,30 @@ input:checked + .slider:before {
 
   <input id="cloakTitle" placeholder="Custom Title">
   <input id="cloakIcon" placeholder="Favicon URL">
-
   <button id="applyCustom">Apply Custom</button>
 </div>
 
-<!-- MOBILE SIZER -->
 <div class="settings-section">
   <h2>Mobile Screen Sizer</h2>
-
   <label class="toggle">
     <input id="mobileSizer" type="checkbox">
     <span class="slider"></span>
   </label> Enable Mobile Mode
 </div>
 
-<!-- ANTI DELEDAO -->
 <div class="settings-section">
   <h2>Anti-Deledao</h2>
-
   <label class="toggle">
     <input id="antiDeledao" type="checkbox">
     <span class="slider"></span>
   </label> Enable Anti-Deledao
 </div>
 
-<!-- ABOUT:BLANK -->
 <div class="settings-section">
   <h2>About:blank Cloaker</h2>
   <button ondblclick="cloakBlank()">Cloak (Double-click)</button>
 </div>
 
-<script src="plaza.js"></script>
-
-<script>
-// Load saved settings into toggles
-window.onload = () => {
-  document.getElementById("mobileSizer").checked =
-    localStorage.getItem("gp_mobile_sizer") === "enabled";
-
-  document.getElementById("antiDeledao").checked =
-    localStorage.getItem("gp_deledao") === "enabled";
-
-  document.getElementById("cloakGoogle").checked =
-    localStorage.getItem("gp_cloak_title") === "Google";
-
-  document.getElementById("cloakCustom").checked =
-    localStorage.getItem("gp_cloak_title") &&
-    localStorage.getItem("gp_cloak_title") !== "Google";
-};
-
-// Activity
-clearFav.onclick = () => {
-  localStorage.removeItem("gp_favorites");
-  alert("Favorites cleared!");
-};
-clearRecent.onclick = () => {
-  localStorage.removeItem("gp_recent");
-  alert("Recently Played cleared!");
-};
-
-// Cloak
-cloakGoogle.onchange = () => {
-  if (cloakGoogle.checked) {
-    localStorage.setItem("gp_cloak_title", "Google");
-    localStorage.setItem("gp_cloak_icon", "https://www.google.com/favicon.ico");
-  } else {
-    localStorage.removeItem("gp_cloak_title");
-    localStorage.removeItem("gp_cloak_icon");
-  }
-};
-
-applyCustom.onclick = () => {
-  const t = cloakTitle.value;
-  const i = cloakIcon.value;
-  if (t) localStorage.setItem("gp_cloak_title", t);
-  if (i) localStorage.setItem("gp_cloak_icon", i);
-  alert("Custom cloak applied!");
-};
-
-// Mobile Sizer
-mobileSizer.onchange = () => {
-  if (mobileSizer.checked)
-    localStorage.setItem("gp_mobile_sizer", "enabled");
-  else
-    localStorage.removeItem("gp_mobile_sizer");
-};
-
-// Anti-Deledao
-antiDeledao.onchange = () => {
-  if (antiDeledao.checked)
-    localStorage.setItem("gp_deledao", "enabled");
-  else
-    localStorage.removeItem("gp_deledao");
-};
-
-// About:blank
-function cloakBlank() {
-  window.location.replace("about:blank");
-}
-</script>
-
+<script src="/GamePlaza/site/plaza.js"></script>
 </body>
 </html>
