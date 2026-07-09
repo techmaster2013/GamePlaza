@@ -466,3 +466,6 @@ h1 .magic .magic-text {
         grid-template-columns: 1fr;
     }
 }
+#game-search {
+    display: block;
+}
