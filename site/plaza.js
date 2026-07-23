@@ -185,6 +185,15 @@ if (document.getElementById("game-grid")) {
     });
   }
 
+searchClear.addEventListener("click", () => {
+  searchInput.value = "";
+  searchClear.hidden = true;
+
+  // Re-render the full game list
+  renderGames(allGames);
+
+  searchInput.focus();
+});
   const chipFav    = document.getElementById("chip-fav");
   const chipRecent = document.getElementById("chip-recent");
   const chipAll    = document.getElementById("chip-all");
