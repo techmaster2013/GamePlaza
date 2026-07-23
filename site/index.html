@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <title>GamePlaza</title>
 
   <!-- Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
 
   <!-- Main CSS -->
   <link rel="stylesheet" href="/GamePlaza/plaza.css">
@@ -19,7 +18,7 @@
 </head>
 <body>
   <!-- particles -->
-  <canvas id="particles"></canvas>
+  <canvas id="particles" width="252" height="782"></canvas>
 
   <div id="main">
 
@@ -37,7 +36,13 @@
     </h2>
 
     <!-- Search box -->
-    <input type="text" id="game-search" placeholder="🔍︎ Search games...">
+    <div class="search-wrap">
+  <input type="text" id="game-search" placeholder="🔍︎ Search games..." autocomplete="off">
+
+  <button type="button" id="search-clear" class="search-clear" style="display: block !important; visibility: visible !important; opacity: 1 !important;" hidden="">
+  ×
+</button>
+</div>
 
     <!-- your activity -->
     <div class="settings-section" style="margin-top:20px; margin-bottom:25px;">
@@ -60,12 +65,13 @@
       <button onclick="window.location.href='https://proxy-plaza.vercel.app'">ProxyPlaza</button>
       <button onclick="window.location.href='settings.html'">Settings</button>
       <button id="surprise-btn">Surprise Me!</button>
+      <button onclick="window.location.href='https://github.com/techmaster2013/GamePlaza'">GitHub Repo</button>
     </div>
 
-    <div class="chip-row" id="category-row"></div>
+    <div class="chip-row" id="category-row"><div class="chip active">All</div><div class="chip">horror</div><div class="chip">arcade</div><div class="chip">sports</div><div class="chip">simulation</div><div class="chip">io</div><div class="chip">puzzle</div><div class="chip">action</div><div class="chip">rhythm</div><div class="chip">adventure</div><div class="chip">misc</div></div>
 
-    <div id="loading">Loading games...</div>
-    <div class="button-container" id="game-grid"></div>
+    <div id="loading" style="display: none;">Loading games...</div>
+    <div class="button-container" id="game-grid"><button><div class="game-title">Adventures with Anxiety ☆</div></button><button><div class="game-title">Angry Birds 2 ☆</div></button><button><div class="game-title">Baldi's Basics Classic Remastered ☆</div></button><button><div class="game-title">Basketball Stars ☆</div></button><button><div class="game-title">Bee Swarm Simulator ☆</div></button><button><div class="game-title">Bendy and the Ink Machine ☆</div></button><button><div class="game-title">BERGENTRUCK_201X ☆</div></button><button><div class="game-title">Block Blast ☆</div></button><button><div class="game-title">Brawl Stars ☆</div></button><button><div class="game-title">Brotato ☆</div></button><button><div class="game-title">Buckshot Roulette ☆</div></button><button><div class="game-title">Bugswim ☆</div></button><button><div class="game-title">Chess ☆</div></button><button><div class="game-title">Chrome Music Lab ☆</div></button><button><div class="game-title">Clash Royale ☆</div></button><button><div class="game-title">Cookie Clicker ☆</div></button><button><div class="game-title">Crazy Cattle 3D ☆</div></button><button><div class="game-title">Cuphead ☆</div></button><button><div class="game-title">DDLC+ ☆</div></button><button><div class="game-title">Dino Game ☆</div></button><button><div class="game-title">Drift Boss ☆</div></button><button><div class="game-title">Eggfish ☆</div></button><button><div class="game-title">eParkour ☆</div></button><button><div class="game-title">Escape Road 3 ☆</div></button><button><div class="game-title">FNF ☆</div></button><button><div class="game-title">Fortnite ☆</div></button><button><div class="game-title">Geometry Dash ☆</div></button><button><div class="game-title">Google Baseball Game ☆</div></button><button><div class="game-title">Granny ☆</div></button><button><div class="game-title">Hollow Knight ☆</div></button><button><div class="game-title">KART BROS! ☆</div></button><button><div class="game-title">Kindergarten 3 ☆</div></button><button><div class="game-title">Learn to Fly ☆</div></button><button><div class="game-title">Mahjong ☆</div></button><button><div class="game-title">Mario Kart ☆</div></button><button><div class="game-title">Minecraft ☆</div></button><button><div class="game-title">Moo Moo ☆</div></button><button><div class="game-title">My Femboy Roommate ☆</div></button><button><div class="game-title">My Singing Monsters ☆</div></button><button><div class="game-title">New York Times Games ☆</div></button><button><div class="game-title">Nut Simulator ☆</div></button><button><div class="game-title">Oneshot ☆</div></button><button><div class="game-title">Online Racing Game ☆</div></button><button><div class="game-title">Oregon Trail ☆</div></button><button><div class="game-title">osu! ☆</div></button><button><div class="game-title">Pac-Man ☆</div></button><button><div class="game-title">Papa's Freezeria ☆</div></button><button><div class="game-title">People Playground ☆</div></button><button><div class="game-title">Poki ☆</div></button><button><div class="game-title">Portal Remake ☆</div></button><button><div class="game-title">R.E.P.O. ☆</div></button><button><div class="game-title">Red Ball 4 ☆</div></button><button><div class="game-title">Rocket League ☆</div></button><button><div class="game-title">Run 3 ☆</div></button><button><div class="game-title">SAB ☆</div></button><button><div class="game-title">slither.io ☆</div></button><button><div class="game-title">Slope Game ☆</div></button><button><div class="game-title">Snake Game ☆</div></button><button><div class="game-title">Stickman Hook ☆</div></button><button><div class="game-title">Superhot ☆</div></button><button><div class="game-title">T9 OS ☆</div></button><button><div class="game-title">Tetris ☆</div></button><button><div class="game-title">That's Not my Neighbor ☆</div></button><button><div class="game-title">Ultrakill ☆</div></button><button><div class="game-title">Undertale Yellow ☆</div></button><button><div class="game-title">Zombs Royale ☆</div></button></div>
 
     <button id="backTop">↑</button>
 
@@ -79,7 +85,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h2>Summer Update</h2>
-        <button class="close-btn" id="closeBtn" aria-label="Close">&times;</button>
+        <button class="close-btn" id="closeBtn" aria-label="Close">×</button>
       </div>
 
       <div class="modal-body">
@@ -89,7 +95,7 @@
         <h3>Features Added</h3>
         <ul>
           <li>Switched games and most javascript to external file</li>
-          <li>Added categories & search improvements</li>
+          <li>Added categories &amp; search improvements</li>
           <li>Performance and accessibility improvements</li>
           <li>UI overhaul</li>
           <li>Your activity section: view your favorites and your game history</li>
@@ -97,6 +103,9 @@
           <li>History - View games that were played on your device before.</li>
           <li>renamed update requests to feedback</li>
           <li>removed GSite GamePlaza due to irrelevancy</li>
+          <li>Added clear button in search</li>
+          <li>fixed button centering and resizing</li>
+          <li>added github repo button</li>
         </ul>
 
         <h3>New Games</h3>
@@ -108,7 +117,7 @@
           <li>fixed osu!</li>
         </ul>
 
-        <p><strong>Release Date:</strong> July 12th, 2026</p>
+        <p><strong>Release Date:</strong> July 23rd, 2026</p>
       </div>
 
       <div class="modal-footer">
@@ -119,5 +128,6 @@
 
   <script src="/GamePlaza/site/games.js"></script>
   <script src="/GamePlaza/site/plaza.js"></script>
-</body>
-</html>
+
+
+</body></html>
