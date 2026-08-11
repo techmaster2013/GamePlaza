@@ -247,6 +247,16 @@ if (document.getElementById("game-grid")) {
     };
   }
 
+  // allow ESC to close the update modal when visible
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      const m = document.getElementById('updateModal');
+      if (m && m.classList.contains('active')) {
+        m.classList.remove('active');
+      }
+    }
+  });
+
   const surpriseBtn = document.getElementById("surprise-btn");
   if (surpriseBtn) {
     surpriseBtn.onclick = () => {
@@ -269,43 +279,75 @@ if (document.getElementById("game-grid")) {
   }
 
   // Occasionally change the on-page title (the H1 text) and the search placeholder
-  // to playful messages, then revert after a short time. Runs only on the index page.
+  // to playful messages, then revert after a short time. Adds fade in/out and an extra message.
   (function playfulTextFlasher() {
     const pageTitleEl = document.querySelector('h1 .magic-text');
     if (!pageTitleEl || !searchInput) return;
 
     const originalTitle = pageTitleEl.textContent;
     const originalPlaceholder = searchInput.getAttribute('placeholder') || '';
-    const flashTitle = 'gameplaza is the best';
-    const flashPlaceholder = 'choose a game already';
+    const messages = [
+      { title: 'gameplaza is the best', placeholder: 'choose a game already' },
+      { title: 'hiiiiiiiii', placeholder: 'choose a game already' }
+    ];
 
-    let timeoutId = null;
+    const fadeDuration = 600; // ms for fade in/out
+    const visibleDuration = 10000; // ms message stays visible (10s)
 
-    function flashOnce() {
-      // set playful texts
-      try {
-        pageTitleEl.textContent = flashTitle;
-        searchInput.setAttribute('placeholder', flashPlaceholder);
-      } catch (e) { /* ignore DOM errors */ }
+    // ensure elements have transition
+    pageTitleEl.style.transition = `opacity ${fadeDuration}ms ease`;
+    searchInput.style.transition = `opacity ${fadeDuration}ms ease`;
 
-      // revert after a short duration
-      timeoutId = setTimeout(() => {
+    let scheduled = null;
+
+    function doFlash() {
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+
+      // fade out
+      pageTitleEl.style.opacity = '0';
+      searchInput.style.opacity = '0';
+
+      setTimeout(() => {
         try {
-          pageTitleEl.textContent = originalTitle;
-          searchInput.setAttribute('placeholder', originalPlaceholder);
+          pageTitleEl.textContent = msg.title;
+          searchInput.setAttribute('placeholder', msg.placeholder);
         } catch (e) {}
-        scheduleNext();
-      }, 4000);
+
+        // fade in
+        pageTitleEl.style.opacity = '1';
+        searchInput.style.opacity = '1';
+
+        // stay visible for visibleDuration, then revert with fade
+        setTimeout(() => {
+          pageTitleEl.style.opacity = '0';
+          searchInput.style.opacity = '0';
+
+          setTimeout(() => {
+            try {
+              pageTitleEl.textContent = originalTitle;
+              searchInput.setAttribute('placeholder', originalPlaceholder);
+            } catch (e) {}
+
+            pageTitleEl.style.opacity = '1';
+            searchInput.style.opacity = '1';
+
+            scheduleNext();
+          }, fadeDuration);
+        }, visibleDuration);
+      }, fadeDuration);
     }
 
     function scheduleNext() {
-      // random delay between 10s and 30s
-      const delay = 10000 + Math.random() * 20000;
-      setTimeout(flashOnce, delay);
+      const delay = 7000 + Math.random() * 23000; // between 7s and 30s
+      scheduled = setTimeout(doFlash, delay);
     }
 
-    // start the cycle
     scheduleNext();
+
+    // clean-up in case page navigates away (not strictly necessary here)
+    window.addEventListener('beforeunload', () => {
+      if (scheduled) clearTimeout(scheduled);
+    });
   })();
 }
 
