@@ -172,6 +172,7 @@ if (document.getElementById("game-grid")) {
   }
 
   const searchInput = document.getElementById("game-search");
+  const searchClear = document.getElementById("search-clear");
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
       const q = e.target.value.toLowerCase();
@@ -182,18 +183,25 @@ if (document.getElementById("game-grid")) {
           return gameName.includes(q);
         })
       );
+
+      // show/hide clear button if present
+      if (searchClear) {
+        searchClear.hidden = !e.target.value;
+      }
     });
   }
 
-searchClear.addEventListener("click", () => {
-  searchInput.value = "";
-  searchClear.hidden = true;
+  if (searchClear) {
+    searchClear.addEventListener("click", () => {
+      if (searchInput) searchInput.value = "";
+      searchClear.hidden = true;
 
-  // Re-render the full game list
-  renderGames(allGames);
+      // Re-render the full game list
+      renderGames(allGames);
 
-  searchInput.focus();
-});
+      if (searchInput) searchInput.focus();
+    });
+  }
   const chipFav    = document.getElementById("chip-fav");
   const chipRecent = document.getElementById("chip-recent");
   const chipAll    = document.getElementById("chip-all");
