@@ -2,8 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Settings | GamePlaza</title>
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+
+  <!-- Main CSS -->
   <link rel="stylesheet" href="/GamePlaza/plaza.css">
+
+  <meta property="og:title" content="GamePlaza Settings">
+  <meta property="og:description" content="GamePlaza Settings - Customize your experience">
+  <meta property="og:image" content="/GamePlaza/Normal.png">
+  <meta name="theme-color" content="#7B1FA2">
 
   <style>
     .toggle {
@@ -12,6 +25,7 @@
       height: 28px;
       display: inline-block;
       margin-right: 10px;
+      vertical-align: middle;
     }
     .toggle input { display: none; }
     .slider {
@@ -42,20 +56,12 @@
       transform: translateX(26px);
     }
 
-    .settings-section {
-      background: rgba(255,255,255,0.03);
-      padding: 20px;
-      border-left: 4px solid var(--purple);
-      margin-bottom: 25px;
-      border-radius: 10px;
-    }
-
-    .settings-section h2 {
-      margin-top: 0;
-      margin-bottom: 12px;
-      background: linear-gradient(to right, var(--purple), var(--violet), var(--pink));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .toggle-label {
+      display: flex;
+      align-items: center;
+      margin: 12px 0;
+      font-size: 15px;
+      color: #F9F6EF;
     }
 
     .preset-grid {
@@ -72,8 +78,9 @@
       padding: 10px;
       color: #F9F6EF;
       cursor: pointer;
-      transition: .3s;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       font-family: Ubuntu;
+      font-weight: 500;
     }
 
     .preset-grid button:hover {
@@ -81,6 +88,10 @@
       border-color: var(--pink);
       box-shadow: 0 0 12px rgba(123,31,162,0.7);
       transform: translateY(-3px);
+    }
+
+    .preset-grid button:active {
+      transform: scale(0.95);
     }
 
     .settings-section input {
@@ -94,12 +105,33 @@
       border: 1px solid #1f1f1f;
       color: #e5e5e5;
       font-family: Ubuntu;
+      font-size: 14px;
+      transition: 0.25s ease;
+      box-sizing: border-box;
+    }
+
+    .settings-section input:focus {
+      outline: none;
+      background: #151515;
+      border-color: #3b82f6;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .settings-section input::placeholder {
+      color: #777;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 30px;
+      margin-top: 10px;
     }
   </style>
 </head>
 
 <body>
-  <canvas id="particles"></canvas>
+  <!-- particles -->
+  <canvas id="particles" width="252" height="782"></canvas>
 
   <div id="main">
 
@@ -109,7 +141,7 @@
       </span>
     </h1>
 
-    <a href="index.html" class="chip" style="margin-bottom:20px; display:inline-block;">
+    <a href="index.html" class="chip back-link">
       ← Back to GamePlaza
     </a>
 
@@ -144,55 +176,69 @@
     </div>
 
     <!-- CUSTOM CLOAK -->
-<div class="settings-section">
-  <h2>Custom Cloak</h2>
+    <div class="settings-section">
+      <h2>Custom Cloak</h2>
 
-  <label class="toggle">
-    <input id="cloakCustom" type="checkbox">
-    <span class="slider"></span>
-  </label>
-  Enable Custom Cloak
+      <div class="toggle-label">
+        <label class="toggle">
+          <input id="cloakCustom" type="checkbox">
+          <span class="slider"></span>
+        </label>
+        <span>Enable Custom Cloak</span>
+      </div>
 
-  <input id="cloakTitle" placeholder="Title - Type GamePlaza to reset">
-  <input id="cloakIcon" placeholder="Favicon - Type /GamePlaza/Normal.png to reset">
+      <input id="cloakTitle" placeholder="Title - Type GamePlaza to reset">
+      <input id="cloakIcon" placeholder="Favicon - Type /GamePlaza/Normal.png to reset">
 
-  <button id="applyCustom">Apply Custom Cloak (applies on reload)</button>
-</div>
-
+      <button id="applyCustom">Apply Custom Cloak (applies on reload)</button>
+    </div>
 
     <!-- MOBILE -->
     <div class="settings-section">
       <h2>Mobile Screen Sizer</h2>
 
-      <label class="toggle">
-        <input id="mobileSizer" type="checkbox">
-        <span class="slider"></span>
-      </label>
-      Enable Mobile Mode
+      <div class="toggle-label">
+        <label class="toggle">
+          <input id="mobileSizer" type="checkbox">
+          <span class="slider"></span>
+        </label>
+        <span>Enable Mobile Mode</span>
+      </div>
     </div>
 
     <!-- ANTI DELEDAO -->
     <div class="settings-section">
       <h2>Anti-Deledao</h2>
 
-      <label class="toggle">
-        <input id="antiDeledao" type="checkbox">
-        <span class="slider"></span>
-      </label>
-      Enable Anti-Deledao
+      <div class="toggle-label">
+        <label class="toggle">
+          <input id="antiDeledao" type="checkbox">
+          <span class="slider"></span>
+        </label>
+        <span>Enable Anti-Deledao</span>
+      </div>
     </div>
 
     <!-- ABOUT BLANK -->
     <div class="settings-section">
       <h2>About:blank Cloaker</h2>
-      <button onclick="cloakBlankReal()">Cloak GamePlaza (double-click)</button>
+      <button onclick="cloakBlankReal()" ondblclick="event.preventDefault()">Cloak GamePlaza (double-click)</button>
     </div>
+
+    <footer style="text-align:center; margin-top:40px; opacity:0.8;">
+      <p>GamePlaza © 2026 — Built by h_z13</p>
+    </footer>
 
   </div>
 
   <script src="/GamePlaza/site/plaza.js"></script>
 
   <script>
+    // Detect if we're on settings page and run settings-specific logic
+    if (document.title.includes("Settings")) {
+      // This allows plaza.js to run its settings logic
+    }
+
     function applyPreset(title, icon) {
       localStorage.setItem("gp_cloak_title", title);
       localStorage.setItem("gp_cloak_icon", icon);
@@ -200,25 +246,38 @@
     }
 
     function cloakBlankReal() {
-      const win = window.open("about:blank", "_blank");
-      const doc = win.document;
+      try {
+        const win = window.open("about:blank", "_blank");
+        if (!win) {
+          alert("Failed to open window. Please check pop-up blocker settings.");
+          return;
+        }
+        
+        const doc = win.document;
+        doc.title = localStorage.getItem("gp_cloak_title") || "Google";
+        
+        const link = doc.createElement("link");
+        link.rel = "icon";
+        link.href = localStorage.getItem("gp_cloak_icon") || "https://www.google.com/favicon.ico";
+        doc.head.appendChild(link);
 
-      doc.title = localStorage.getItem("gp_cloak_title") || "Google";
-      const link = doc.createElement("link");
-      link.rel = "icon";
-      link.href = localStorage.getItem("gp_cloak_icon") || "https://www.google.com/favicon.ico";
-      doc.head.appendChild(link);
+        const iframe = doc.createElement("iframe");
+        iframe.src = window.location.href;
+        iframe.style.position = "fixed";
+        iframe.style.top = "0";
+        iframe.style.left = "0";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%";
+        iframe.style.border = "none";
+        iframe.style.margin = "0";
+        iframe.style.padding = "0";
 
-      const iframe = doc.createElement("iframe");
-      iframe.src = window.location.href;
-      iframe.style.position = "fixed";
-      iframe.style.top = "0";
-      iframe.style.left = "0";
-      iframe.style.width = "100%";
-      iframe.style.height = "100%";
-      iframe.style.border = "none";
-
-      doc.body.appendChild(iframe);
+        doc.body.style.margin = "0";
+        doc.body.style.padding = "0";
+        doc.body.appendChild(iframe);
+      } catch (e) {
+        alert("Error: " + e.message);
+      }
     }
   </script>
 
