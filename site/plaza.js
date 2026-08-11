@@ -267,6 +267,46 @@ if (document.getElementById("game-grid")) {
   if (backTop) {
     backTop.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
   }
+
+  // Occasionally change the on-page title (the H1 text) and the search placeholder
+  // to playful messages, then revert after a short time. Runs only on the index page.
+  (function playfulTextFlasher() {
+    const pageTitleEl = document.querySelector('h1 .magic-text');
+    if (!pageTitleEl || !searchInput) return;
+
+    const originalTitle = pageTitleEl.textContent;
+    const originalPlaceholder = searchInput.getAttribute('placeholder') || '';
+    const flashTitle = 'gameplaza is the best';
+    const flashPlaceholder = 'choose a game already';
+
+    let timeoutId = null;
+
+    function flashOnce() {
+      // set playful texts
+      try {
+        pageTitleEl.textContent = flashTitle;
+        searchInput.setAttribute('placeholder', flashPlaceholder);
+      } catch (e) { /* ignore DOM errors */ }
+
+      // revert after a short duration
+      timeoutId = setTimeout(() => {
+        try {
+          pageTitleEl.textContent = originalTitle;
+          searchInput.setAttribute('placeholder', originalPlaceholder);
+        } catch (e) {}
+        scheduleNext();
+      }, 4000);
+    }
+
+    function scheduleNext() {
+      // random delay between 10s and 30s
+      const delay = 10000 + Math.random() * 20000;
+      setTimeout(flashOnce, delay);
+    }
+
+    // start the cycle
+    scheduleNext();
+  })();
 }
 
 /* SETTINGS PAGE LOGIC */
