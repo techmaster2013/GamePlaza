@@ -66,12 +66,12 @@
     /* Modal: one authoritative implementation, including automatic startup. */
     const modal=$("updateModal"),panel=modal&&modal.querySelector(".modal-content"),trigger=$("update-trigger"),close=$("closeBtn"),dismiss=$("dismissBtn");
     let previousFocus=null;
-    const openModal=()=>{if(!modal)return;previousFocus=document.activeElement;modal.classList.add("active");modal.setAttribute("aria-hidden","false");modal.style.display="flex";document.body.classList.add("modal-open");document.body.style.overflow="hidden";if(panel)setTimeout(()=>panel.focus(),0);};
-    const closeModal=()=>{if(!modal)return;modal.classList.remove("active");modal.setAttribute("aria-hidden","true");modal.style.display="none";document.body.classList.remove("modal-open");document.body.style.overflow="";if(previousFocus&&previousFocus.focus)setTimeout(()=>previousFocus.focus(),0);};
+    const openModal=()=>{if(!modal||modal.classList.contains("active"))return;previousFocus=document.activeElement;modal.classList.add("active");modal.setAttribute("aria-hidden","false");document.body.classList.add("modal-open");if(panel)setTimeout(()=>panel.focus(),0);};
+    const closeModal=()=>{if(!modal||!modal.classList.contains("active"))return;modal.classList.remove("active");modal.setAttribute("aria-hidden","true");document.body.classList.remove("modal-open");if(previousFocus&&previousFocus.focus)setTimeout(()=>previousFocus.focus(),0);};
     window.GamePlazaModal={open:openModal,close:closeModal};
     if(trigger)trigger.onclick=openModal;if(close)close.onclick=closeModal;if(dismiss)dismiss.onclick=closeModal;
     if(modal)modal.onclick=e=>{if(e.target===modal)closeModal();};
-    document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal&&modal.classList.contains("active"))closeModal();});
 
     /* Short blue scroll trail */
     const trail=document.createElement("div");trail.className="scroll-trail";document.body.appendChild(trail);let trailTimer;
