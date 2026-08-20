@@ -75,7 +75,9 @@
 
     /* Short blue scroll trail */
     const trail=document.createElement("div");trail.className="scroll-trail";document.body.appendChild(trail);let trailTimer;
-    addEventListener("scroll",()=>{trail.classList.add("scrolling");clearTimeout(trailTimer);trailTimer=setTimeout(()=>trail.classList.remove("scrolling"),180);},{passive:true});
+    const updateTrail=()=>{const documentHeight=document.documentElement.scrollHeight-innerHeight;const progress=documentHeight>0?scrollY/documentHeight:0;const thumbHeight=Math.max(56,innerHeight*(innerHeight/document.documentElement.scrollHeight));trail.style.height=`${thumbHeight}px`;trail.style.top=`${progress*Math.max(0,innerHeight-thumbHeight)}px`;};
+    addEventListener("scroll",()=>{updateTrail();trail.classList.add("scrolling");clearTimeout(trailTimer);trailTimer=setTimeout(()=>trail.classList.remove("scrolling"),260);},{passive:true});
+    addEventListener("resize",updateTrail,{passive:true});updateTrail();
 
     if($("backTop"))$("backTop").onclick=()=>scrollTo({top:0,behavior:"smooth"});
     if(search){const title=document.querySelector(".hero h1 .magic-text");if(title){const ot=title.textContent,op=search.placeholder,msgs=[["gameplaza is the best","choose a game already"],["hiiiiiiiii","what are you playing?"],["welcome to the plaza","find something fun..."]];const schedule=()=>setTimeout(()=>{const m=msgs[Math.floor(Math.random()*msgs.length)];title.textContent=m[0];search.placeholder=m[1];setTimeout(()=>{title.textContent=ot;search.placeholder=op;schedule();},4500);},18000+Math.random()*18000);schedule();}}
