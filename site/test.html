@@ -12,6 +12,23 @@
   <meta property="og:title" content="GamePlaza">
   <meta property="og:description" content="GamePlaza — an easy way to find games.">
   <meta name="theme-color" content="#7B1FA2">
+
+  <!-- Fixes for modal and scroll trail (overrides in test.css) -->
+  <style>
+    /* Prevent background scrolling while modal is open */
+    body.modal-open { overflow: hidden; }
+
+    /* Ensure modal overlay is centered and visible when active */
+    .modal-overlay { display: none; position: fixed; inset: 0; align-items: center; justify-content: center; background: rgba(0,0,0,0.55); z-index: 99999; }
+    .modal-overlay.active { display: flex; }
+
+    /* Make modal content scrollable if too tall and provide sensible sizing */
+    .modal-content { max-width: 880px; width: calc(100% - 48px); max-height: 90vh; overflow: auto; border-radius: 12px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+    /* Scroll trail: make sure it's above page content, visible while scrolling, and transitions smoothly */
+    .scroll-trail { position: fixed; right: 0; top: 0; width: 11px; height: 0; z-index: 99998; pointer-events: none; background: linear-gradient(180deg, rgba(56,167,255,.9) 0%, rgba(74,180,255,.56) 35%, rgba(72,154,255,.2) 68%, rgba(56,167,255,0) 100%); transition: height .18s linear, top .18s linear, opacity .2s linear; opacity: 0; border-radius: 8px; }
+    .scroll-trail.scrolling { opacity: 1; }
+  </style>
 </head>
 <body>
   <canvas id="particles" aria-hidden="true"></canvas>
@@ -65,7 +82,7 @@
     </section>
 
     <section class="home-section">
-      <div class="lucky-card"><div><span class="section-kicker">🎰 FEELING LUCKY?</span><h2>Can't decide what to play?</h2><p>Let GamePlaza choose something for you.</p></div><button id="luckyButton" type="button">🎲 Surprise Me!</button></div>
+      <div class="lucky-card"><div><span class="section-kicker">🎰 FEELING LUCKY?</span><h2>Can't decide what to play?</h2><p>Let GamePlaza choose something for you.</p></div><button id="luckyButton" type="button">I'm feeling lucky</button></div>
     </section>
 
     <section class="home-section browse-section" id="browse">
@@ -152,43 +169,6 @@
 
   <script src="games.js"></script>
   <script src="test.js"></script>
-
-  <script>
-    (function () {
-      var modal = document.getElementById("updateModal");
-      var panel = modal ? modal.querySelector(".modal-content") : null;
-      var trigger = document.getElementById("update-trigger");
-      var closeButton = document.getElementById("closeBtn");
-      var dismissButton = document.getElementById("dismissBtn");
-      if (!modal || !panel) return;
-
-      function openUpdateModal() {
-        modal.className = "modal-overlay active";
-        modal.setAttribute("aria-hidden", "false");
-        modal.style.display = "flex";
-        if (document.body.className.indexOf("modal-open") === -1) document.body.className += " modal-open";
-        panel.focus();
-      }
-      function closeUpdateModal() {
-        modal.className = "modal-overlay";
-        modal.setAttribute("aria-hidden", "true");
-        modal.style.display = "none";
-        document.body.className = document.body.className.replace(/\bmodal-open\b/g, "").replace(/\s{2,}/g, " ").trim();
-      }
-
-      window.showGamePlazaUpdate = openUpdateModal;
-      window.hideGamePlazaUpdate = closeUpdateModal;
-      window.GamePlazaModal = { open: openUpdateModal, close: closeUpdateModal };
-      trigger.onclick = openUpdateModal;
-      closeButton.onclick = closeUpdateModal;
-      dismissButton.onclick = closeUpdateModal;
-      modal.onclick = function (event) { if (event.target === modal) closeUpdateModal(); };
-      document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape" && modal.className.indexOf("active") !== -1) closeUpdateModal();
-      });
-      openUpdateModal();
-    }());
-  </script>
 
 </body>
 </html>
