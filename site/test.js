@@ -258,29 +258,39 @@
     };
     ["heroSurprise", "luckyButton"].forEach((id) => { if ($(id)) $(id).addEventListener("click", surpriseMe); });
 
-    /* Update modal */
+    /* Update modal — same class-based behavior as index.html/plaza.js */
     const modal = $("updateModal");
-    const modalContent = modal ? modal.querySelector(".modal-content") : null;
+    const trigger = $("update-trigger");
+    const close = $("closeBtn");
+    const dismiss = $("dismissBtn");
+
     const openModal = () => {
       if (!modal) return;
-      modal.hidden = false;
+      modal.classList.add("active");
       modal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
-      requestAnimationFrame(() => { if (modalContent) modalContent.focus(); });
     };
+
     const closeModal = () => {
       if (!modal) return;
-      modal.hidden = true;
+      modal.classList.remove("active");
       modal.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
-      const trigger = $("update-trigger");
-      if (trigger) trigger.focus();
     };
-    if ($("update-trigger")) $("update-trigger").addEventListener("click", openModal);
-    if ($("closeBtn")) $("closeBtn").addEventListener("click", closeModal);
-    if ($("dismissBtn")) $("dismissBtn").addEventListener("click", closeModal);
-    if (modal) modal.addEventListener("click", (event) => { if (event.target === modal) closeModal(); });
-    document.addEventListener("keydown", (event) => { if (event.key === "Escape" && modal && !modal.hidden) closeModal(); });
+
+    if (trigger) trigger.addEventListener("click", openModal);
+    if (close) close.addEventListener("click", closeModal);
+    if (dismiss) dismiss.addEventListener("click", closeModal);
+
+    if (modal) {
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) closeModal();
+      });
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" || event.key === "Esc") closeModal();
+    });
 
     /* Back to top */
     if ($("backTop")) $("backTop").addEventListener("click", () => window.scrollTo({ top:0, behavior:"smooth" }));
