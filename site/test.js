@@ -1,915 +1,1385 @@
-"use strict";
-
-/*
- * GamePlaza plaza.js
- *
- * Main responsibilities:
- * - particles
- * - settings/cloaking
- * - games
- * - search
- * - categories
- * - favorites
- * - history
- * - update modal
- * - surprise button
- * - back-to-top
- * - playful title/search text
- */
-
+```javascript
 /* =========================================================
-   PARTICLES
-   ========================================================= */
+   GAMEPLAZA
+   Main JavaScript
+========================================================= */
 
-(function initParticles() {
+document.addEventListener("DOMContentLoaded", () => {
+
+    /* =====================================================
+       PARTICLES
+    ===================================================== */
+
     const canvas = document.getElementById("particles");
 
-    if (!canvas) return;
+    if (canvas) {
 
-    const ctx = canvas.getContext("2d");
+        const ctx = canvas.getContext("2d");
 
-    if (!ctx) return;
+        let particles = [];
 
-    let particles = [];
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
 
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
+        resizeCanvas();
 
-    function createParticles() {
-        particles = [];
+        window.addEventListener("resize", resizeCanvas);
 
         for (let i = 0; i < 60; i++) {
+
             particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
                 r: Math.random() * 2 + 1,
                 dx: (Math.random() - 0.5) * 0.5,
                 dy: (Math.random() - 0.5) * 0.5
             });
+
         }
-    }
 
-    function animate() {
-        ctx.clearRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
+        function animateParticles() {
 
-        for (const particle of particles) {
-            particle.x += particle.dx;
-            particle.y += particle.dy;
-
-            if (
-                particle.x < 0 ||
-                particle.x > canvas.width
-            ) {
-                particle.dx *= -1;
-            }
-
-            if (
-                particle.y < 0 ||
-                particle.y > canvas.height
-            ) {
-                particle.dy *= -1;
-            }
-
-            ctx.beginPath();
-
-            ctx.arc(
-                particle.x,
-                particle.y,
-                particle.r,
+            ctx.clearRect(
                 0,
-                Math.PI * 2
+                0,
+                canvas.width,
+                canvas.height
             );
 
-            ctx.fillStyle = "#3b82f6";
+            particles.forEach(p => {
 
-            ctx.fill();
+                p.x += p.dx;
+                p.y += p.dy;
+
+                if (p.x < 0 || p.x > canvas.width)
+                    p.dx *= -1;
+
+                if (p.y < 0 || p.y > canvas.height)
+                    p.dy *= -1;
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    p.x,
+                    p.y,
+                    p.r,
+                    0,
+                    Math.PI * 2
+                );
+
+                ctx.fillStyle = "#3b82f6";
+
+                ctx.fill();
+
+            });
+
+            requestAnimationFrame(animateParticles);
         }
 
-        requestAnimationFrame(animate);
+        animateParticles();
     }
 
-    resize();
-    createParticles();
 
-    window.addEventListener("resize", () => {
-        resize();
-        createParticles();
-    });
+    /* =====================================================
+       SETTINGS / CLOAK
+    ===================================================== */
 
-    animate();
-})();
+    const cloakTitle =
+        localStorage.getItem("gp_cloak_title");
 
+    const cloakIcon =
+        localStorage.getItem("gp_cloak_icon");
 
-/* =========================================================
-   GLOBAL SETTINGS
-   ========================================================= */
+    const mobileSizer =
+        localStorage.getItem("gp_mobile_sizer");
 
-(function initGlobalSettings() {
-    const title = localStorage.getItem("gp_cloak_title");
-    const icon = localStorage.getItem("gp_cloak_icon");
-    const sizer = localStorage.getItem("gp_mobile_sizer");
-
-    if (title) {
-        document.title = title;
+    if (cloakTitle) {
+        document.title = cloakTitle;
     }
 
-    if (icon) {
-        let link = document.querySelector(
-            "link[rel~='icon']"
+    if (cloakIcon) {
+
+        let icon =
+            document.querySelector(
+                "link[rel~='icon']"
+            );
+
+        if (!icon) {
+
+            icon =
+                document.createElement("link");
+
+            icon.rel = "icon";
+
+            document.head.appendChild(icon);
+        }
+
+        icon.href = cloakIcon;
+    }
+
+    if (mobileSizer === "enabled") {
+        document.body.classList.add("mobile-sized");
+    }
+
+
+    /* =====================================================
+       GAME DATA
+    ===================================================== */
+
+    let allGames =
+        Array.isArray(window.games)
+            ? window.games
+            : [];
+
+    let favorites =
+        JSON.parse(
+            localStorage.getItem("gp_favorites") || "[]"
         );
 
-        if (!link) {
-            link = document.createElement("link");
+    let recent =
+        JSON.parse(
+            localStorage.getItem("gp_recent") || "[]"
+        );
 
-            link.rel = "icon";
 
-            document.head.appendChild(link);
-        }
-
-        link.href = icon;
+    function gameName(game) {
+        return game?.name ||
+               game?.label ||
+               "Unknown";
     }
 
-    if (sizer === "enabled") {
-        document.body.style.width = "480px";
-        document.body.style.margin = "0 auto";
-    }
-})();
 
-
-/* =========================================================
-   UPDATE MODAL
-   ========================================================= */
-
-(function initUpdateModal() {
-    const modal = document.getElementById("updateModal");
-
-    if (!modal) return;
-
-    const trigger = document.getElementById("update-trigger");
-    const close = document.getElementById("closeBtn");
-    const dismiss = document.getElementById("dismissBtn");
-
-    function openModal() {
-        modal.classList.add("active");
-        modal.setAttribute("aria-hidden", "false");
+    function gameUrl(game) {
+        return game?.url || "#";
     }
 
-    function closeModal() {
-        modal.classList.remove("active");
-        modal.setAttribute("aria-hidden", "true");
-    }
 
-    if (trigger) {
-        trigger.addEventListener("click", openModal);
-    }
-
-    if (close) {
-        close.addEventListener("click", closeModal);
-    }
-
-    if (dismiss) {
-        dismiss.addEventListener("click", closeModal);
-    }
-
-    modal.addEventListener("click", (event) => {
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
-
-    document.addEventListener("keydown", (event) => {
-        if (
-            event.key === "Escape" &&
-            modal.classList.contains("active")
-        ) {
-            closeModal();
-        }
-    });
-
-    /*
-     * IMPORTANT:
-     * Modal initialization is independent from the game system.
-     * If games.js ever fails, the modal still works.
-     */
-    openModal();
-})();
-
-
-/* =========================================================
-   INDEX / GAME SYSTEM
-   ========================================================= */
-
-(function initGameSystem() {
-    const gameGrid = document.getElementById("game-grid");
-
-    if (!gameGrid) return;
-
-    const loading = document.getElementById("loading");
-    const noGames = document.getElementById("no-games");
-
-    const searchInput = document.getElementById("game-search");
-    const searchClear = document.getElementById("search-clear");
-
-    const categoryRow = document.getElementById("category-row");
-
-    const chipFav = document.getElementById("chip-fav");
-    const chipRecent = document.getElementById("chip-recent");
-    const chipAll = document.getElementById("chip-all");
-
-    const favCount = document.getElementById("favCount");
-    const recentCount = document.getElementById("recentCount");
-
-    const surpriseBtn = document.getElementById("surprise-btn");
-
-    /* ---------------------------------------------------------
-       DATA
-       --------------------------------------------------------- */
-
-    let allGames = Array.isArray(window.games)
-        ? window.games
-        : [];
-
-    let favorites = readStorageArray(
-        "gp_favorites"
-    );
-
-    let recent = readStorageArray(
-        "gp_recent"
-    );
-
-    /*
-     * One unified filter state.
-     *
-     * search:
-     *     current search text
-     *
-     * category:
-     *     "all" or a category name
-     *
-     * activity:
-     *     "all", "favorites", or "recent"
-     */
-    const state = {
-        search: "",
-        category: "all",
-        activity: "all"
-    };
-
-
-    /* ---------------------------------------------------------
-       STORAGE
-       --------------------------------------------------------- */
-
-    function readStorageArray(key) {
-        try {
-            const value = JSON.parse(
-                localStorage.getItem(key) || "[]"
-            );
-
-            return Array.isArray(value)
-                ? value
-                : [];
-        } catch {
-            return [];
-        }
-    }
+    /* =====================================================
+       FAVORITES
+    ===================================================== */
 
     function saveFavorites() {
+
         localStorage.setItem(
             "gp_favorites",
             JSON.stringify(favorites)
         );
+
     }
 
-    function saveRecent() {
-        localStorage.setItem(
-            "gp_recent",
-            JSON.stringify(recent)
-        );
-    }
-
-
-    /* ---------------------------------------------------------
-       GAME NAME
-       --------------------------------------------------------- */
-
-    function getGameName(game) {
-        return String(
-            game?.name ||
-            game?.label ||
-            "Unknown"
-        );
-    }
-
-
-    /* ---------------------------------------------------------
-       FILTERING
-       --------------------------------------------------------- */
-
-    function getFilteredGames() {
-        const query = state.search
-            .trim()
-            .toLowerCase();
-
-        return allGames.filter((game) => {
-            const name = getGameName(game);
-
-            /* Search */
-            if (
-                query &&
-                !name.toLowerCase().includes(query)
-            ) {
-                return false;
-            }
-
-            /* Category */
-            if (
-                state.category !== "all" &&
-                String(game.category || "")
-                    .toLowerCase() !==
-                    state.category.toLowerCase()
-            ) {
-                return false;
-            }
-
-            /* Activity */
-            if (
-                state.activity === "favorites" &&
-                !favorites.includes(name)
-            ) {
-                return false;
-            }
-
-            if (
-                state.activity === "recent" &&
-                !recent.includes(name)
-            ) {
-                return false;
-            }
-
-            return true;
-        });
-    }
-
-
-    /* ---------------------------------------------------------
-       RENDER
-       --------------------------------------------------------- */
-
-    function renderGames() {
-        const list = getFilteredGames();
-
-        gameGrid.innerHTML = "";
-
-        if (loading) {
-            loading.style.display = "none";
-        }
-
-        if (noGames) {
-            noGames.hidden = list.length !== 0;
-        }
-
-        for (const game of list) {
-            const button = document.createElement("button");
-
-            button.type = "button";
-
-            const name = getGameName(game);
-
-            if (game.img) {
-                const img = document.createElement("img");
-
-                img.src = game.img;
-
-                img.alt = "";
-
-                img.loading = "lazy";
-
-                button.appendChild(img);
-            }
-
-            const title = document.createElement("div");
-
-            title.className = "game-title";
-
-            const text = document.createTextNode(
-                name + " "
-            );
-
-            title.appendChild(text);
-
-            const star = document.createElement("span");
-
-            star.className = "game-star";
-
-            star.textContent = favorites.includes(name)
-                ? "★"
-                : "☆";
-
-            star.setAttribute(
-                "aria-label",
-                favorites.includes(name)
-                    ? "Remove from favorites"
-                    : "Add to favorites"
-            );
-
-            star.addEventListener(
-                "click",
-                (event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    toggleFavorite(name);
-                }
-            );
-
-            title.appendChild(star);
-
-            button.appendChild(title);
-
-            button.addEventListener(
-                "click",
-                () => {
-                    addRecent(name);
-
-                    if (game.url) {
-                        window.location.href = game.url;
-                    }
-                }
-            );
-
-            gameGrid.appendChild(button);
-        }
-
-        updateCounts();
-        updateActiveChips();
-        updateSearchClear();
-    }
-
-
-    /* ---------------------------------------------------------
-       FAVORITES
-       --------------------------------------------------------- */
 
     function toggleFavorite(name) {
+
         if (favorites.includes(name)) {
-            favorites = favorites.filter(
-                (item) => item !== name
-            );
+
+            favorites =
+                favorites.filter(
+                    item => item !== name
+                );
+
         } else {
+
             favorites.push(name);
+
         }
 
         saveFavorites();
 
-        /*
-         * IMPORTANT:
-         * We do NOT modify state.search,
-         * state.category, or state.activity.
-         *
-         * Therefore favoriting a game while searching
-         * or browsing a category does NOT kick the user
-         * back to All.
-         */
-        renderGames();
+        updateCounts();
+
+        renderHome();
+
+        renderGames(
+            getCurrentFilteredGames()
+        );
     }
 
 
-    /* ---------------------------------------------------------
-       HISTORY
-       --------------------------------------------------------- */
+    /* =====================================================
+       RECENT
+    ===================================================== */
 
     function addRecent(name) {
-        recent = recent.filter(
-            (item) => item !== name
-        );
+
+        recent =
+            recent.filter(
+                item => item !== name
+            );
 
         recent.unshift(name);
 
-        recent = recent.slice(0, 20);
+        recent =
+            recent.slice(0, 20);
 
-        saveRecent();
+        localStorage.setItem(
+            "gp_recent",
+            JSON.stringify(recent)
+        );
 
         updateCounts();
 
-        /*
-         * If the user is currently viewing History,
-         * update the rendered list too.
-         */
-        if (state.activity === "recent") {
-            renderGames();
-        }
+        renderHome();
     }
 
 
-    /* ---------------------------------------------------------
-       COUNTS
-       --------------------------------------------------------- */
+    /* =====================================================
+       COUNTERS
+    ===================================================== */
 
     function updateCounts() {
-        if (favCount) {
-            favCount.textContent =
+
+        const fav =
+            document.getElementById("favCount");
+
+        const rec =
+            document.getElementById("recentCount");
+
+        const homeFav =
+            document.getElementById(
+                "homeFavoriteCount"
+            );
+
+        const homeRecent =
+            document.getElementById(
+                "homeRecentCount"
+            );
+
+        const homeGame =
+            document.getElementById(
+                "homeGameCount"
+            );
+
+
+        if (fav)
+            fav.textContent =
                 favorites.length;
-        }
 
-        if (recentCount) {
-            recentCount.textContent =
+        if (rec)
+            rec.textContent =
                 recent.length;
-        }
+
+        if (homeFav)
+            homeFav.textContent =
+                `${favorites.length} game${favorites.length === 1 ? "" : "s"}`;
+
+        if (homeRecent)
+            homeRecent.textContent =
+                `${recent.length} game${recent.length === 1 ? "" : "s"}`;
+
+        if (homeGame)
+            homeGame.textContent =
+                `${allGames.length} games`;
     }
 
 
-    /* ---------------------------------------------------------
-       CHIP STATE
-       --------------------------------------------------------- */
+    /* =====================================================
+       HOME PAGE
+    ===================================================== */
 
-    function updateActiveChips() {
-        /*
-         * Activity chips and category chips are handled
-         * separately now.
-         *
-         * This fixes the old problem where:
-         *
-         * document.querySelectorAll(".chip")
-         *
-         * accidentally changed the active state of
-         * unrelated controls.
-         */
+    function findGame(name) {
 
-        if (chipFav) {
-            chipFav.classList.toggle(
-                "active",
-                state.activity === "favorites"
-            );
-        }
-
-        if (chipRecent) {
-            chipRecent.classList.toggle(
-                "active",
-                state.activity === "recent"
-            );
-        }
-
-        if (chipAll) {
-            chipAll.classList.toggle(
-                "active",
-                state.activity === "all"
-            );
-        }
-
-        if (categoryRow) {
-            const chips =
-                categoryRow.querySelectorAll(".chip");
-
-            chips.forEach((chip) => {
-                const category =
-                    chip.dataset.category;
-
-                chip.classList.toggle(
-                    "active",
-                    category === state.category
-                );
-            });
-        }
-    }
-
-
-    /* ---------------------------------------------------------
-       CATEGORIES
-       --------------------------------------------------------- */
-
-    function buildCategories() {
-        if (!categoryRow) return;
-
-        categoryRow.innerHTML = "";
-
-        const categories = [
-            ...new Set(
-                allGames
-                    .map((game) => game.category)
-                    .filter(Boolean)
-                    .map(String)
-            )
-        ];
-
-        categories.sort((a, b) =>
-            a.localeCompare(b)
+        return allGames.find(
+            game =>
+                gameName(game) === name
         );
+    }
 
-        function createCategoryChip(
-            label,
-            value
-        ) {
-            const chip =
+
+    function createHomeGameCard(game) {
+
+        const card =
+            document.createElement("button");
+
+        card.className =
+            "home-game-card";
+
+        const icon =
+            document.createElement("span");
+
+        icon.className =
+            "game-icon";
+
+        icon.textContent =
+            favorites.includes(gameName(game))
+                ? "★"
+                : "🎮";
+
+        const title =
+            document.createElement("strong");
+
+        title.textContent =
+            gameName(game);
+
+        const category =
+            document.createElement("small");
+
+        category.textContent =
+            game.category || "Game";
+
+        card.appendChild(icon);
+        card.appendChild(title);
+        card.appendChild(category);
+
+        card.addEventListener("click", () => {
+
+            addRecent(gameName(game));
+
+            if (gameUrl(game) !== "#")
+                window.location.href =
+                    gameUrl(game);
+
+        });
+
+        return card;
+    }
+
+
+    function renderHome() {
+
+        /* -------------------------
+           FEATURED
+        ------------------------- */
+
+        const featured =
+            document.getElementById(
+                "featured-name"
+            );
+
+        const featuredDescription =
+            document.getElementById(
+                "featured-description"
+            );
+
+        const featuredPlay =
+            document.getElementById(
+                "featured-play"
+            );
+
+        if (featured && allGames.length) {
+
+            /*
+             * Keep Crazy Cattle 3D as the featured
+             * game if it exists, otherwise use the
+             * first game.
+             */
+
+            const game =
+                findGame("Crazy Cattle 3D") ||
+                allGames[0];
+
+            featured.textContent =
+                gameName(game);
+
+            featuredDescription.textContent =
+                game.description ||
+                "Today's featured game from the GamePlaza collection.";
+
+            if (featuredPlay) {
+
+                featuredPlay.onclick = () => {
+
+                    addRecent(
+                        gameName(game)
+                    );
+
+                    window.location.href =
+                        gameUrl(game);
+
+                };
+
+            }
+
+        }
+
+
+        /* -------------------------
+           RECENT
+        ------------------------- */
+
+        const recentContainer =
+            document.getElementById(
+                "recent-games"
+            );
+
+        if (recentContainer) {
+
+            recentContainer.innerHTML = "";
+
+            const recentGames =
+                recent
+                    .map(name => findGame(name))
+                    .filter(Boolean)
+                    .slice(0, 3);
+
+            if (!recentGames.length) {
+
+                recentContainer.innerHTML = `
+                    <div class="empty-state">
+                        <span>⏱</span>
+                        <strong>No recently played games yet.</strong>
+                        <small>Games you play will appear here.</small>
+                    </div>
+                `;
+
+            } else {
+
+                recentGames.forEach(
+                    game =>
+                        recentContainer.appendChild(
+                            createHomeGameCard(game)
+                        )
+                );
+
+            }
+        }
+
+
+        /* -------------------------
+           RECENTLY ADDED
+        ------------------------- */
+
+        const newContainer =
+            document.getElementById(
+                "new-games"
+            );
+
+        if (newContainer) {
+
+            newContainer.innerHTML = "";
+
+            /*
+             * The last three entries are treated
+             * as recently added, matching your
+             * current GamePlaza update style.
+             */
+
+            allGames
+                .slice(-3)
+                .reverse()
+                .forEach(game => {
+
+                    newContainer.appendChild(
+                        createHomeGameCard(game)
+                    );
+
+                });
+
+        }
+
+
+        /* -------------------------
+           FAVORITES
+        ------------------------- */
+
+        const favoriteContainer =
+            document.getElementById(
+                "favorite-games"
+            );
+
+        if (favoriteContainer) {
+
+            favoriteContainer.innerHTML = "";
+
+            const favoriteGames =
+                favorites
+                    .map(name => findGame(name))
+                    .filter(Boolean)
+                    .slice(0, 3);
+
+            if (!favoriteGames.length) {
+
+                favoriteContainer.innerHTML = `
+                    <div class="empty-state">
+                        <span>☆</span>
+                        <strong>No favorites yet.</strong>
+                        <small>Press ☆ next to a game to add it here.</small>
+                    </div>
+                `;
+
+            } else {
+
+                favoriteGames.forEach(
+                    game =>
+                        favoriteContainer.appendChild(
+                            createHomeGameCard(game)
+                        )
+                );
+
+            }
+        }
+
+
+        updateCounts();
+    }
+
+
+    /* =====================================================
+       GAME LIBRARY
+    ===================================================== */
+
+    let currentList =
+        [...allGames];
+
+
+    function getCurrentFilteredGames() {
+        return currentList;
+    }
+
+
+    function renderGames(list) {
+
+        const grid =
+            document.getElementById(
+                "game-grid"
+            );
+
+        if (!grid)
+            return;
+
+        currentList = list;
+
+        grid.innerHTML = "";
+
+        list.forEach(game => {
+
+            const btn =
                 document.createElement("button");
 
-            chip.type = "button";
+            if (game.img) {
 
-            chip.className = "chip";
+                const img =
+                    document.createElement("img");
 
-            chip.textContent = label;
+                img.src =
+                    game.img;
 
-            chip.dataset.category = value;
+                img.alt =
+                    gameName(game);
 
-            chip.addEventListener(
+                btn.appendChild(img);
+            }
+
+
+            const title =
+                document.createElement("div");
+
+            title.className =
+                "game-title";
+
+            title.textContent =
+                `${gameName(game)} ${
+                    favorites.includes(gameName(game))
+                        ? "★"
+                        : "☆"
+                }`;
+
+
+            title.addEventListener(
+                "click",
+                event => {
+
+                    event.stopPropagation();
+
+                    toggleFavorite(
+                        gameName(game)
+                    );
+
+                }
+            );
+
+
+            btn.appendChild(title);
+
+
+            btn.addEventListener(
                 "click",
                 () => {
-                    state.category = value;
 
-                    renderGames();
+                    addRecent(
+                        gameName(game)
+                    );
+
+                    window.location.href =
+                        gameUrl(game);
+
                 }
             );
 
-            return chip;
-        }
 
-        categoryRow.appendChild(
-            createCategoryChip(
-                "All",
-                "all"
-            )
-        );
+            grid.appendChild(btn);
 
-        for (const category of categories) {
-            categoryRow.appendChild(
-                createCategoryChip(
-                    category,
-                    category
+        });
+
+
+        const loading =
+            document.getElementById(
+                "loading"
+            );
+
+        if (loading)
+            loading.style.display =
+                "none";
+    }
+
+
+    /* =====================================================
+       CATEGORIES
+    ===================================================== */
+
+    function buildCategories() {
+
+        const row =
+            document.getElementById(
+                "category-row"
+            );
+
+        if (!row)
+            return;
+
+        row.innerHTML = "";
+
+        const categories =
+            [
+                ...new Set(
+                    allGames
+                        .map(game => game.category)
+                        .filter(Boolean)
                 )
-            );
-        }
-
-        updateActiveChips();
-    }
+            ];
 
 
-    /* ---------------------------------------------------------
-       ACTIVITY CHIPS
-       --------------------------------------------------------- */
+        function activate(chip) {
 
-    if (chipFav) {
-        chipFav.addEventListener(
-            "click",
-            () => {
-                state.activity = "favorites";
-
-                renderGames();
-            }
-        );
-    }
-
-    if (chipRecent) {
-        chipRecent.addEventListener(
-            "click",
-            () => {
-                state.activity = "recent";
-
-                renderGames();
-            }
-        );
-    }
-
-    if (chipAll) {
-        chipAll.addEventListener(
-            "click",
-            () => {
-                state.activity = "all";
-
-                renderGames();
-            }
-        );
-    }
-
-
-    /* ---------------------------------------------------------
-       SEARCH
-       --------------------------------------------------------- */
-
-    if (searchInput) {
-        searchInput.addEventListener(
-            "input",
-            () => {
-                state.search =
-                    searchInput.value;
-
-                renderGames();
-            }
-        );
-    }
-
-    if (searchClear) {
-        searchClear.addEventListener(
-            "click",
-            () => {
-                state.search = "";
-
-                if (searchInput) {
-                    searchInput.value = "";
-                    searchInput.focus();
-                }
-
-                renderGames();
-            }
-        );
-    }
-
-    function updateSearchClear() {
-        if (!searchClear) return;
-
-        searchClear.hidden =
-            !state.search;
-    }
-
-
-    /* ---------------------------------------------------------
-       SURPRISE ME
-       --------------------------------------------------------- */
-
-    if (surpriseBtn) {
-        surpriseBtn.addEventListener(
-            "click",
-            () => {
-                surpriseBtn.classList.add(
-                    "flash"
+            document
+                .querySelectorAll(
+                    ".category-row .chip"
+                )
+                .forEach(
+                    item =>
+                        item.classList.remove(
+                            "active"
+                        )
                 );
 
-                setTimeout(() => {
-                    surpriseBtn.classList.remove(
-                        "flash"
+            chip.classList.add("active");
+        }
+
+
+        const allChip =
+            document.createElement("div");
+
+        allChip.className =
+            "chip active";
+
+        allChip.textContent =
+            "All";
+
+        allChip.onclick = () => {
+
+            activate(allChip);
+
+            renderGames(
+                [...allGames]
+            );
+
+        };
+
+        row.appendChild(allChip);
+
+
+        categories.forEach(category => {
+
+            const chip =
+                document.createElement("div");
+
+            chip.className =
+                "chip";
+
+            chip.textContent =
+                category;
+
+            chip.onclick = () => {
+
+                activate(chip);
+
+                renderGames(
+                    allGames.filter(
+                        game =>
+                            game.category ===
+                            category
+                    )
+                );
+
+            };
+
+            row.appendChild(chip);
+
+        });
+
+    }
+
+
+    /* =====================================================
+       SEARCH
+    ===================================================== */
+
+    const search =
+        document.getElementById(
+            "game-search"
+        );
+
+    const clear =
+        document.getElementById(
+            "search-clear"
+        );
+
+
+    if (search) {
+
+        search.addEventListener(
+            "input",
+            () => {
+
+                const query =
+                    search.value
+                        .trim()
+                        .toLowerCase();
+
+
+                if (clear)
+                    clear.hidden =
+                        query.length === 0;
+
+
+                if (!query) {
+
+                    renderGames(
+                        [...allGames]
                     );
-                }, 400);
 
-                if (!allGames.length) return;
+                    return;
+                }
 
-                const random =
-                    allGames[
+
+                renderGames(
+                    allGames.filter(
+                        game =>
+                            gameName(game)
+                                .toLowerCase()
+                                .includes(query)
+                    )
+                );
+
+            }
+        );
+
+    }
+
+
+    if (clear) {
+
+        clear.addEventListener(
+            "click",
+            () => {
+
+                if (search)
+                    search.value = "";
+
+                clear.hidden = true;
+
+                renderGames(
+                    [...allGames]
+                );
+
+                if (search)
+                    search.focus();
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ACTIVITY FILTERS
+    ===================================================== */
+
+    const chipFav =
+        document.getElementById(
+            "chip-fav"
+        );
+
+    const chipRecent =
+        document.getElementById(
+            "chip-recent"
+        );
+
+    const chipAll =
+        document.getElementById(
+            "chip-all"
+        );
+
+
+    function activateActivity(chip) {
+
+        document
+            .querySelectorAll(
+                ".activity-section .chip"
+            )
+            .forEach(
+                item =>
+                    item.classList.remove(
+                        "active"
+                    )
+            );
+
+        chip.classList.add("active");
+    }
+
+
+    if (chipFav) {
+
+        chipFav.onclick = () => {
+
+            activateActivity(
+                chipFav
+            );
+
+            renderGames(
+                allGames.filter(
+                    game =>
+                        favorites.includes(
+                            gameName(game)
+                        )
+                )
+            );
+
+        };
+
+    }
+
+
+    if (chipRecent) {
+
+        chipRecent.onclick = () => {
+
+            activateActivity(
+                chipRecent
+            );
+
+            renderGames(
+                allGames.filter(
+                    game =>
+                        recent.includes(
+                            gameName(game)
+                        )
+                )
+            );
+
+        };
+
+    }
+
+
+    if (chipAll) {
+
+        chipAll.onclick = () => {
+
+            activateActivity(
+                chipAll
+            );
+
+            renderGames(
+                [...allGames]
+            );
+
+        };
+
+    }
+
+
+    /* =====================================================
+       SURPRISE ME
+    ===================================================== */
+
+    function surpriseMe() {
+
+        if (!allGames.length)
+            return;
+
+        const game =
+            allGames[
+                Math.floor(
+                    Math.random() *
+                    allGames.length
+                )
+            ];
+
+        addRecent(
+            gameName(game)
+        );
+
+        window.location.href =
+            gameUrl(game);
+
+    }
+
+
+    const surprise =
+        document.getElementById(
+            "surprise-btn"
+        );
+
+    const lucky =
+        document.getElementById(
+            "luckyButton"
+        );
+
+    const heroSurprise =
+        document.getElementById(
+            "heroSurprise"
+        );
+
+
+    if (surprise)
+        surprise.onclick =
+            surpriseMe;
+
+    if (lucky)
+        lucky.onclick =
+            surpriseMe;
+
+    if (heroSurprise)
+        heroSurprise.onclick =
+            surpriseMe;
+
+
+    /* =====================================================
+       BROWSE BUTTONS
+    ===================================================== */
+
+    function goToBrowse() {
+
+        const browse =
+            document.getElementById(
+                "browse"
+            );
+
+        if (browse) {
+
+            browse.scrollIntoView({
+                behavior: "smooth"
+            });
+
+            setTimeout(
+                () => {
+
+                    if (search)
+                        search.focus();
+
+                },
+                500
+            );
+
+        }
+
+    }
+
+
+    const heroBrowse =
+        document.getElementById(
+            "heroBrowse"
+        );
+
+    const homeAll =
+        document.getElementById(
+            "homeAll"
+        );
+
+
+    if (heroBrowse)
+        heroBrowse.onclick =
+            goToBrowse;
+
+    if (homeAll)
+        homeAll.onclick =
+            goToBrowse;
+
+
+    /* =====================================================
+       HOME ACTIVITY BUTTONS
+    ===================================================== */
+
+    function showFavorites() {
+
+        goToBrowse();
+
+        setTimeout(
+            () => {
+
+                if (chipFav)
+                    chipFav.click();
+
+            },
+            550
+        );
+
+    }
+
+
+    function showRecent() {
+
+        goToBrowse();
+
+        setTimeout(
+            () => {
+
+                if (chipRecent)
+                    chipRecent.click();
+
+            },
+            550
+        );
+
+    }
+
+
+    const homeFavorites =
+        document.getElementById(
+            "homeFavorites"
+        );
+
+    const homeRecent =
+        document.getElementById(
+            "homeRecent"
+        );
+
+    const viewFavorites =
+        document.getElementById(
+            "viewFavorites"
+        );
+
+    const viewHistory =
+        document.getElementById(
+            "viewHistory"
+        );
+
+
+    if (homeFavorites)
+        homeFavorites.onclick =
+            showFavorites;
+
+    if (viewFavorites)
+        viewFavorites.onclick =
+            showFavorites;
+
+    if (homeRecent)
+        homeRecent.onclick =
+            showRecent;
+
+    if (viewHistory)
+        viewHistory.onclick =
+            showRecent;
+
+
+    /* =====================================================
+       UPDATE MODAL
+       FIXED / DOM-SAFE
+    ===================================================== */
+
+    const modal =
+        document.getElementById(
+            "updateModal"
+        );
+
+    const trigger =
+        document.getElementById(
+            "update-trigger"
+        );
+
+    const close =
+        document.getElementById(
+            "closeBtn"
+        );
+
+    const dismiss =
+        document.getElementById(
+            "dismissBtn"
+        );
+
+
+    function openModal() {
+
+        if (!modal)
+            return;
+
+        modal.classList.add(
+            "active"
+        );
+
+        modal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    function closeModal() {
+
+        if (!modal)
+            return;
+
+        modal.classList.remove(
+            "active"
+        );
+
+        modal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    /*
+     * The homepage doesn't show the update
+     * trigger by default, but the modal still
+     * works if another page provides it.
+     */
+
+    if (trigger)
+        trigger.addEventListener(
+            "click",
+            openModal
+        );
+
+    if (close)
+        close.addEventListener(
+            "click",
+            closeModal
+        );
+
+    if (dismiss)
+        dismiss.addEventListener(
+            "click",
+            closeModal
+        );
+
+
+    if (modal) {
+
+        modal.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target === modal
+                ) {
+                    closeModal();
+                }
+
+            }
+        );
+
+    }
+
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Escape" ||
+                event.key === "Esc"
+            ) {
+                closeModal();
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       BACK TO TOP
+    ===================================================== */
+
+    const backTop =
+        document.getElementById(
+            "backTop"
+        );
+
+    if (backTop) {
+
+        backTop.onclick = () => {
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        };
+
+    }
+
+
+    /* =====================================================
+       PLAYFUL TEXT
+    ===================================================== */
+
+    if (search) {
+
+        const title =
+            document.querySelector(
+                ".hero h1 .magic-text"
+            );
+
+        if (title) {
+
+            const originalTitle =
+                title.textContent;
+
+            const originalPlaceholder =
+                search.placeholder;
+
+            const messages = [
+
+                [
+                    "gameplaza is the best",
+                    "choose a game already"
+                ],
+
+                [
+                    "hiiiiiiiii",
+                    "what are you playing?"
+                ],
+
+                [
+                    "welcome to the plaza",
+                    "find something fun..."
+                ]
+
+            ];
+
+
+            function flashText() {
+
+                const message =
+                    messages[
                         Math.floor(
                             Math.random() *
-                            allGames.length
+                            messages.length
                         )
                     ];
 
-                if (!random?.url) return;
 
-                const name =
-                    getGameName(random);
-
-                addRecent(name);
-
-                window.location.href =
-                    random.url;
-            }
-        );
-    }
+                title.style.opacity = "0";
+                search.style.opacity = "0";
 
 
-    /* ---------------------------------------------------------
-       BACK TO TOP
-       --------------------------------------------------------- */
-
-    const backTop =
-        document.getElementById("backTop");
-
-    if (backTop) {
-        backTop.addEventListener(
-            "click",
-            () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-            }
-        );
-    }
-
-
-    /* ---------------------------------------------------------
-       PLAYFUL TITLE / SEARCH
-       --------------------------------------------------------- */
-
-    (function playfulTextFlasher() {
-        const pageTitle =
-            document.querySelector(
-                "h1 .magic-text"
-            );
-
-        if (!pageTitle || !searchInput) {
-            return;
-        }
-
-        const originalTitle =
-            pageTitle.textContent;
-
-        const originalPlaceholder =
-            searchInput.getAttribute(
-                "placeholder"
-            ) || "";
-
-        const messages = [
-            {
-                title: "gameplaza is the best",
-                placeholder: "choose a game already"
-            },
-            {
-                title: "hiiiiiiiii",
-                placeholder: "choose a game already"
-            }
-        ];
-
-        const fadeDuration = 600;
-        const visibleDuration = 10000;
-
-        pageTitle.style.transition =
-            `opacity ${fadeDuration}ms ease`;
-
-        searchInput.style.transition =
-            `opacity ${fadeDuration}ms ease`;
-
-        let scheduled = null;
-
-        function scheduleNext() {
-            const delay =
-                7000 +
-                Math.random() * 23000;
-
-            scheduled =
                 setTimeout(
-                    doFlash,
-                    delay
-                );
-        }
+                    () => {
 
-        function doFlash() {
-            const message =
-                messages[
-                    Math.floor(
-                        Math.random() *
-                        messages.length
-                    )
-                ];
+                        title.textContent =
+                            message[0];
 
-            pageTitle.style.opacity = "0";
-            searchInput.style.opacity = "0";
+                        search.placeholder =
+                            message[1];
 
-            setTimeout(() => {
-                pageTitle.textContent =
-                    message.title;
+                        title.style.opacity = "1";
+                        search.style.opacity = "1";
 
-                searchInput.setAttribute(
-                    "placeholder",
-                    message.placeholder
-                );
 
-                pageTitle.style.opacity = "1";
-                searchInput.style.opacity = "1";
+                        setTimeout(
+                            () => {
 
-                setTimeout(() => {
-                    pageTitle.style.opacity = "0";
-                    searchInput.style.opacity = "0";
+                                title.style.opacity =
+                                    "0";
 
-                    setTimeout(() => {
-                        pageTitle.textContent =
-                            originalTitle;
+                                search.style.opacity =
+                                    "0";
 
-                        searchInput.setAttribute(
-                            "placeholder",
-                            originalPlaceholder
+
+                                setTimeout(
+                                    () => {
+
+                                        title.textContent =
+                                            originalTitle;
+
+                                        search.placeholder =
+                                            originalPlaceholder;
+
+                                        title.style.opacity =
+                                            "1";
+
+                                        search.style.opacity =
+                                            "1";
+
+                                        scheduleFlash();
+
+                                    },
+                                    500
+                                );
+
+                            },
+                            7000
                         );
 
-                        pageTitle.style.opacity = "1";
-                        searchInput.style.opacity = "1";
+                    },
+                    500
+                );
 
-                        scheduleNext();
-                    }, fadeDuration);
-                }, visibleDuration);
-            }, fadeDuration);
+            }
+
+
+            function scheduleFlash() {
+
+                const delay =
+                    10000 +
+                    Math.random() * 25000;
+
+                setTimeout(
+                    flashText,
+                    delay
+                );
+
+            }
+
+
+            title.style.transition =
+                "opacity .5s ease";
+
+            search.style.transition =
+                "opacity .5s ease";
+
+            scheduleFlash();
+
         }
 
-        scheduleNext();
-
-        window.addEventListener(
-            "beforeunload",
-            () => {
-                if (scheduled) {
-                    clearTimeout(scheduled);
-                }
-            }
-        );
-    })();
+    }
 
 
-    /* ---------------------------------------------------------
+    /* =====================================================
        INITIALIZE
-       --------------------------------------------------------- */
+    ===================================================== */
 
     buildCategories();
-    renderGames();
 
-})();
+    renderGames(
+        [...allGames]
+    );
+
+    renderHome();
+
+    updateCounts();
+
+});
+```
