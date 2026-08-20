@@ -1,288 +1,475 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>GamePlaza</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="icon" href="Normal.png" type="image/x-icon">
+    <title>GamePlaza</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"
-    rel="stylesheet"
-  >
+    <link rel="icon" href="../Normal.png" type="image/png">
+    <link rel="stylesheet" href="/GamePlaza/site/test.css">
 
-  <link rel="stylesheet" href="/GamePlaza/site/test.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"
+        rel="stylesheet"
+    >
 
-  <meta
-    property="og:title"
-    content="GamePlaza"
-  >
-  <meta
-    property="og:description"
-    content="A website created by a Staten Island middle schooler who wanted an easy way to find games that are unblocked, without any VPNs or proxies. It comes with a proxy, a favorites system, and over 60 games!"
-  >
-  <meta
-    property="og:image"
-    content="/GamePlaza/Normal.png"
-  >
-  <meta
-    name="theme-color"
-    content="#7B1FA2"
-  >
+    <meta property="og:title" content="GamePlaza">
+    <meta
+        property="og:description"
+        content="GamePlaza — an easy way to find games."
+    >
+    <meta property="og:image" content="../Normal.png">
+    <meta name="theme-color" content="#7B1FA2">
 </head>
 
 <body>
 
-  <canvas id="particles"></canvas>
+<canvas id="particles"></canvas>
 
-  <div id="main">
+<div id="main">
 
-    <h1>
-      <span class="magic">
-        <span class="magic-text">Welcome to GamePlaza</span>
-      </span>
-    </h1>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-badge">🎮 GAMEPLAZA</div>
 
-    <h2 class="update-heading">
-      <span class="magic">
-        <span class="magic-text">Summer Update</span>
-      </span>
+        <h1>
+            <span class="magic">
+                <span class="magic-text">Welcome to GamePlaza</span>
+            </span>
+        </h1>
 
-      <button
-        type="button"
-        class="update-badge"
-        id="update-trigger"
-      >
-        Update Notes
-      </button>
-    </h2>
+        <p class="hero-subtitle">
+            Your games. Your favorites. Your plaza.
+        </p>
 
-    <!-- Search -->
-    <div class="search-wrap">
-      <input
-        type="text"
-        id="game-search"
-        placeholder="🔍︎ Search games..."
-        autocomplete="off"
-        aria-label="Search games"
-      >
+        <div class="hero-actions">
+            <button class="primary-action" id="heroBrowse">
+                Browse Games
+            </button>
 
-      <button
-        type="button"
-        id="search-clear"
-        class="search-clear"
-        aria-label="Clear search"
-        hidden
-      >
-        ×
-      </button>
-    </div>
+            <button class="secondary-action" id="heroSurprise">
+                🎰 Surprise Me
+            </button>
+        </div>
+    </section>
 
-    <!-- Activity -->
-    <div
-      class="settings-section activity-section"
-      id="activity-section"
-    >
-      <h2>Your Activity</h2>
 
-      <p class="activity-counts">
-        ⭐ Favorites: <span id="favCount">0</span>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        ⏱ Recently Played: <span id="recentCount">0</span>
-      </p>
+    <!-- FEATURED -->
+    <section class="home-section featured-section">
 
-      <div class="chip-row activity-chips">
-        <button type="button" class="chip" id="chip-fav">
-          Favorites
-        </button>
+        <div class="section-heading">
+            <div>
+                <span class="section-kicker">⭐ FEATURED</span>
+                <h2>Game of the Day</h2>
+            </div>
+        </div>
 
-        <button type="button" class="chip" id="chip-recent">
-          History
-        </button>
+        <div class="featured-card" id="featured-card">
 
-        <button type="button" class="chip active" id="chip-all">
-          All
-        </button>
-      </div>
-    </div>
+            <div class="featured-content">
+                <span class="featured-label">TODAY'S PICK</span>
 
-    <!-- Pinned buttons -->
-    <div id="featured-container" class="button-container pinned-buttons">
+                <h2 id="featured-name">Loading...</h2>
 
-      <button type="button" onclick="window.location.href='requests.html'">
-        Feedback
-      </button>
+                <p id="featured-description">
+                    Today's featured game from the GamePlaza collection.
+                </p>
 
-      <button
-        type="button"
-        onclick="window.location.href='https://proxy-plaza.vercel.app'"
-      >
-        ProxyPlaza
-      </button>
+                <button id="featured-play">
+                    ▶ Play Game
+                </button>
+            </div>
 
-      <button
-        type="button"
-        onclick="window.location.href='settings.html'"
-      >
-        Settings
-      </button>
+            <div class="featured-decoration">
+                🎮
+            </div>
 
-      <button type="button" id="surprise-btn">
-        Surprise Me!
-      </button>
+        </div>
 
-      <button
-        type="button"
-        onclick="window.location.href='https://github.com/techmaster2013/GamePlaza'"
-      >
-        GitHub Repo
-      </button>
+    </section>
 
-    </div>
 
-    <!-- Categories -->
-    <div
-      class="chip-row category-row"
-      id="category-row"
-      aria-label="Game categories"
-    >
-      <!-- Populated by plaza.js -->
-    </div>
+    <!-- QUICK ACCESS -->
+    <section class="home-section">
 
-    <div id="loading">
-      Loading games...
-    </div>
+        <div class="section-heading">
+            <div>
+                <span class="section-kicker">⚡ QUICK ACCESS</span>
+                <h2>Your Plaza</h2>
+            </div>
+        </div>
 
-    <!-- Games are rendered here by plaza.js -->
-    <div
-      class="button-container game-grid"
-      id="game-grid"
-    ></div>
+        <div class="quick-grid">
 
-    <div
-      id="no-games"
-      hidden
-    >
-      No games found.
-    </div>
+            <button class="quick-card" id="homeRecent">
+                <span class="quick-icon">▶</span>
+                <span>
+                    <strong>Recently Played</strong>
+                    <small id="homeRecentCount">0 games</small>
+                </span>
+            </button>
 
-    <button
-      type="button"
-      id="backTop"
-      aria-label="Back to top"
-    >
-      ↑
+            <button class="quick-card" id="homeFavorites">
+                <span class="quick-icon">⭐</span>
+                <span>
+                    <strong>Favorites</strong>
+                    <small id="homeFavoriteCount">0 games</small>
+                </span>
+            </button>
+
+            <button class="quick-card" id="homeAll">
+                <span class="quick-icon">📚</span>
+                <span>
+                    <strong>All Games</strong>
+                    <small id="homeGameCount">0 games</small>
+                </span>
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- RECENTLY PLAYED -->
+    <section class="home-section">
+
+        <div class="section-heading">
+            <div>
+                <span class="section-kicker">▶ HISTORY</span>
+                <h2>Recently Played</h2>
+            </div>
+
+            <button class="section-link" id="viewHistory">
+                View All →
+            </button>
+        </div>
+
+        <div class="home-game-row" id="recent-games">
+
+            <div class="empty-state">
+                <span>⏱</span>
+                <strong>No recently played games yet.</strong>
+                <small>Games you play will appear here.</small>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- NEW GAMES -->
+    <section class="home-section">
+
+        <div class="section-heading">
+            <div>
+                <span class="section-kicker">🆕 NEW</span>
+                <h2>Recently Added</h2>
+            </div>
+        </div>
+
+        <div class="home-game-row" id="new-games"></div>
+
+    </section>
+
+
+    <!-- FAVORITES -->
+    <section class="home-section">
+
+        <div class="section-heading">
+            <div>
+                <span class="section-kicker">⭐ YOUR GAMES</span>
+                <h2>Your Favorites</h2>
+            </div>
+
+            <button class="section-link" id="viewFavorites">
+                View All →
+            </button>
+        </div>
+
+        <div class="home-game-row" id="favorite-games">
+
+            <div class="empty-state">
+                <span>☆</span>
+                <strong>No favorites yet.</strong>
+                <small>Press ☆ next to a game to add it here.</small>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SURPRISE -->
+    <section class="home-section lucky-section">
+
+        <div class="lucky-card">
+
+            <div>
+                <span class="section-kicker">🎰 FEELING LUCKY?</span>
+
+                <h2>Can't decide what to play?</h2>
+
+                <p>
+                    Let GamePlaza choose something for you.
+                </p>
+            </div>
+
+            <button id="luckyButton">
+                🎲 Surprise Me!
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- BROWSE -->
+    <section class="home-section browse-section" id="browse">
+
+        <div class="section-heading">
+            <div>
+                <span class="section-kicker">📚 GAME LIBRARY</span>
+                <h2>Browse GamePlaza</h2>
+
+                <p>
+                    Search through the entire GamePlaza library
+                    or browse by category.
+                </p>
+            </div>
+        </div>
+
+        <div class="search-wrap">
+
+            <input
+                type="text"
+                id="game-search"
+                placeholder="🔍 Search games..."
+                autocomplete="off"
+            >
+
+            <button
+                type="button"
+                id="search-clear"
+                class="search-clear"
+                aria-label="Clear search"
+                hidden
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="settings-section activity-section">
+
+            <h2>Your Activity</h2>
+
+            <p class="activity-counts">
+                ⭐ Favorites:
+                <span id="favCount">0</span>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+
+                ⏱ Recently Played:
+                <span id="recentCount">0</span>
+            </p>
+
+            <div class="chip-row">
+
+                <div class="chip" id="chip-fav">
+                    Favorites
+                </div>
+
+                <div class="chip" id="chip-recent">
+                    History
+                </div>
+
+                <div class="chip active" id="chip-all">
+                    All
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="button-container utility-buttons">
+
+            <button onclick="window.location.href='requests.html'">
+                Feedback
+            </button>
+
+            <button onclick="window.location.href='https://proxy-plaza.vercel.app'">
+                ProxyPlaza
+            </button>
+
+            <button onclick="window.location.href='settings.html'">
+                Settings
+            </button>
+
+            <button id="surprise-btn">
+                Surprise Me!
+            </button>
+
+            <button onclick="window.location.href='https://github.com/techmaster2013/GamePlaza'">
+                GitHub Repo
+            </button>
+
+        </div>
+
+
+        <div class="chip-row category-row" id="category-row"></div>
+
+        <div id="loading">
+            Loading games...
+        </div>
+
+        <div
+            class="button-container"
+            id="game-grid"
+        ></div>
+
+    </section>
+
+
+    <button id="backTop" aria-label="Back to top">
+        ↑
     </button>
 
+
     <footer>
-      <p>GamePlaza © 2026 — Built by h_z13</p>
+        <p>
+            GamePlaza © 2026 — Built by h_z13
+        </p>
+
+        <div class="footer-links">
+            <a href="requests.html">Feedback</a>
+            <a href="settings.html">Settings</a>
+            <a href="https://github.com/techmaster2013/GamePlaza">
+                GitHub
+            </a>
+        </div>
     </footer>
 
-  </div>
+</div>
 
-  <!-- Update modal -->
-  <div
+
+<!-- UPDATE MODAL -->
+<div
     class="modal-overlay"
     id="updateModal"
     aria-hidden="true"
-  >
+>
+
     <div
-      class="modal-content"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="updateModalTitle"
+        class="modal-content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="updateTitle"
     >
 
-      <div class="modal-header">
+        <div class="modal-header">
 
-        <h2 id="updateModalTitle">
-          Summer Update
-        </h2>
+            <div>
+                <span class="section-kicker">✨ UPDATE</span>
 
-        <button
-          type="button"
-          class="close-btn"
-          id="closeBtn"
-          aria-label="Close"
-        >
-          ×
-        </button>
+                <h2 id="updateTitle">
+                    Summer Update
+                </h2>
+            </div>
 
-      </div>
+            <button
+                class="close-btn"
+                id="closeBtn"
+                aria-label="Close"
+            >
+                ×
+            </button>
 
-      <div class="modal-body">
+        </div>
 
-        <h3>Update Notes</h3>
 
-        <p>
-          Give suggestions by pressing the feedback button —
-          lots of QOL updates expected this summer!
-        </p>
+        <div class="modal-body">
 
-        <h3>Features Added</h3>
+            <h3>Update Notes</h3>
 
-        <ul>
-          <li>Switched games and most JavaScript to external files</li>
-          <li>Added categories &amp; search improvements</li>
-          <li>Performance and accessibility improvements</li>
-          <li>UI overhaul</li>
-          <li>Your Activity section: favorites and game history</li>
-          <li>Favorites — press the star next to a game to favorite it</li>
-          <li>History — view games played on your device before</li>
-          <li>Renamed Update Requests to Feedback</li>
-          <li>Removed GSite GamePlaza due to irrelevancy</li>
-          <li>Added clear button in search</li>
-          <li>Fixed button centering and resizing</li>
-          <li>Added GitHub Repo button</li>
-          <li>Press Escape to close the update modal</li>
-          <li>Search bar and title occasionally change</li>
-          <li>Settings page streamlined and improved</li>
-        </ul>
+            <p>
+                Give suggestions by pressing the Feedback button —
+                lots of QOL updates expected this summer!
+            </p>
 
-        <h3>New Games</h3>
 
-        <ul>
-          <li>Granny</li>
-          <li>Angry Birds 2</li>
-          <li>Run 3</li>
-          <li>Revamped Minecraft, Zombs, and a few more</li>
-          <li>Fixed osu!</li>
-        </ul>
+            <h3>Features Added</h3>
 
-        <h3>Known Bugs</h3>
+            <ul>
+                <li>Switched games and most JavaScript to external files</li>
+                <li>Added categories and search improvements</li>
+                <li>Performance and accessibility improvements</li>
+                <li>UI overhaul</li>
+                <li>Your Activity section</li>
+                <li>Favorites system</li>
+                <li>Game history</li>
+                <li>Renamed Update Requests to Feedback</li>
+                <li>Removed GSite GamePlaza</li>
+                <li>Added clear button in search</li>
+                <li>Fixed button centering and resizing</li>
+                <li>Added GitHub Repo button</li>
+                <li>ESC now closes the update modal</li>
+                <li>Search bar and title can occasionally change</li>
+                <li>Settings page improvements</li>
+            </ul>
 
-        <ul>
-          <li>Categories were previously uncentered</li>
-          <li>Activity/category All buttons could become unselected</li>
-          <li>Favoriting could previously reset the current filter</li>
-          <li>Favicon may still be buggy on some browsers</li>
-        </ul>
 
-        <p>
-          <strong>Release Date:</strong>
-          August 11th, 2026
-        </p>
+            <h3>New Games</h3>
 
-      </div>
+            <ul>
+                <li>Granny</li>
+                <li>Angry Birds 2</li>
+                <li>Run 3</li>
+                <li>Revamped Minecraft</li>
+                <li>Revamped Zombs Royale</li>
+                <li>Fixed osu!</li>
+            </ul>
 
-      <div class="modal-footer">
 
-        <button
-          type="button"
-          id="dismissBtn"
-        >
-          Dismiss (Esc)
-        </button>
+            <h3>Known Bugs</h3>
 
-      </div>
+            <ul>
+                <li>Some categories may be uncentered</li>
+                <li>Some activity selection states may reset</li>
+                <li>Favoriting from filtered results can reset the view</li>
+                <li>Favicon may still be buggy in some browsers</li>
+            </ul>
+
+
+            <p class="release-date">
+                <strong>Release Date:</strong>
+                August 11th, 2026
+            </p>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button id="dismissBtn">
+                Dismiss (Esc)
+            </button>
+
+        </div>
 
     </div>
-  </div>
 
-  <script src="/GamePlaza/site/games.js"></script>
-  <script src="/GamePlaza/site/test.js"></script>
+</div>
+
+
+<script src="games.js"></script>
+<script src="test.js"></script>
 
 </body>
 </html>
+```
