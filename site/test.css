@@ -1,0 +1,907 @@
+:root {
+    --purple: rgb(123, 31, 162);
+    --violet: rgb(103, 58, 183);
+    --pink: rgb(244, 143, 177);
+
+    --background: #0d0619;
+    --panel: #190f26;
+    --panel-hover: #25163a;
+    --text: #f9f6ef;
+    --muted: #777;
+}
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background:
+        linear-gradient(
+            -45deg,
+            #1a0f2e,
+            #0f0820,
+            #1f1240,
+            #0d0619
+        );
+
+    background-size: 400% 400%;
+
+    animation:
+        gradientShift 15s ease infinite,
+        fadeIn 1s ease-out forwards;
+
+    margin: 0;
+    min-height: 100vh;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    user-select: none;
+
+    font-family: "Ubuntu", sans-serif;
+    color: var(--text);
+
+    opacity: 0;
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+#particles {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+#main {
+    width: 90vw;
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes background-pan {
+    from {
+        background-position: 0% center;
+    }
+
+    to {
+        background-position: -200% center;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes flash {
+    0% {
+        box-shadow: 0 0 0 var(--pink);
+    }
+
+    50% {
+        box-shadow: 0 0 20px var(--pink);
+    }
+
+    100% {
+        box-shadow: 0 0 0 var(--pink);
+    }
+}
+
+/* =========================================================
+   TITLES
+   ========================================================= */
+
+h1 {
+    color: white;
+
+    font-family: "Ubuntu", sans-serif;
+    font-size: clamp(2em, 2vw, 4em);
+    font-weight: 400;
+
+    margin: 0;
+
+    padding: 150px 0 40px;
+
+    text-align: center;
+}
+
+h1 .magic {
+    display: inline-block;
+    position: relative;
+}
+
+h1 .magic .magic-text,
+h2 .magic .magic-text {
+    background:
+        linear-gradient(
+            to right,
+            var(--purple),
+            var(--violet),
+            var(--pink),
+            var(--purple)
+        );
+
+    background-size: 200%;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+
+    white-space: nowrap;
+
+    animation: background-pan 3s linear infinite;
+}
+
+.update-heading {
+    text-align: center;
+    margin: 0 0 20px;
+}
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.search-wrap {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    max-width: 600px;
+
+    margin: 0 auto 20px;
+
+    position: relative;
+}
+
+#game-search {
+    flex: 1;
+
+    width: 100%;
+
+    padding: 12px 48px 12px 18px;
+
+    border-radius: 14px;
+
+    background: #0f0f0f;
+    color: #e5e5e5;
+
+    border: 1px solid #1f1f1f;
+
+    font-size: 15px;
+
+    box-shadow:
+        0 0 0 2px #1a1a1a;
+
+    transition: 0.25s ease;
+}
+
+#game-search:focus {
+    outline: none;
+
+    background: #151515;
+
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 0 12px rgba(59, 130, 246, 0.5);
+}
+
+#game-search::placeholder {
+    color: var(--muted);
+}
+
+.search-clear {
+    position: absolute;
+
+    right: 12px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    background: transparent;
+    border: none;
+
+    color: #888;
+
+    font-size: 24px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    padding: 2px 6px;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.search-clear:hover {
+    color: var(--pink);
+
+    transform:
+        translateY(-50%)
+        scale(1.1);
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.button-container {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 15px;
+
+    justify-content: center;
+
+    width: 100%;
+
+    margin: 0 auto;
+
+    padding: 20px;
+}
+
+.button-container button {
+    flex: 0 1 280px;
+
+    margin: 0;
+
+    padding: 18px 20px;
+
+    border: 2px solid var(--purple);
+    border-radius: 12px;
+
+    font-size: 16px;
+    font-weight: 500;
+
+    color: var(--text);
+
+    background: var(--panel);
+
+    text-align: center;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+        background 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.button-container button:hover {
+    transform: translateY(-4px);
+
+    background: var(--panel-hover);
+
+    border-color: var(--pink);
+
+    box-shadow:
+        0 0 15px rgba(123, 31, 162, 0.7),
+        0 0 30px rgba(244, 143, 177, 0.3);
+}
+
+.button-container button:active {
+    transform: scale(0.95);
+}
+
+.button-container button img {
+    width: 100%;
+    height: 120px;
+
+    object-fit: cover;
+
+    border-radius: 6px;
+
+    margin-bottom: 10px;
+
+    display: block;
+}
+
+/* =========================================================
+   PINNED BUTTONS
+   ========================================================= */
+
+#featured-container {
+    background-color: rgba(244, 143, 177, 0.1);
+
+    padding: 15px;
+
+    border-left: 4px solid var(--pink);
+
+    margin-bottom: 20px;
+}
+
+/* =========================================================
+   UPDATE BADGE
+   ========================================================= */
+
+.update-badge {
+    display: inline-block;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--purple),
+            var(--violet)
+        );
+
+    color: white;
+
+    padding: 8px 16px;
+
+    border: none;
+    border-radius: 20px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    margin-top: 10px;
+
+    box-shadow:
+        0 4px 15px rgba(123, 31, 162, 0.4);
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+.update-badge:hover {
+    transform: scale(1.05);
+
+    box-shadow:
+        0 6px 20px rgba(123, 31, 162, 0.6);
+}
+
+/* =========================================================
+   ACTIVITY
+   ========================================================= */
+
+.activity-section {
+    margin-top: 20px;
+    margin-bottom: 25px;
+
+    text-align: center;
+}
+
+.activity-section h2 {
+    margin-bottom: 10px;
+}
+
+.activity-counts {
+    color: #ccc;
+
+    margin-bottom: 12px;
+}
+
+.chip-row {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+    margin: 0 auto;
+}
+
+.chip,
+#chip-fav,
+#chip-recent,
+#chip-all {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 20px;
+
+    margin: 0;
+
+    background: var(--panel);
+
+    border: 2px solid var(--purple);
+    border-radius: 12px;
+
+    color: var(--text);
+
+    font-size: 15px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+        background 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.chip:hover,
+#chip-fav:hover,
+#chip-recent:hover,
+#chip-all:hover {
+    transform: translateY(-4px);
+
+    background: var(--panel-hover);
+
+    border-color: var(--pink);
+
+    box-shadow:
+        0 0 15px rgba(123, 31, 162, 0.7),
+        0 0 30px rgba(244, 143, 177, 0.3);
+}
+
+.chip:active,
+#chip-fav:active,
+#chip-recent:active,
+#chip-all:active {
+    transform: scale(0.95);
+}
+
+.chip.active,
+#chip-fav.active,
+#chip-recent.active,
+#chip-all.active {
+    background: var(--panel-hover);
+
+    border-color: var(--pink);
+
+    box-shadow:
+        0 0 15px rgba(123, 31, 162, 0.7),
+        0 0 30px rgba(244, 143, 177, 0.3);
+}
+
+/* =========================================================
+   GAME GRID
+   ========================================================= */
+
+.game-grid {
+    min-height: 100px;
+}
+
+.game-title {
+    width: 100%;
+}
+
+.game-star {
+    display: inline-block;
+
+    margin-left: 4px;
+
+    color: var(--pink);
+
+    font-size: 18px;
+}
+
+.game-star:hover {
+    transform: scale(1.15);
+}
+
+#no-games {
+    text-align: center;
+
+    color: #aaa;
+
+    font-size: 18px;
+
+    margin: 30px 0 50px;
+}
+
+#no-games[hidden] {
+    display: none;
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+#loading {
+    text-align: center;
+
+    font-size: 18px;
+
+    opacity: 0.7;
+
+    margin-top: 20px;
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.modal-overlay {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(0, 0, 0, 0.7);
+
+    z-index: 999;
+
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background:
+        linear-gradient(
+            135deg,
+            #242424 0%,
+            #1a1a1a 100%
+        );
+
+    border: 2px solid var(--pink);
+
+    border-radius: 15px;
+
+    padding: 40px;
+
+    max-width: 600px;
+    width: 100%;
+
+    box-shadow:
+        0 10px 40px rgba(244, 143, 177, 0.3);
+
+    animation: slideUp 0.4s ease;
+
+    max-height: 80vh;
+
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 20px;
+
+    border-bottom: 2px solid var(--pink);
+
+    padding-bottom: 15px;
+}
+
+.modal-header h2 {
+    margin: 0;
+
+    background:
+        linear-gradient(
+            to right,
+            var(--purple),
+            var(--violet),
+            var(--pink)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+
+    font-size: 28px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+
+    color: var(--pink);
+
+    font-size: 28px;
+
+    cursor: pointer;
+
+    transition: transform 0.2s ease;
+}
+
+.close-btn:hover {
+    transform: scale(1.2);
+}
+
+.modal-body {
+    color: var(--text);
+
+    line-height: 1.6;
+
+    font-size: 16px;
+}
+
+.modal-body h3 {
+    color: var(--pink);
+
+    margin-top: 15px;
+    margin-bottom: 8px;
+}
+
+.modal-body ul,
+.modal-body ol {
+    margin: 10px 0;
+
+    padding-left: 20px;
+}
+
+.modal-body li {
+    margin: 8px 0;
+}
+
+.modal-footer {
+    margin-top: 25px;
+
+    text-align: right;
+}
+
+.modal-footer button {
+    background:
+        linear-gradient(
+            135deg,
+            var(--purple),
+            var(--violet)
+        );
+
+    border: none;
+
+    color: white;
+
+    padding: 12px 30px;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    transition: all 0.3s ease;
+}
+
+.modal-footer button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 20px rgba(123, 31, 162, 0.4);
+}
+
+/* =========================================================
+   SURPRISE
+   ========================================================= */
+
+#surprise-btn.flash {
+    animation: flash 0.4s ease;
+}
+
+/* =========================================================
+   BACK TO TOP
+   ========================================================= */
+
+#backTop {
+    position: fixed;
+
+    bottom: 20px;
+    right: 20px;
+
+    background: var(--panel);
+
+    border: 2px solid var(--purple);
+
+    border-radius: 50%;
+
+    padding: 10px 14px;
+
+    color: var(--text);
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+    z-index: 20;
+}
+
+#backTop:hover {
+    background: var(--panel-hover);
+
+    border-color: var(--pink);
+
+    box-shadow:
+        0 0 15px rgba(123, 31, 162, 0.7);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+    text-align: center;
+
+    margin-top: 40px;
+
+    padding-bottom: 30px;
+
+    opacity: 0.8;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0d0619;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--purple);
+
+    border-radius: 10px;
+
+    border: 2px solid #0d0619;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--pink);
+}
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+
+.settings-section button {
+    background: var(--panel);
+
+    border: 2px solid var(--purple);
+
+    border-radius: 12px;
+
+    padding: 10px 18px;
+
+    color: var(--text);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    margin: 6px 6px 6px 0;
+
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.settings-section button:hover {
+    transform: translateY(-2px);
+
+    background: var(--panel-hover);
+
+    border-color: var(--pink);
+
+    box-shadow:
+        0 0 12px rgba(123, 31, 162, 0.7),
+        0 0 24px rgba(244, 143, 177, 0.3);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 25px;
+        margin: 20px;
+    }
+
+    .modal-header h2 {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        padding-top: 100px;
+    }
+
+    .modal-content {
+        padding: 20px;
+    }
+
+    .update-badge {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .button-container button {
+        flex: 1 1 100%;
+    }
+
+    .chip {
+        flex: 0 1 auto;
+    }
+}
