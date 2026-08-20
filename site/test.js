@@ -75,7 +75,7 @@
 
     /* Short blue scroll trail */
     const trail=document.createElement("div");trail.className="scroll-trail";document.body.appendChild(trail);let trailTimer;
-    const updateTrail=()=>{const documentHeight=document.documentElement.scrollHeight-innerHeight;const progress=documentHeight>0?scrollY/documentHeight:0;const thumbHeight=Math.max(56,innerHeight*(innerHeight/document.documentElement.scrollHeight));trail.style.height=`${thumbHeight}px`;trail.style.top=`${progress*Math.max(0,innerHeight-thumbHeight)}px`;};
+    const updateTrail=()=>{const documentHeight=document.documentElement.scrollHeight-innerHeight;const progress=documentHeight>0?scrollY/documentHeight:0;const thumbHeight=Math.max(74,innerHeight*(innerHeight/document.documentElement.scrollHeight));trail.style.height=`${thumbHeight}px`;trail.style.top=`${progress*Math.max(0,innerHeight-thumbHeight)}px`;};
     addEventListener("scroll",()=>{updateTrail();trail.classList.add("scrolling");clearTimeout(trailTimer);trailTimer=setTimeout(()=>trail.classList.remove("scrolling"),260);},{passive:true});
     addEventListener("resize",updateTrail,{passive:true});updateTrail();
 
