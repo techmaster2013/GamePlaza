@@ -15,7 +15,6 @@
 </head>
 <body>
   <canvas id="particles" aria-hidden="true"></canvas>
-
   <main id="main">
     <section class="hero">
       <div class="hero-badge">🎮 GAMEPLAZA</div>
@@ -71,12 +70,10 @@
 
     <section class="home-section browse-section" id="browse">
       <div class="section-heading"><div><span class="section-kicker">📚 GAME LIBRARY</span><h2>Browse GamePlaza</h2><p>Search the library, filter by activity, or browse by category.</p></div></div>
-
       <div class="search-wrap">
         <input id="game-search" type="search" placeholder="🔍 Search games..." autocomplete="off" spellcheck="false">
         <button id="search-clear" class="search-clear" type="button" aria-label="Clear search" hidden>×</button>
       </div>
-
       <div class="activity-section">
         <h2>Your Activity</h2>
         <p class="activity-counts">⭐ Favorites: <span id="favCount">0</span> &nbsp;&nbsp; ⏱ Recently Played: <span id="recentCount">0</span></p>
@@ -86,32 +83,27 @@
           <button class="chip active" id="chip-all" type="button">All</button>
         </div>
       </div>
-
       <div class="chip-row category-row" id="category-row"></div>
       <div id="loading" class="loading">Loading games...</div>
       <div class="button-container" id="game-grid"></div>
     </section>
 
     <button id="backTop" aria-label="Back to top" type="button">↑</button>
-
     <footer>
       <p>GamePlaza © 2026 — Built by h_z13</p>
       <div class="footer-links"><a href="requests.html">Feedback</a><a href="settings.html">Settings</a><a href="https://github.com/techmaster2013/GamePlaza">GitHub</a></div>
     </footer>
   </main>
 
-  <!-- Imported from index.html; index.html itself was not edited. -->
-  <div class="modal-overlay" id="updateModal" aria-hidden="true">
-    <div class="modal-content">
+  <div class="modal-overlay" id="updateModal" aria-hidden="true" hidden>
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="updateTitle" tabindex="-1">
       <div class="modal-header">
-        <h2>Summer Update</h2>
-        <button class="close-btn" id="closeBtn" aria-label="Close" type="button">×</button>
+        <div><span class="section-kicker">✨ UPDATE</span><h2 id="updateTitle">Summer Update</h2></div>
+        <button class="close-btn" id="closeBtn" type="button" aria-label="Close">×</button>
       </div>
-
       <div class="modal-body">
         <h3>Update Notes</h3>
         <p>give suggestions by pressing the feedback button — lots of QOL updates expected this summer!</p>
-
         <h3>Features Added</h3>
         <ul>
           <li>Switched games and most javascript to external file</li>
@@ -130,7 +122,6 @@
           <li>search bar and title will occasionally change</li>
           <li>settings page is more steamlined and looks bette</li>
         </ul>
-
         <h3>New Games</h3>
         <ul>
           <li>Granny</li>
@@ -139,7 +130,6 @@
           <li>Revamped Minecraft, Zombs, and a few more</li>
           <li>fixed osu!</li>
         </ul>
-
         <h3>Known Bugs</h3>
         <ul>
           <li>Categorries are uncentered</li>
@@ -147,17 +137,45 @@
           <li>when favoriting a game while in search results or a category, rresets the current area (sorry for bad explanation)</li>
           <li>favicon is bugged</li>
         </ul>
-
         <p><strong>Release Date:</strong> August 11th, 2026</p>
       </div>
-
-      <div class="modal-footer">
-        <button id="dismissBtn" type="button">Dismiss (esc)</button>
-      </div>
+      <div class="modal-footer"><button id="dismissBtn" type="button">Dismiss (esc)</button></div>
     </div>
   </div>
 
   <script src="games.js"></script>
   <script src="test.js"></script>
+  <script>
+    // Hard fallback for the update modal: keeps it working even if another
+    // homepage feature throws an unrelated JavaScript error.
+    (() => {
+      const modal = document.getElementById('updateModal');
+      const trigger = document.getElementById('update-trigger');
+      const close = document.getElementById('closeBtn');
+      const dismiss = document.getElementById('dismissBtn');
+      if (!modal || !trigger) return;
+
+      const open = () => {
+        modal.hidden = false;
+        modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      };
+      const shut = () => {
+        modal.classList.remove('active');
+        modal.hidden = true;
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      };
+
+      trigger.onclick = open;
+      if (close) close.onclick = shut;
+      if (dismiss) dismiss.onclick = shut;
+      modal.onclick = (event) => { if (event.target === modal) shut(); };
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.hidden) shut();
+      });
+    })();
+  </script>
 </body>
 </html>
