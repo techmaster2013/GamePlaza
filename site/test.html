@@ -100,26 +100,60 @@
     </footer>
   </main>
 
-  <div class="modal-overlay" id="updateModal" aria-hidden="true" hidden>
-    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="updateTitle" tabindex="-1">
+  <!-- Imported from index.html; index.html itself was not edited. -->
+  <div class="modal-overlay" id="updateModal" aria-hidden="true">
+    <div class="modal-content">
       <div class="modal-header">
-        <div><span class="section-kicker">✨ UPDATE</span><h2 id="updateTitle">Summer Update</h2></div>
-        <button class="close-btn" id="closeBtn" type="button" aria-label="Close">×</button>
+        <h2>Summer Update</h2>
+        <button class="close-btn" id="closeBtn" aria-label="Close" type="button">×</button>
       </div>
+
       <div class="modal-body">
         <h3>Update Notes</h3>
-        <p>Give suggestions with the Feedback link — lots of QOL updates are planned for GamePlaza.</p>
+        <p>give suggestions by pressing the feedback button — lots of QOL updates expected this summer!</p>
+
         <h3>Features Added</h3>
         <ul>
-          <li>External games and JavaScript files</li><li>Categories and improved search</li><li>Performance and accessibility improvements</li><li>Homepage UI overhaul</li><li>Your Activity section</li><li>Favorites and game history</li><li>Feedback rename</li><li>Search clear button</li><li>Improved button sizing</li><li>GitHub link</li><li>ESC and backdrop close the modal</li><li>Settings page improvements</li>
+          <li>Switched games and most javascript to external file</li>
+          <li>Added categories &amp; search improvements</li>
+          <li>Performance and accessibility improvements</li>
+          <li>UI overhaul</li>
+          <li>Your activity section: view your favorites and your game history</li>
+          <li>Favorites - Press the star next to a button to favorite it.</li>
+          <li>History - View games that were played on your device before.</li>
+          <li>renamed update requests to feedback</li>
+          <li>removed GSite GamePlaza due to irrelevancy</li>
+          <li>Added clear button in search</li>
+          <li>fixed button centering and resizing</li>
+          <li>added github repo button</li>
+          <li>you can now press esc to leave the update modal</li>
+          <li>search bar and title will occasionally change</li>
+          <li>settings page is more steamlined and looks bette</li>
         </ul>
+
         <h3>New Games</h3>
-        <ul><li>Granny</li><li>Angry Birds 2</li><li>Run 3</li><li>Revamped Minecraft</li><li>Revamped Zombs Royale</li><li>Fixed osu!</li></ul>
+        <ul>
+          <li>Granny</li>
+          <li>Angry Birds 2</li>
+          <li>Run 3</li>
+          <li>Revamped Minecraft, Zombs, and a few more</li>
+          <li>fixed osu!</li>
+        </ul>
+
         <h3>Known Bugs</h3>
-        <ul><li>Some older game links may behave differently on GitHub Pages</li></ul>
-        <p class="release-date"><strong>Release Date:</strong> August 11th, 2026</p>
+        <ul>
+          <li>Categorries are uncentered</li>
+          <li>"All" button in Your Activity and categories comes unselected</li>
+          <li>when favoriting a game while in search results or a category, rresets the current area (sorry for bad explanation)</li>
+          <li>favicon is bugged</li>
+        </ul>
+
+        <p><strong>Release Date:</strong> August 11th, 2026</p>
       </div>
-      <div class="modal-footer"><button id="dismissBtn" type="button">Dismiss (Esc)</button></div>
+
+      <div class="modal-footer">
+        <button id="dismissBtn" type="button">Dismiss (esc)</button>
+      </div>
     </div>
   </div>
 
