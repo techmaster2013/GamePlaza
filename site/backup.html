@@ -1,160 +1,143 @@
+<!DOCTYPE html>
 <html lang="en"><head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="GamePlaza — a small curated games portal. Browse, filter, and launch games.">
+  <meta charset="UTF-8">
   <title>GamePlaza</title>
-  <link rel="icon" href="/GamePlaza/site/Normal.png" type="image/png">
-  <link rel="stylesheet" href="/GamePlaza/plaza.css">
-  <!-- Google Fonts -->
+
+  <!-- Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&amp;display=swap" rel="stylesheet"><style>#game-search {
-  width: 300px;
-  padding: 12px 16px;
-  border-radius: 10px;
-  border: 2px solid rgba(255,255,255,0.15);
-  background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(6px);
-  color: white;
-  margin: 20px auto;
-  display: block;
-  font-size: 16px;
-}
-.footer {
-  text-align: center;
-  padding: 20px;
-  color: rgba(255,255,255,0.6);
-  font-size: 14px;
-  margin-top: 40px;
-}
-</style>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="/GamePlaza/plaza.css">
+
+  <meta property="og:title" content="GamePlaza">
+  <meta property="og:description" content="A website created by a Staten Island middle schooler who wanted an easy way to find games that are unblocked, without any VPNs or proxies. It comes with a proxy, a favorites system, and over 60 games!">
+  <meta property="og:image" content="/GamePlaza/Normal.png">
+  <meta name="theme-color" content="#7B1FA2">
 </head>
 <body>
-  <h1>
-    <span class="magic">
-      <span class="magic-text">Welcome to GamePlaza</span>
-    </span>
-  </h1>
+  <!-- particles -->
+  <canvas id="particles" width="252" height="782"></canvas>
 
-  <h2>
-    <span class="magic">
-      <span class="magic-text">Summer 2026</span>
-      <div class="update-badge" id="update-trigger">Update Notes</div>
-    </span>
-  </h2>
+  <div id="main">
 
-  <!-- Update Modal -->
+    <h1>
+      <span class="magic">
+        <span class="magic-text">Welcome to GamePlaza</span>
+      </span>
+    </h1>
+
+    <h2>
+      <span class="magic">
+        <span class="magic-text">Summer Update</span>
+        <div class="update-badge" id="update-trigger">Update Notes</div>
+      </span>
+    </h2>
+
+    <!-- Search box -->
+    <div class="search-wrap">
+  <input type="text" id="game-search" placeholder="🔍︎ Search games..." autocomplete="off">
+
+  <button type="button" id="search-clear" class="search-clear" style="display: block !important; visibility: visible !important; opacity: 1 !important;" hidden="">
+  ×
+</button>
+</div>
+
+    <!-- your activity -->
+    <div class="settings-section" style="margin-top:20px; margin-bottom:25px;">
+      <h2>Your Activity</h2>
+      <p style="color:#ccc; margin-bottom:12px;">
+        ⭐ Favorites: <span id="favCount">0</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        ⏱ Recently Played: <span id="recentCount">0</span>
+      </p>
+      <div class="chip-row">
+        <div class="chip" id="chip-fav">Favorites</div>
+        <div class="chip" id="chip-recent">History</div>
+        <div class="chip" id="chip-all">All</div>
+      </div>
+    </div>
+
+    <!-- pinned buttons -->
+    <div id="featured-container" class="button-container">
+      <button onclick="window.location.href='requests.html'">Feedback</button>
+      <button onclick="window.location.href='https://proxy-plaza.vercel.app'">ProxyPlaza</button>
+      <button onclick="window.location.href='settings.html'">Settings</button>
+      <button id="surprise-btn">Surprise Me!</button>
+      <button onclick="window.location.href='https://github.com/techmaster2013/GamePlaza'">GitHub Repo</button>
+    </div>
+
+    <div class="chip-row" id="category-row"><div class="chip active">All</div><div class="chip">horror</div><div class="chip">arcade</div><div class="chip">sports</div><div class="chip">simulation</div><div class="chip">io</div><div class="chip">puzzle</div><div class="chip">action</div><div class="chip">rhythm</div><div class="chip">adventure</div><div class="chip">misc</div></div>
+
+    <div id="loading" style="display: none;">Loading games...</div>
+    <div class="button-container" id="game-grid"><button><div class="game-title">Adventures with Anxiety ☆</div></button><button><div class="game-title">Angry Birds 2 ☆</div></button><button><div class="game-title">Baldi's Basics Classic Remastered ☆</div></button><button><div class="game-title">Basketball Stars ☆</div></button><button><div class="game-title">Bee Swarm Simulator ☆</div></button><button><div class="game-title">Bendy and the Ink Machine ☆</div></button><button><div class="game-title">BERGENTRUCK_201X ☆</div></button><button><div class="game-title">Block Blast ☆</div></button><button><div class="game-title">Brawl Stars ☆</div></button><button><div class="game-title">Brotato ☆</div></button><button><div class="game-title">Buckshot Roulette ☆</div></button><button><div class="game-title">Bugswim ☆</div></button><button><div class="game-title">Chess ☆</div></button><button><div class="game-title">Chrome Music Lab ☆</div></button><button><div class="game-title">Clash Royale ☆</div></button><button><div class="game-title">Cookie Clicker ☆</div></button><button><div class="game-title">Crazy Cattle 3D ☆</div></button><button><div class="game-title">Cuphead ☆</div></button><button><div class="game-title">DDLC+ ☆</div></button><button><div class="game-title">Dino Game ☆</div></button><button><div class="game-title">Drift Boss ☆</div></button><button><div class="game-title">Eggfish ☆</div></button><button><div class="game-title">eParkour ☆</div></button><button><div class="game-title">Escape Road 3 ☆</div></button><button><div class="game-title">FNF ☆</div></button><button><div class="game-title">Fortnite ☆</div></button><button><div class="game-title">Geometry Dash ☆</div></button><button><div class="game-title">Google Baseball Game ☆</div></button><button><div class="game-title">Granny ☆</div></button><button><div class="game-title">Hollow Knight ☆</div></button><button><div class="game-title">KART BROS! ☆</div></button><button><div class="game-title">Kindergarten 3 ☆</div></button><button><div class="game-title">Learn to Fly ☆</div></button><button><div class="game-title">Mahjong ☆</div></button><button><div class="game-title">Mario Kart ☆</div></button><button><div class="game-title">Minecraft ☆</div></button><button><div class="game-title">Moo Moo ☆</div></button><button><div class="game-title">My Femboy Roommate ☆</div></button><button><div class="game-title">My Singing Monsters ☆</div></button><button><div class="game-title">New York Times Games ☆</div></button><button><div class="game-title">Nut Simulator ☆</div></button><button><div class="game-title">Oneshot ☆</div></button><button><div class="game-title">Online Racing Game ☆</div></button><button><div class="game-title">Oregon Trail ☆</div></button><button><div class="game-title">osu! ☆</div></button><button><div class="game-title">Pac-Man ☆</div></button><button><div class="game-title">Papa's Freezeria ☆</div></button><button><div class="game-title">People Playground ☆</div></button><button><div class="game-title">Poki ☆</div></button><button><div class="game-title">Portal Remake ☆</div></button><button><div class="game-title">R.E.P.O. ☆</div></button><button><div class="game-title">Red Ball 4 ☆</div></button><button><div class="game-title">Rocket League ☆</div></button><button><div class="game-title">Run 3 ☆</div></button><button><div class="game-title">SAB ☆</div></button><button><div class="game-title">slither.io ☆</div></button><button><div class="game-title">Slope Game ☆</div></button><button><div class="game-title">Snake Game ☆</div></button><button><div class="game-title">Stickman Hook ☆</div></button><button><div class="game-title">Superhot ☆</div></button><button><div class="game-title">T9 OS ☆</div></button><button><div class="game-title">Tetris ☆</div></button><button><div class="game-title">That's Not my Neighbor ☆</div></button><button><div class="game-title">Ultrakill ☆</div></button><button><div class="game-title">Undertale Yellow ☆</div></button><button><div class="game-title">Zombs Royale ☆</div></button></div>
+
+    <button id="backTop">↑</button>
+
+    <footer style="text-align:center; margin-top:40px; opacity:0.8;">
+      <p>GamePlaza © 2026 — Built by h_z13</p>
+    </footer>
+  </div> <!-- END OF #main -->
+
+  <!-- Modal outside #main so it overlays everything -->
   <div class="modal-overlay" id="updateModal">
     <div class="modal-content">
       <div class="modal-header">
         <h2>Summer Update</h2>
         <button class="close-btn" id="closeBtn" aria-label="Close">×</button>
       </div>
+
       <div class="modal-body">
         <h3>Update Notes</h3>
-        <p>Give suggestions in the Update Requests button — lots of QOL updates expected this summer!</p>
-        
+        <p>give suggestions by pressing the feedback button — lots of QOL updates expected this summer!</p>
+
         <h3>Features Added</h3>
         <ul>
-          <li>Switched games to external file</li>
+          <li>Switched games and most javascript to external file</li>
           <li>Added categories &amp; search improvements</li>
           <li>Performance and accessibility improvements</li>
+          <li>UI overhaul</li>
+          <li>Your activity section: view your favorites and your game history</li>
+          <li>Favorites - Press the star next to a button to favorite it.</li>
+          <li>History - View games that were played on your device before.</li>
+          <li>renamed update requests to feedback</li>
+          <li>removed GSite GamePlaza due to irrelevancy</li>
+          <li>Added clear button in search</li>
+          <li>fixed button centering and resizing</li>
+          <li>added github repo button</li>
+          <li>you can now press esc to leave the update modal</li>
+          <li>search bar and title will occasionally change</li>
+          <li>settings page is more steamlined and looks bette</li>
         </ul>
 
         <h3>New Games</h3>
         <ul>
-        <li>Granny</li>
-        <li>Angry Birds 2</li>
+          <li>Granny</li>
+          <li>Angry Birds 2</li>
+          <li>Run 3</li>
+          <li>Revamped Minecraft, Zombs, and a few more</li>
+          <li>fixed osu!</li>
         </ul>
-        <p><strong>Release Date:</strong> July 7th, 2026</p>
+
+        <h3>Known Bugs</h3>
+        <ul>
+          <li>Categorries are uncentered</li>
+          <li>"All" button in Your Activity and categories comes unselected</li>
+          <li>when favoriting a game while in search results or a category, rresets the current area (sorry for bad explanation)</li>
+          <li>favicon is bugged</li>
+
+        <p><strong>Release Date:</strong> August 11th, 2026</p>
       </div>
+
       <div class="modal-footer">
-        <button id="dismissBtn" type="button">Dismiss</button>
+        <button id="dismissBtn" type="button">Dismiss (esc)</button>
       </div>
     </div>
   </div>
 
-  <!-- Search bar -->
-  <!-- SEARCH BAR -->
-<input type="text" id="game-search" placeholder="Search games...">
+  <script src="/GamePlaza/site/games.js"></script>
+  <script src="/GamePlaza/site/plaza.js"></script>
 
-  
-
-  <!-- Category chips -->
-  <div id="category-bar" class="category-bar" role="navigation" aria-label="Categories"><button class="category-chip active">All</button><button class="category-chip">Action</button><button class="category-chip">Arcade</button><button class="category-chip">Puzzle</button><button class="category-chip">Sim</button><button class="category-chip">Adventure</button><button class="category-chip">Horror</button><button class="category-chip">Rhythm</button><button class="category-chip">Sports</button><button class="category-chip">IO Games</button><button class="category-chip">Misc</button></div>
-
-  <!-- Featured Games Section -->
-  <div id="featured-container" class="button-container"><button>GSite GamePlaza</button><button>Update Requests</button><button>ProxyPlaza</button><button>Settings</button><button id="surprise-btn">Surprise Me!</button></div>
-
-  <!-- All Games Section -->
-  <div class="button-container" id="button-container"><button data-category="horror">Adventures with Anxiety</button><button data-category="arcade">Angry Birds 2</button><button data-category="horror">Baldi's Basics Classic Remastered</button><button data-category="sports">Basketball Stars</button><button data-category="simulation">Bee Swarm Simulator</button><button data-category="horror">Bendy and the Ink Machine</button><button data-category="io">BERGENTRUCK_201X</button><button data-category="puzzle">Block Blast</button><button data-category="simulation">Brawl Stars</button><button data-category="action">Brotato</button><button data-category="horror">Buckshot Roulette</button><button data-category="arcade">Bugswim</button><button data-category="puzzle">Chess</button><button data-category="rhythm">Chrome Music Lab</button><button data-category="action">Clash Royale</button><button data-category="simulation">Cookie Clicker</button><button data-category="io">Crazy Cattle 3D</button><button data-category="io">Cuphead</button><button data-category="io">DDLC+</button><button data-category="action">Dino Game</button><button data-category="sports">Drift Boss</button><button data-category="horror">Eggfish</button><button data-category="io">eParkour</button><button data-category="sports">Escape Road 3</button><button data-category="rhythm">FNF</button><button data-category="action">Fortnite</button><button data-category="action">Geometry Dash</button><button data-category="sports">Google Baseball Game</button><button data-category="horror">Granny</button><button data-category="io">Hollow Knight</button><button data-category="sports">KART BROS!</button><button data-category="horror">Kindergarten 3</button><button data-category="adventure">Learn to Fly</button><button data-category="puzzle">Mahjong</button><button data-category="sports">Mario Kart</button><button data-category="adventure">Minecraft</button><button data-category="simulation">Moo Moo</button><button data-category="simulation">My Femboy Roommate</button><button data-category="simulation">My Singing Monsters</button><button data-category="puzzle">New York Times Games</button><button data-category="simulation">Nut Simulator</button><button data-category="adventure">Oneshot</button><button data-category="sports">Online Racing Game</button><button data-category="simulation">Oregon Trail</button><button data-category="rhythm">osu!</button><button data-category="action">Pac-Man</button><button data-category="simulation">Papa's Freezeria</button><button data-category="horror">People Playground</button><button data-category="arcade">Poki</button><button data-category="adventure">Portal Remake</button><button data-category="horror">R.E.P.O.</button><button data-category="sports">Red Ball 4</button><button data-category="io">Rocket League</button><button data-category="adventure">SAB</button><button data-category="io">slither.io</button><button data-category="arcade">Slope Game</button><button data-category="arcade">Snake Game</button><button data-category="action">Stickman Hook</button><button data-category="io">Superhot</button><button data-category="misc">T9 OS</button><button data-category="puzzle">Tetris</button><button data-category="horror">That's Not my Neighbor</button><button data-category="io">Ultrakill</button><button data-category="horror">Undertale Yellow</button><button data-category="io">Zombs Royale</button></div>
-
-  <!-- Footer -->
-  <footer style="margin-top: 28px; color: var(--muted)">
-    <a href="https://github.com/xxpwnxxx420lord" target="_blank" rel="noopener noreferrer">Original by Syntaxical</a>
-  </footer>
-
-  <!-- Decorative canvas -->
-  <canvas id="bg-canvas" aria-hidden="true" style="position: fixed; inset: 0; z-index: -1; pointer-events: none;"></canvas>
-
-  <!-- Data & renderer -->
-  <script defer="" src="/GamePlaza/site/games.js"></script>
-  <script defer="" src="/GamePlaza/site/plaza.js"></script>
-  <script>
-    // Wait for DOM to be ready
-    document.addEventListener('DOMContentLoaded', () => {
-      // Update Modal Logic
-      const updateModal = document.getElementById("updateModal");
-      const updateTrigger = document.getElementById("update-trigger");
-      const closeBtn = document.getElementById("closeBtn");
-      const dismissBtn = document.getElementById("dismissBtn");
-
-      function closeModal() {
-        updateModal.classList.add("modal-hidden");
-      }
-
-      function openModal() {
-        updateModal.classList.remove("modal-hidden");
-      }
-
-      if (closeBtn) closeBtn.addEventListener("click", closeModal);
-      if (dismissBtn) dismissBtn.addEventListener("click", closeModal);
-      if (updateTrigger) updateTrigger.addEventListener("click", openModal);
-
-      // Close modal when clicking outside
-      if (updateModal) {
-        updateModal.addEventListener("click", (e) => {
-          if (e.target === updateModal) {
-            closeModal();
-          }
-        });
-      }
-
-      // Escape key to close
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeModal();
-      });
-
-      // Preserve site settings safely
-      try {
-        const savedTitle = localStorage.getItem('setting_cloakTitleInput') || localStorage.getItem('gameplaza_custom_title') || localStorage.getItem('gameplaza_cloak_title');
-        const savedIcon = localStorage.getItem('setting_cloakIconInput') || localStorage.getItem('gameplaza_custom_icon') || localStorage.getItem('gameplaza_cloak_icon');
-        if (savedTitle) document.title = String(savedTitle).slice(0, 200);
-        if (savedIcon) {
-          try {
-            const url = new URL(savedIcon, location.href);
-            if (['http:', 'https:', 'data:'].includes(url.protocol)) {
-              let link = document.querySelector("link[rel~='icon']");
-              if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
-              link.href = url.href;
-            }
-          } catch (e) { /* ignore invalid icon */ }
-        }
-      } catch (e) { console.warn('Error applying saved settings', e); }
-    });
-  </script>
-<footer class="footer">
-  © 2026 GamePlaza — All Rights Reserved
-</footer>
 
 </body></html>
