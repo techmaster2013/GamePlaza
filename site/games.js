@@ -67,11 +67,11 @@ const games = [
   { label: "Granny", url: "/granny/index.html" },
   { label: "Angry Birds 2", url: "/angry/index.html" },
   { label: "Run 3", url: "/GamePlaza/games/run3.html" },
+  { label: "Roblox", url: "/GamePlaza/games/rblx.html" },
 ];
 
 // Non-game site links (nav/utility) - kept separate, not part of the searchable game grid
 const siteLinks = [
-  { label: "GSite GamePlaza", url: "https://sites.google.com/nycstudents.net/gameplaza" },
   { label: "Update Requests", url: "https://docs.google.com/forms/d/e/1FAIpQLSdltdDYawD5naUl7gZbAJuKv4u13vMXt-XDTlmUP4LdpS7yAQ/viewform" },
   { label: "ProxyPlaza", url: "https://proxy-plaza.vercel.app/" },
   { label: "Settings", url: "/GamePlaza/site/settings.html" },
