@@ -34,55 +34,54 @@
   <canvas id="particles" aria-hidden="true"></canvas>
   <main id="main">
     <section class="hero">
-      <div class="hero-badge">🎮 GAMEPLAZA</div>
+      <div class="hero-badge">GamePlaza</div>
       <h1><span class="magic-text">Welcome to GamePlaza</span></h1>
-      <p class="hero-subtitle">Your games. Your favorites. Your plaza.</p>
       <div class="hero-actions">
         <button class="primary-action" id="heroBrowse" type="button">Browse Games</button>
-        <button class="secondary-action" id="heroSurprise" type="button">🎰 Surprise Me</button>
-        <button class="secondary-action" id="update-trigger" type="button">✨ What's New</button>
+        <button class="secondary-action" id="heroSurprise" type="button">Surprise Me!</button>
+        <button class="secondary-action" id="update-trigger" type="button">What's New</button>
       </div>
     </section>
 
     <section class="home-section">
-      <div class="section-heading"><div><span class="section-kicker">⭐ FEATURED</span><h2>Game of the Day</h2></div></div>
+      <div class="section-heading"><div><span class="section-kicker">Featured</span><h2>Game of the Day</h2></div></div>
       <div class="featured-card">
         <div class="featured-content">
-          <span class="featured-label">TODAY'S PICK</span>
+          <span class="featured-label">Today's Featured Pick</span>
           <h2 id="featured-name">Loading...</h2>
-          <p id="featured-description">Today's featured game from the GamePlaza collection.</p>
-          <button id="featured-play" type="button">▶ Play Game</button>
+          <p id="featured-description">Today's featured game. Changes daily.</p>
+          <button id="featured-play" type="button">▷|| Play Game</button>
         </div>
-        <div class="featured-decoration" aria-hidden="true">🎮</div>
+        <div class="featured-decoration" aria-hidden="true">👾</div>
       </div>
     </section>
 
     <section class="home-section">
-      <div class="section-heading"><div><span class="section-kicker">⚡ QUICK ACCESS</span><h2>Your Plaza</h2></div></div>
+      <div class="section-heading"><div><span class="section-kicker"></span><h2>SavePlaza</h2></div></div>
       <div class="quick-grid">
-        <button class="quick-card" id="homeRecent" type="button"><span class="quick-icon">▶</span><span><strong>Recently Played</strong><small id="homeRecentCount">0 games</small></span></button>
-        <button class="quick-card" id="homeFavorites" type="button"><span class="quick-icon">⭐</span><span><strong>Favorites</strong><small id="homeFavoriteCount">0 games</small></span></button>
+        <button class="quick-card" id="homeRecent" type="button"><span class="quick-icon">▷||</span><span><strong>Recently Played</strong><small id="homeRecentCount">0 games</small></span></button>
+        <button class="quick-card" id="homeFavorites" type="button"><span class="quick-icon">☆</span><span><strong>Favorites</strong><small id="homeFavoriteCount">0 games</small></span></button>
         <button class="quick-card" id="homeAll" type="button"><span class="quick-icon">📚</span><span><strong>All Games</strong><small id="homeGameCount">0 games</small></span></button>
       </div>
     </section>
 
     <section class="home-section">
-      <div class="section-heading"><div><span class="section-kicker">▶ HISTORY</span><h2>Recently Played</h2></div><button class="section-link" id="viewHistory" type="button">View All →</button></div>
+      <div class="section-heading"><div><span class="section-kicker">Game History</span><h2>Recently Played</h2></div><button class="section-link" id="viewHistory" type="button">View All →</button></div>
       <div class="home-game-row" id="recent-games"></div>
     </section>
 
     <section class="home-section">
-      <div class="section-heading"><div><span class="section-kicker">🆕 NEW</span><h2>Recently Added</h2></div></div>
+      <div class="section-heading"><div><span class="section-kicker">New games</span><h2>Recently Added</h2></div></div>
       <div class="home-game-row" id="new-games"></div>
     </section>
 
     <section class="home-section">
-      <div class="section-heading"><div><span class="section-kicker">⭐ YOUR GAMES</span><h2>Your Favorites</h2></div><button class="section-link" id="viewFavorites" type="button">View All →</button></div>
+      <div class="section-heading"><div><span class="section-kicker">faved games</span><h2>Your Favorites</h2></div><button class="section-link" id="viewFavorites" type="button">View All →</button></div>
       <div class="home-game-row" id="favorite-games"></div>
     </section>
 
     <section class="home-section">
-      <div class="lucky-card"><div><span class="section-kicker">🎰 FEELING LUCKY?</span><h2>Can't decide what to play?</h2><p>Let GamePlaza choose something for you.</p></div><button id="luckyButton" type="button">I'm feeling lucky</button></div>
+      <div class="lucky-card"><div><span class="section-kicker">gambling machine</span><h2>Can't decide what to play?</h2><p>Let GamePlaza choose something for you.</p></div><button id="luckyButton" type="button">Surprise Me!</button></div>
     </section>
 
     <section class="home-section browse-section" id="browse">
@@ -116,7 +115,7 @@
     <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="updateTitle" aria-describedby="updateDescription" tabindex="-1">
       <div class="modal-header">
         <div>
-          <span class="section-kicker">✨ UPDATE</span>
+          <span class="section-kicker">Changelog</span>
           <h2 id="updateTitle">Summer Update</h2>
         </div>
         <button class="close-btn" id="closeBtn" type="button" aria-label="Close update notes">×</button>
@@ -131,6 +130,7 @@
           <li>Added categories &amp; search improvements</li>
           <li>Performance and accessibility improvements</li>
           <li>UI overhaul</li>
+          <li>UI overhaul x2</li>
           <li>Your activity section: view your favorites and your game history</li>
           <li>Favorites - Press the star next to a game to favorite it.</li>
           <li>History - View games that were played on your device before.</li>
