@@ -47,6 +47,7 @@
       .scroll-banner-actions { display:flex; align-items:center; gap:10px; }
       .scroll-banner-settings,
       .scroll-banner-proxy,
+      .scroll-banner-surprise,
       .hero-settings-button,
       .hero-proxy-button {
         display:inline-flex;
@@ -64,6 +65,7 @@
       }
       .scroll-banner-settings:hover,
       .scroll-banner-proxy:hover,
+      .scroll-banner-surprise:hover,
       .hero-settings-button:hover,
       .hero-proxy-button:hover {
         transform: translateY(-2px);
@@ -73,7 +75,7 @@
       @media (max-width: 520px) {
         .scroll-banner-inner { width: calc(100% - 20px); }
         .scroll-banner-actions { gap:6px; }
-        .scroll-banner-settings, .scroll-banner-proxy { padding: 8px 10px; font-size: .9rem; }
+        .scroll-banner-settings, .scroll-banner-proxy, .scroll-banner-surprise { padding: 8px 10px; font-size: .9rem; }
       }
     `;
     document.head.appendChild(style);
@@ -89,25 +91,33 @@
           <span>GamePlaza</span>
         </a>
         <div class="scroll-banner-actions">
+          <a class="scroll-banner-surprise" href="#browse">Surprise Me!</a>
           <a class="scroll-banner-proxy" href="https://proxy-plaza.vercel.app">ProxyPlaza</a>
-          <a class="scroll-banner-settings" href="settings.html">⚙ Settings</a>
+          <a class="scroll-banner-settings" href="settings.html">Settings</a>
         </div>
       </div>`;
     document.body.prepend(banner);
 
+    const heroSurprise = document.getElementById("heroSurprise");
+    const bannerSurprise = banner.querySelector(".scroll-banner-surprise");
+    bannerSurprise?.addEventListener("click", (event) => {
+      event.preventDefault();
+      heroSurprise?.click();
+    });
+
     if (heroActions && !document.getElementById("hero-settings")) {
       const proxy = document.createElement("a");
       proxy.id = "hero-proxy";
-      proxy.className = "hero-proxy-button";
+      proxy.className = "hero-proxy-button secondary-action";
       proxy.href = "https://proxy-plaza.vercel.app";
       proxy.textContent = "ProxyPlaza";
       heroActions.appendChild(proxy);
 
       const settings = document.createElement("a");
       settings.id = "hero-settings";
-      settings.className = "hero-settings-button";
+      settings.className = "hero-settings-button secondary-action";
       settings.href = "settings.html";
-      settings.textContent = "⚙ Settings";
+      settings.textContent = "Settings";
       heroActions.appendChild(settings);
     }
 
