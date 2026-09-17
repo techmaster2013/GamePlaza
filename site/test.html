@@ -26,7 +26,7 @@
     .modal-content { max-width: 880px; width: calc(100% - 48px); max-height: 90vh; overflow: auto; border-radius: 12px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
     /* Scroll trail: make sure it's above page content, visible while scrolling, and transitions smoothly */
-    .scroll-trail { position: fixed; right: 0; top: 0; width: 11px; height: 0; z-index: 99998; pointer-events: none; background: linear-gradient(180deg, rgba(56,167,255,.9) 0%, rgba(74,180,255,.56) 35%, rgba(72,154,255,.2) 68%, rgba(56,167,255,0) 100%); transition: height .18s linear, top .18s linear, opacity .2s linear; opacity: 0; border-radius: 8px; }
+    .scroll-trail { position: fixed; right: 0; top: 0; width: 11px; height: 0; z-index: 99998; pointer-events: none; background: linear-gradient(180deg, rgba(56,167,255,.9) 0%, rgba(74,180,255,.56) 35%); }
     .scroll-trail.scrolling { opacity: 1; }
   </style>
 </head>
@@ -81,7 +81,7 @@
     </section>
 
     <section class="home-section">
-      <div class="lucky-card"><div><span class="section-kicker">gambling machine</span><h2>Can't decide what to play?</h2><p>Let GamePlaza choose something for you.</p></div><button id="luckyButton" type="button">Surprise Me!</button></div>
+      <div class="lucky-card"><div><span class="section-kicker">gambling machine</span><h2>Can't decide what to play?</h2><p>Let GamePlaza choose something for you.</p></div><button id="luckyButton" type="button">I'm Feeling Lucky</button></div>
     </section>
 
     <section class="home-section browse-section" id="browse">
@@ -168,6 +168,7 @@
 
   <script src="games.js"></script>
   <script src="test.js"></script>
+  <script src="banner.js"></script>
 
 </body>
 </html>
