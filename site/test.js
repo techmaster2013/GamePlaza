@@ -22,7 +22,7 @@
       const ctx = canvas.getContext("2d");
       let particles = [];
       const resize = () => { canvas.width = innerWidth; canvas.height = innerHeight; };
-      const make = () => { particles = Array.from({length:60}, () => ({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2+1,dx:(Math.random()-.5)*.5,dy:(Math.random()-.5)*.5})) };
+      const make = () => { particles = Array.from({length:60}, () => ({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2+1,dx:(Math.random()-.5)*.5,dy:(Math.random()-.5)*.5})); };
       const animate = () => { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>canvas.width)p.dx*=-1;if(p.y<0||p.y>canvas.height)p.dy*=-1;ctx.fillStyle="rgba(56,167,255,0.5)";ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();});requestAnimationFrame(animate); };
       resize(); make(); animate(); addEventListener("resize",()=>{resize();make();});
     }
@@ -38,8 +38,44 @@
     const addRecent=(name)=>{recent=[name,...recent.filter(x=>x!==name)].slice(0,20);save("gp_recent",recent);updateCounts();renderHome();};
     const toggleFavorite=(name)=>{favorites=favorites.includes(name)?favorites.filter(x=>x!==name):[...favorites,name];save("gp_favorites",favorites);updateCounts();renderHome();renderGames();};
 
+    /* Game preview: visual-only embed with a separate Play button. */
+    let preview = null;
+    const ensurePreview = () => {
+      if (preview) return preview;
+      const overlay = document.createElement("div");
+      overlay.className = "game-preview-overlay";
+      overlay.setAttribute("aria-hidden", "true");
+      overlay.innerHTML = `
+        <div class="game-preview" role="dialog" aria-modal="true" aria-labelledby="gamePreviewTitle" tabindex="-1">
+          <div class="game-preview-head"><h2 class="game-preview-title" id="gamePreviewTitle">Game Preview</h2><button class="game-preview-close" type="button" aria-label="Close preview">×</button></div>
+          <div class="game-preview-frame-wrap"><iframe class="game-preview-frame" title="Game preview" loading="lazy"></iframe><div class="game-preview-blocker" aria-hidden="true"></div></div>
+          <div class="game-preview-actions"><button class="game-preview-play" type="button">▷|| Play Game</button></div>
+          <p class="game-preview-note">preview only — the game is not interactive until you press Play Game.</p>
+        </div>`;
+      document.body.appendChild(overlay);
+      const panel = overlay.querySelector(".game-preview");
+      const frame = overlay.querySelector(".game-preview-frame");
+      const title = overlay.querySelector(".game-preview-title");
+      const close = overlay.querySelector(".game-preview-close");
+      const play = overlay.querySelector(".game-preview-play");
+      const closePreview = () => { overlay.classList.remove("active"); overlay.setAttribute("aria-hidden","true"); frame.src="about:blank"; document.body.classList.remove("modal-open"); };
+      const openPreview = (game) => {
+        if (!game || gameUrl(game) === "#") return;
+        title.textContent = gameName(game);
+        frame.src = gameUrl(game);
+        play.onclick = () => { addRecent(gameName(game)); location.href = gameUrl(game); };
+        overlay.classList.add("active"); overlay.setAttribute("aria-hidden","false"); document.body.classList.add("modal-open");
+        try { panel.focus(); } catch (_) {}
+      };
+      close.onclick = closePreview;
+      overlay.onclick = (e) => { if (e.target === overlay) closePreview(); };
+      preview = { open: openPreview, close: closePreview };
+      return preview;
+    };
+    const openGamePreview = (game) => ensurePreview().open(game);
+
     const emptyState=(icon,title,text)=>{const b=document.createElement("div");b.className="empty-state";b.innerHTML=`<span>${icon}</span><strong>${title}</strong><small>${text}</small>`;return b;};
-    const homeCard=(game)=>{const b=document.createElement("button");b.type="button";b.className="home-game-card";const i=document.createElement("span");i.className="game-icon";i.textContent=favorites.includes(gameName(game))?"⭐":"☆";i.onclick=e=>{e.stopPropagation();toggleFavorite(gameName(game));};b.appendChild(i);const t=document.createElement("span");t.className="game-name";t.textContent=gameName(game);b.appendChild(t);b.onclick=()=>{addRecent(gameName(game));location.href=gameUrl(game);};return b;};
+    const homeCard=(game)=>{const b=document.createElement("button");b.type="button";b.className="home-game-card";const i=document.createElement("span");i.className="game-icon";i.textContent=favorites.includes(gameName(game))?"⭐":"☆";i.onclick=e=>{e.stopPropagation();toggleFavorite(gameName(game));};b.appendChild(i);const t=document.createElement("span");t.className="game-name";t.textContent=gameName(game);b.appendChild(t);b.onclick=()=>{openGamePreview(game);};return b;};
 
     function renderHome(){
       const fg=findGame("Crazy Cattle 3D")||allGames[0];
@@ -51,7 +87,7 @@
     }
 
     function filtered(){const q=state.query.toLowerCase();return allGames.filter(g=>{const n=gameName(g).toLowerCase();const cat=state.category==="all"||g.category===state.category;const act=state.activity==="all"||(state.activity==="favorites"&&favorites.includes(gameName(g)))||(state.activity==="recent"&&recent.includes(gameName(g)));return n.includes(q)&&cat&&act;});}
-    function renderGames(){const grid=$("game-grid");if(!grid)return;const list=filtered();grid.replaceChildren();if(!list.length)grid.appendChild(emptyState("🔎","No games found.","Try a different search or category."));else list.forEach(g=>{const b=document.createElement("button");b.type="button";b.className="game-button";const i=document.createElement("span");i.className="game-icon";i.textContent=favorites.includes(gameName(g))?"⭐":"☆";i.onclick=e=>{e.stopPropagation();toggleFavorite(gameName(g));};b.appendChild(i);const t=document.createElement("div");t.className="game-title";t.textContent=gameName(g);b.appendChild(t);b.onclick=()=>{addRecent(gameName(g));location.href=gameUrl(g);};grid.appendChild(b);});}
+    function renderGames(){const grid=$("game-grid");if(!grid)return;const list=filtered();grid.replaceChildren();if(!list.length)grid.appendChild(emptyState("🔎","No games found.","Try a different search or category."));else list.forEach(g=>{const b=document.createElement("button");b.type="button";b.className="game-button";const i=document.createElement("span");i.className="game-icon";i.textContent=favorites.includes(gameName(g))?"⭐":"☆";i.onclick=e=>{e.stopPropagation();toggleFavorite(gameName(g));};b.appendChild(i);const t=document.createElement("div");t.className="game-title";t.textContent=gameName(g);b.appendChild(t);b.onclick=()=>openGamePreview(g);grid.appendChild(b);});}
 
     function buildCategories(){const row=$("category-row");if(!row)return;row.replaceChildren();const cats=[...new Set(allGames.map(g=>g.category).filter(Boolean))].sort((a,b)=>(categoryLabels[a]||a).localeCompare(categoryLabels[b]||b));const setCategory=c=>{state.category=c;document.querySelectorAll(".category-row .chip").forEach(x=>x.classList.remove("active"));const e=row.querySelector(`[data-cat="${c}"]`);if(e)e.classList.add("active");renderGames();};const ac=document.createElement("button");ac.type="button";ac.className="chip active";ac.setAttribute("data-cat","all");ac.textContent="All";ac.onclick=()=>setCategory("all");row.appendChild(ac);cats.forEach(c=>{const e=document.createElement("button");e.type="button";e.className="chip";e.setAttribute("data-cat",c);e.textContent=categoryLabels[c]||c;e.onclick=()=>setCategory(c);row.appendChild(e);});}
     const search=$("game-search"),clear=$("search-clear");
@@ -62,85 +98,25 @@
     const browse=()=>$("browse")&&$("browse").scrollIntoView({behavior:"smooth",block:"start"});
     const showFav=()=>{browse();setTimeout(()=>setActivity("favorites"),350);};const showRecent=()=>{browse();setTimeout(()=>setActivity("recent"),350);};
     if($("heroBrowse"))$("heroBrowse").onclick=browse;if($("homeAll"))$("homeAll").onclick=()=>{browse();setTimeout(()=>setActivity("all"),350);};if($("homeFavorites"))$("homeFavorites").onclick=showFav;if($("homeRecent"))$("homeRecent").onclick=showRecent;if($("viewFavorites"))$("viewFavorites").onclick=showFav;if($("viewHistory"))$("viewHistory").onclick=showRecent;
-    const surprise=()=>{if(!allGames.length)return;const g=allGames[Math.floor(Math.random()*allGames.length)];addRecent(gameName(g));if(gameUrl(g)!=="#")location.href=gameUrl(g);};["heroSurprise","luckyButton"].forEach(id=>{if($(id))$(id).onclick=surprise;});
+    const surprise=()=>{if(!allGames.length)return;const g=allGames[Math.floor(Math.random()*allGames.length)];openGamePreview(g);};["heroSurprise","luckyButton"].forEach(id=>{if($(id))$(id).onclick=surprise;});
 
     /* Modal: one authoritative implementation, including automatic startup. */
     const modal=$("updateModal"),panel=modal&&modal.querySelector(".modal-content"),trigger=$("update-trigger"),close=$("closeBtn"),dismiss=$("dismissBtn");
     let previousFocus=null;
-    const openModal=()=>{
-      if(!modal)return;
-      previousFocus=document.activeElement;
-
-      // compute scrollbar compensation to avoid layout shift when hiding scrollbar
-      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-      if (scrollBarWidth > 0) {
-        // preserve existing inline padding-right
-        modal.__originalBodyPaddingRight = document.body.style.paddingRight || '';
-        document.body.style.paddingRight = `${scrollBarWidth}px`;
-      }
-
-      document.body.classList.add("modal-open");
-      modal.classList.add("active");
-      modal.setAttribute("aria-hidden","false");
-
-      // focus the modal panel for accessibility
-      try { if (panel) { panel.focus(); } } catch (e) {}
-
-      // hide the scroll trail while modal is open
-      const trail = document.querySelector('.scroll-trail'); if (trail) { trail.style.opacity = '0'; }
-    };
-
-    const closeModal=()=>{
-      if(!modal)return;
-      modal.classList.remove("active");
-      modal.setAttribute("aria-hidden","true");
-      document.body.classList.remove("modal-open");
-
-      // restore body padding-right
-      if (modal.__originalBodyPaddingRight !== undefined) {
-        document.body.style.paddingRight = modal.__originalBodyPaddingRight;
-        delete modal.__originalBodyPaddingRight;
-      } else {
-        document.body.style.paddingRight = '';
-      }
-
-      // return focus
-      try { if (previousFocus && previousFocus.focus) previousFocus.focus(); } catch (e) {}
-
-      // restore scroll trail visibility
-      const trail = document.querySelector('.scroll-trail'); if (trail) { trail.style.opacity = ''; }
-    };
+    const openModal=()=>{if(!modal)return;previousFocus=document.activeElement;const scrollBarWidth=window.innerWidth-document.documentElement.clientWidth;if(scrollBarWidth>0){modal.__originalBodyPaddingRight=document.body.style.paddingRight||'';document.body.style.paddingRight=`${scrollBarWidth}px`;}document.body.classList.add("modal-open");modal.classList.add("active");modal.setAttribute("aria-hidden","false");try{if(panel)panel.focus();}catch(e){}const trail=document.querySelector('.scroll-trail');if(trail)trail.style.opacity='0';};
+    const closeModal=()=>{if(!modal)return;modal.classList.remove("active");modal.setAttribute("aria-hidden","true");document.body.classList.remove("modal-open");if(modal.__originalBodyPaddingRight!==undefined){document.body.style.paddingRight=modal.__originalBodyPaddingRight;delete modal.__originalBodyPaddingRight;}else document.body.style.paddingRight='';try{if(previousFocus&&previousFocus.focus)previousFocus.focus();}catch(e){}const trail=document.querySelector('.scroll-trail');if(trail)trail.style.opacity='';};
     window.GamePlazaModal={open:openModal,close:closeModal};
-    if(trigger)trigger.onclick=()=>{openModal();};if(close)close.onclick=closeModal;if(dismiss)dismiss.onclick=closeModal;
-    if(modal)modal.onclick=e=>{if(e.target===modal)closeModal();};
-    document.addEventListener("keydown",e=>{if((e.key==="Escape"||e.key==="Esc")&&modal&&modal.classList.contains("active"))closeModal();});
+    if(trigger)trigger.onclick=()=>{openModal();};if(close)close.onclick=closeModal;if(dismiss)dismiss.onclick=closeModal;if(modal)modal.onclick=e=>{if(e.target===modal)closeModal();};
+    document.addEventListener("keydown",e=>{if((e.key==="Escape"||e.key==="Esc")&&modal&&modal.classList.contains("active"))closeModal();if((e.key==="Escape"||e.key==="Esc")&&preview&&preview.close)preview.close();});
 
     /* Short blue scroll trail */
     const trail=document.createElement("div");trail.className="scroll-trail";trail.style.transition="height .18s ease, opacity .18s ease";document.body.appendChild(trail);let trailTimer;
-    const updateTrail=()=>{
-      // if modal is open, don't show trail
-      if (modal && modal.classList.contains('active')) {
-        trail.style.height = '0px';
-        trail.style.opacity = '0';
-        return;
-      }
-
-      const documentHeight=document.documentElement.scrollHeight-innerHeight;
-      const progress=documentHeight>0?scrollY/documentHeight:0;
-      const thumbHeight=Math.max(74,innerHeight*(innerHeight/document.documentElement.scrollHeight));
-      const thumbTop = Math.max(0, Math.min(innerHeight - thumbHeight, progress*(innerHeight - thumbHeight)));
-      trail.style.height = thumbHeight + 'px';
-      trail.style.top = thumbTop + 'px';
-      trail.style.opacity = '1';
-    };
-    addEventListener("scroll",()=>{updateTrail();trail.classList.add("scrolling");clearTimeout(trailTimer);trailTimer=setTimeout(()=>{trail.classList.remove("scrolling");if(!(modal && modal.classList.contains('active')))trail.style.opacity='';},600);},{passive:true});
-    addEventListener("resize",updateTrail,{passive:true});updateTrail();
+    const updateTrail=()=>{if(modal&&modal.classList.contains('active')){trail.style.height='0px';trail.style.opacity='0';return;}const documentHeight=document.documentElement.scrollHeight-innerHeight;const progress=documentHeight>0?scrollY/documentHeight:0;const thumbHeight=Math.max(74,innerHeight*(innerHeight/document.documentElement.scrollHeight));const thumbTop=Math.max(0,Math.min(innerHeight-thumbHeight,progress*(innerHeight-thumbHeight)));trail.style.height=thumbHeight+'px';trail.style.top=thumbTop+'px';trail.style.opacity='1';};
+    addEventListener("scroll",()=>{updateTrail();trail.classList.add("scrolling");clearTimeout(trailTimer);trailTimer=setTimeout(()=>{trail.classList.remove("scrolling");if(!(modal&&modal.classList.contains('active')))trail.style.opacity='';},600);},{passive:true});addEventListener("resize",updateTrail,{passive:true});updateTrail();
 
     if($("backTop"))$("backTop").onclick=()=>scrollTo({top:0,behavior:"smooth"});
-    if(search){const title=document.querySelector(".hero h1 .magic-text");if(title){const ot=title.textContent,op=search.placeholder,msgs=[["gameplaza is the best","choose a game already"],["hiiii","welcome to gameplaza!"],["psst","there are hidden games in the search..."]];const rotate=()=>{const m=msgs[Math.floor(Math.random()*msgs.length)];title.textContent=m[0];search.placeholder="🔍 "+m[1];setTimeout(rotate,1E4);};rotate();}}
+    if(search){const title=document.querySelector(".hero h1 .magic-text");if(title){const msgs=[["gameplaza is the best","choose a game already"],["hiiii","welcome to gameplaza!"],["psst","there are hidden games in the search..."]];const rotate=()=>{const m=msgs[Math.floor(Math.random()*msgs.length)];title.textContent=m[0];search.placeholder="🔍 "+m[1];setTimeout(rotate,1E4);};rotate();}}
 
-    buildCategories();renderGames();renderHome();updateCounts();
-    /* Always show the update modal when test.html opens. */
-    setTimeout(openModal,120);
+    buildCategories();renderGames();renderHome();updateCounts();setTimeout(openModal,120);
   });
 })();
