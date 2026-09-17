@@ -44,8 +44,14 @@
         text-decoration: none;
       }
       .scroll-banner-icon { width: 34px; height: 34px; object-fit: contain; border-radius: 8px; }
+      .scroll-banner-actions { display:flex; align-items:center; gap:10px; }
       .scroll-banner-settings,
-      .hero-settings-button {
+      .scroll-banner-proxy,
+      .hero-settings-button,
+      .hero-proxy-button {
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
         border: 1px solid rgba(244, 143, 177, .65);
         border-radius: 8px;
         padding: 9px 14px;
@@ -54,11 +60,20 @@
         cursor: pointer;
         font: inherit;
         text-decoration: none;
+        transition: transform .2s ease, background .2s ease, border-color .2s ease;
       }
-      .scroll-banner-settings:hover, .hero-settings-button:hover { background: var(--panel-hover, #25163a); }
+      .scroll-banner-settings:hover,
+      .scroll-banner-proxy:hover,
+      .hero-settings-button:hover,
+      .hero-proxy-button:hover {
+        transform: translateY(-2px);
+        background: var(--panel-hover, #25163a);
+        border-color: var(--pink, #f48fb1);
+      }
       @media (max-width: 520px) {
         .scroll-banner-inner { width: calc(100% - 20px); }
-        .scroll-banner-settings { padding: 8px 10px; font-size: .9rem; }
+        .scroll-banner-actions { gap:6px; }
+        .scroll-banner-settings, .scroll-banner-proxy { padding: 8px 10px; font-size: .9rem; }
       }
     `;
     document.head.appendChild(style);
@@ -73,11 +88,21 @@
           <img src="../Normal.png" alt="" class="scroll-banner-icon">
           <span>GamePlaza</span>
         </a>
-        <a class="scroll-banner-settings" href="settings.html">⚙ Settings</a>
+        <div class="scroll-banner-actions">
+          <a class="scroll-banner-proxy" href="https://proxy-plaza.vercel.app">ProxyPlaza</a>
+          <a class="scroll-banner-settings" href="settings.html">⚙ Settings</a>
+        </div>
       </div>`;
     document.body.prepend(banner);
 
     if (heroActions && !document.getElementById("hero-settings")) {
+      const proxy = document.createElement("a");
+      proxy.id = "hero-proxy";
+      proxy.className = "hero-proxy-button";
+      proxy.href = "https://proxy-plaza.vercel.app";
+      proxy.textContent = "ProxyPlaza";
+      heroActions.appendChild(proxy);
+
       const settings = document.createElement("a");
       settings.id = "hero-settings";
       settings.className = "hero-settings-button";
