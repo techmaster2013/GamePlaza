@@ -53,9 +53,9 @@
         display:inline-flex;
         align-items:center;
         justify-content:center;
-        border: 1px solid rgba(244, 143, 177, .65);
-        border-radius: 8px;
-        padding: 9px 14px;
+        border: 2px solid rgba(244, 143, 177, .6);
+        border-radius: 12px;
+        padding: 13px 24px;
         color: var(--text, #f9f6ef);
         background: var(--panel, #190f26);
         cursor: pointer;
@@ -68,9 +68,10 @@
       .scroll-banner-surprise:hover,
       .hero-settings-button:hover,
       .hero-proxy-button:hover {
-        transform: translateY(-2px);
+        transform: translateY(-3px);
         background: var(--panel-hover, #25163a);
         border-color: var(--pink, #f48fb1);
+        box-shadow: 0 8px 25px rgba(123,31,162,.35);
       }
       @media (max-width: 520px) {
         .scroll-banner-inner { width: calc(100% - 20px); }
