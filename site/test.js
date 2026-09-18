@@ -117,6 +117,6 @@
     if($("backTop"))$("backTop").onclick=()=>scrollTo({top:0,behavior:"smooth"});
     if(search){const title=document.querySelector(".hero h1 .magic-text");if(title){const msgs=[["gameplaza is the best","choose a game already"],["hiiii","welcome to gameplaza!"],["psst","there are hidden games in the search..."]];const rotate=()=>{const m=msgs[Math.floor(Math.random()*msgs.length)];title.textContent=m[0];search.placeholder="🔍 "+m[1];setTimeout(rotate,1E4);};rotate();}}
 
-    buildCategories();renderGames();renderHome();updateCounts();setTimeout(openModal,120);
+    buildCategories();renderGames();renderHome();updateCounts();const loading=$("loading");if(loading)loading.hidden=true;setTimeout(openModal,120);
   });
 })();
