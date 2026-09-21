@@ -1,10 +1,10 @@
-/* Fixed plaza.css
-   - corrected root selector
-   - added global box-sizing
-   - removed duplicate rules and consolidated .search-wrap/.search-clear
-   - raised modal z-index above experimental banner
-   - allowed text selection (removed user-select: none on body)
-*/
+/* Import Ubuntu font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap');
+
+/* Apply Ubuntu font to the entire document by default */
+body, html {
+    font-family: 'Ubuntu', sans-serif;
+}
 :root {
     --purple: rgb(123, 31, 162);
     --violet: rgb(103, 58, 183);
