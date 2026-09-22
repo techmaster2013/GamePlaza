@@ -667,5 +667,24 @@
             showLoginError("Add the Firebase Web app configuration to enable the dashboard.");
         }
     </script>
+    <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDAd_RUXKRdXICvOGTgrC3i7_PST_BxmtE",
+    authDomain: "gplaza-feedback.firebaseapp.com",
+    projectId: "gplaza-feedback",
+    storageBucket: "gplaza-feedback.firebasestorage.app",
+    messagingSenderId: "311535800676",
+    appId: "1:311535800676:web:44bbebd348b5e3e9e66a71"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
 </body>
 </html>
