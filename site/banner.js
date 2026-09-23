@@ -46,6 +46,7 @@
           <a class="scroll-banner-surprise" href="#browse">Surprise Me!</a>
           <a class="scroll-banner-proxy" href="https://proxy-plaza.vercel.app">ProxyPlaza</a>
           <a class="scroll-banner-settings" href="settings.html">Settings</a>
+          <a class="secondary-action" href="requests.html">Feedback</a>
         </div>
       </div>`;
     document.body.prepend(banner);
