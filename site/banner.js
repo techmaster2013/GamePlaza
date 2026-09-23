@@ -23,14 +23,14 @@
       .scroll-banner-link { display:inline-flex; align-items:center; gap:10px; color:var(--text,#f9f6ef); font-weight:700; font-size:1.15rem; text-decoration:none; }
       .scroll-banner-icon { width:34px; height:34px; object-fit:contain; border-radius:8px; }
       .scroll-banner-actions { display:flex; align-items:center; gap:10px; }
-      .scroll-banner-settings,.scroll-banner-proxy,.scroll-banner-surprise,.hero-settings-button,.hero-proxy-button {
+      .scroll-banner-settings,.scroll-banner-proxy,.scroll-banner-surprise,.scroll-banner-feedback,.hero-settings-button,.hero-proxy-button {
         display:inline-flex; align-items:center; justify-content:center;
         border:2px solid rgba(244,143,177,.6); border-radius:12px;
         padding:13px 24px; color:#fff; background:rgba(244,143,177,.08);
         cursor:pointer; font:inherit; font-size:15px; font-weight:600;
         text-decoration:none; transition:transform .25s ease,box-shadow .25s ease,background .25s ease,border-color .25s ease;
       }
-      .scroll-banner-settings:hover,.scroll-banner-proxy:hover,.scroll-banner-surprise:hover,.hero-settings-button:hover,.hero-proxy-button:hover {
+      .scroll-banner-settings:hover,.scroll-banner-proxy:hover,.scroll-banner-surprise:hover,.scroll-banner-feedback:hover,.hero-settings-button:hover,.hero-proxy-button:hover {
         transform:translateY(-3px); border-color:var(--pink,#f48fb1); background:var(--panel-hover,#25163a); box-shadow:0 8px 25px rgba(123,31,162,.35);
       }
       @media(max-width:560px){.scroll-banner-inner{width:calc(100% - 20px)}.scroll-banner-actions{gap:6px}.scroll-banner-settings,.scroll-banner-proxy,.scroll-banner-surprise{padding:8px 10px;font-size:.9rem}}
@@ -46,7 +46,7 @@
           <a class="scroll-banner-surprise" href="#browse">Surprise Me!</a>
           <a class="scroll-banner-proxy" href="https://proxy-plaza.vercel.app">ProxyPlaza</a>
           <a class="scroll-banner-settings" href="settings.html">Settings</a>
-          <a class="secondary-action" href="requests.html">Feedback</a>
+          <a class="scroll-banner-feedback" href="requests.html">Feedback</a>
         </div>
       </div>`;
     document.body.prepend(banner);
