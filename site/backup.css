@@ -512,3 +512,17 @@ h2 .magic .magic-text {
   filter: brightness(1.1);
   box-shadow: 0 6px 24px rgba(123, 31, 162, 0.5);
 }
+
+/* Changelog history */
+.modal-footer{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap}
+.version-history{display:inline-block;position:relative}
+.version-history-toggle{background:linear-gradient(135deg,var(--purple),var(--violet));border:none;color:white;padding:12px 30px;border-radius:5px;cursor:pointer;font-size:16px;font-weight:600;transition:all .3s ease}
+.version-history-toggle:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(123,31,162,.4)}
+.version-history-list{position:absolute;right:0;bottom:calc(100% + 10px);width:min(520px,80vw);max-height:55vh;overflow:auto;padding:12px;background:#1a1a1a;border:1px solid var(--pink);border-radius:12px;text-align:left;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.version-history-list details{padding:10px 0;border-bottom:1px solid rgba(244,143,177,.18)}
+.version-history-list details:last-child{border-bottom:0}
+.version-history-list summary{cursor:pointer;color:var(--pink);font-weight:600}
+.history-entry{padding:8px 4px;color:#F9F6EF}
+.history-entry h3{color:var(--pink);font-size:15px}
+.history-entry ul{margin:8px 0;padding-left:20px}
+@media(max-width:560px){.version-history-list{right:auto;left:0;width:min(88vw,520px)}}
