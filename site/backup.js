@@ -435,3 +435,67 @@ if (document.title.includes("Settings")) {
     window.location.replace("about:blank");
   };
 }
+
+
+/* Firestore changelog sync */
+(async () => {
+  try {
+    const [{ initializeApp }, { getFirestore, doc, getDoc }] = await Promise.all([
+      import("https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js"),
+      import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js")
+    ]);
+    const app = initializeApp({
+      apiKey: "AIzaSyDAd_RUXKRdXICgvtprC3i7_PST_BxmtE",
+      authDomain: "gplaza-feedback.firebaseapp.com",
+      projectId: "gplaza-feedback",
+      storageBucket: "gplaza-feedback.firebasestorage.app",
+      messagingSenderId: "311535800676",
+      appId: "1:311535800676:web:44bbebd348b5e3e9e66a71"
+    }, "gameplaza-changelog");
+    const db = getFirestore(app);
+    const snap = await getDoc(doc(db, "changelog", "main"));
+    if (!snap.exists()) return;
+    const data = snap.data();
+    const current = data.current;
+    const escapeHtml = value => { const d=document.createElement("div"); d.textContent=value ?? ""; return d.innerHTML; };
+    const sectionHtml = item => {
+      const out=[];
+      if(item.notes) out.push("<h3>Update Notes</h3><p>"+escapeHtml(String(item.notes)).replace(/\n/g,"<br>")+"</p>");
+      [["Features Added",item.features],["New Games",item.newGames],["Known Bugs",item.bugs]].forEach(([h,v])=>{
+        if(Array.isArray(v)&&v.length) out.push("<h3>"+h+"</h3><ul>"+v.map(x=>"<li>"+escapeHtml(String(x))+"</li>").join("")+"</ul>");
+      });
+      if(item.releaseDate) out.push("<p><strong>Release Date:</strong> "+escapeHtml(String(item.releaseDate))+"</p>");
+      return out.join("");
+    };
+    const modal=document.getElementById("updateModal");
+    if(current && modal){
+      const title=modal.querySelector(".modal-header h2");
+      const body=modal.querySelector(".modal-body");
+      if(title) title.textContent=current.title||"Update";
+      if(body) body.innerHTML=sectionHtml(current);
+    }
+    const root=document.getElementById("versionHistory");
+    const history=Array.isArray(data.history)?data.history:[];
+    if(root){
+      root.innerHTML="";
+      if(history.length){
+        const heading=document.createElement("h3");
+        heading.textContent="📜 Version History";
+        root.appendChild(heading);
+        history.forEach(item=>{
+          const details=document.createElement("details");
+          const summary=document.createElement("summary");
+          summary.textContent=(item.version||"Previous")+" — "+(item.title||"Update");
+          details.appendChild(summary);
+          const body=document.createElement("div");
+          body.className="history-entry";
+          body.innerHTML=sectionHtml(item);
+          details.appendChild(body);
+          root.appendChild(details);
+        });
+      }
+    }
+  } catch(error) {
+    console.warn("GamePlaza changelog sync unavailable; using local changelog.", error);
+  }
+})();
