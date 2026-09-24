@@ -55,7 +55,7 @@
     banner.querySelector(".scroll-banner-surprise")?.addEventListener("click",e=>{e.preventDefault();heroSurprise?.click()});
 
     if(heroActions&&!document.getElementById("hero-settings")){
-      const proxy=document.createElement("a"); proxy.id="hero-proxy"; proxy.className="hero-proxy-button"; proxy.href="https://proxy-plaza.vercel.app"; proxy.textContent="ProxyPlaza"; heroActions.appendChild(proxy);
+      const proxy=document.createElement("a"); proxy.id="hero-proxy"; proxy.className="hero-proxy-button"; proxy.href="https://techmaster2013.github.io/coreHZ"; proxy.textContent="coreHZ"; heroActions.appendChild(proxy);
       const settings=document.createElement("a"); settings.id="hero-settings"; settings.className="hero-settings-button"; settings.href="settings.html"; settings.textContent="Settings"; heroActions.appendChild(settings);
     }
 
