@@ -44,7 +44,7 @@
         <a class="scroll-banner-link" href="#main"><img src="../Normal.png" alt="" class="scroll-banner-icon"><span>GamePlaza</span></a>
         <div class="scroll-banner-actions">
           <a class="scroll-banner-surprise" href="#browse">Surprise Me!</a>
-          <a class="scroll-banner-proxy" href="https://proxy-plaza.vercel.app">ProxyPlaza</a>
+          <a class="scroll-banner-proxy" href="https://techmaster2013.github.io/coreHZ">coreHZ</a>
           <a class="scroll-banner-settings" href="settings.html">Settings</a>
           <a class="scroll-banner-feedback" href="requests.html">Feedback</a>
         </div>
