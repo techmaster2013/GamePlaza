@@ -210,10 +210,6 @@
 
     const updateVisibility=()=>banner.classList.toggle("visible",window.scrollY>heroTitle.getBoundingClientRect().bottom);
     window.addEventListener("scroll",updateVisibility,{passive:true}); window.addEventListener("resize",updateVisibility,{passive:true}); updateVisibility();
-  };
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init,{once:true}); else init();
-})();
-
     /* Short blue scroll trail */
     const trail=document.createElement("div");trail.className="scroll-trail";trail.style.transition="height .18s ease, opacity .18s ease";document.body.appendChild(trail);let trailTimer;
     const updateTrail=()=>{if(modal&&modal.classList.contains('active')){trail.style.height='0px';trail.style.opacity='0';return;}const documentHeight=document.documentElement.scrollHeight-innerHeight;const progress=documentHeight>0?scrollY/documentHeight:0;const thumbHeight=Math.max(74,innerHeight*(innerHeight/document.documentElement.scrollHeight));const thumbTop=Math.max(0,Math.min(innerHeight-thumbHeight,progress*(innerHeight-thumbHeight)));trail.style.height=thumbHeight+'px';trail.style.top=thumbTop+'px';trail.style.opacity='1';};
