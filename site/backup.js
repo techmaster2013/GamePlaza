@@ -476,24 +476,28 @@ if (document.title.includes("Settings")) {
     }
     const root=document.getElementById("versionHistory");
     const history=Array.isArray(data.history)?data.history:[];
-    if(root){
+    if(root && history.length){
       root.innerHTML="";
-      if(history.length){
-        const heading=document.createElement("h3");
-        heading.textContent="📜 Version History";
-        root.appendChild(heading);
-        history.forEach(item=>{
-          const details=document.createElement("details");
-          const summary=document.createElement("summary");
-          summary.textContent=(item.version||"Previous")+" — "+(item.title||"Update");
-          details.appendChild(summary);
-          const body=document.createElement("div");
-          body.className="history-entry";
-          body.innerHTML=sectionHtml(item);
-          details.appendChild(body);
-          root.appendChild(details);
-        });
-      }
+      const toggle=document.createElement("button");
+      toggle.type="button";
+      toggle.className="version-history-toggle";
+      toggle.textContent="📜 Version History";
+      toggle.setAttribute("aria-expanded","false");
+      const list=document.createElement("div");
+      list.className="version-history-list";
+      list.hidden=true;
+      history.forEach(item=>{
+        const details=document.createElement("details");
+        const summary=document.createElement("summary");
+        summary.textContent=(item.version||"Previous")+" — "+(item.title||"Update");
+        const body=document.createElement("div");
+        body.className="history-entry";
+        body.innerHTML=sectionHtml(item);
+        details.append(summary,body);
+        list.appendChild(details);
+      });
+      toggle.onclick=()=>{list.hidden=!list.hidden;toggle.setAttribute("aria-expanded",String(!list.hidden));};
+      root.append(toggle,list);
     }
   } catch(error) {
     console.warn("GamePlaza changelog sync unavailable; using local changelog.", error);
