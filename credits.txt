@@ -1,5 +1,5 @@
 Credits to:
-The people behind (Barnical)[https://barnical.github.io/GameSite/index.html]
+The people behind Barnical (https://barnical.github.io/GameSite/index.html), and frogies arcade (https://www.frogiesarcade.win/) for ideas!
 GitHub Copilot & ChatGPT (sometimes i need some help yk)
 Google (made Google Sites, where the original GamePlaza lies)
 Friends bc they helped with finding games
