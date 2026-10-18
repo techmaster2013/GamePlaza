@@ -26,7 +26,7 @@
 <link rel="dns-prefetch" href="https://www.google.com">
 </head>
 <body data-theme="resend">
-<!-- Barnical reference markup supplied by user. CSS/JS will be added next. -->
+<!-- Barnical reference markup and JavaScript supplied by user. CSS is pending. -->
 <div id="mascotRainbowOverlay" class="mascot-rainbow-overlay" aria-hidden="true"></div>
 <div class="app-shell" id="appShell">
   <button class="drawer-backdrop" id="drawerBackdrop" aria-label="Close menu"></button>
@@ -59,8 +59,101 @@
   </aside>
   <div class="main-pane">
     <header class="topbar"><div class="topbar-left"><button class="icon-button" id="sidebarToggle" aria-label="Toggle sidebar">☰</button><div class="breadcrumb"><span class="breadcrumb-brand">Barnical V4</span><span class="breadcrumb-separator">/</span><span class="breadcrumb-title" id="breadcrumbTitle">All games</span></div></div><div class="topbar-right"><button class="surprise-button" id="surpriseMeButton">Surprise me</button><span class="presence-pill" id="presenceCount">5 online</span><button class="search-button" id="searchOpen"><span class="search-button-label">Search games</span><span class="search-kbd">/ or CTRL K</span></button></div></header>
-    <main class="content" id="content"><div class="content-header"><p class="eyebrow">Library</p><h1 class="content-title" id="contentTitle">All games</h1><p class="content-copy" id="contentCount">149 games</p><div class="content-toolbar"><div class="sort-control"><button class="sort-option is-active" data-sort="alphabetical">Alphabetical</button><button class="sort-option" data-sort="popularity">Most popular</button><button class="sort-option" data-sort="likes">Most liked</button></div><p class="sort-note" id="sortNote">Sorted alphabetically.</p></div></div><section class="recent-section" id="recentSection" hidden><div class="recent-section-head"><div><p class="recent-eyebrow">Recently played</p><h2 class="recent-title">Jump back in</h2></div><button class="recent-clear" id="recentClear">Clear</button></div><div class="recent-row" id="recentRow"></div></section><div class="game-grid" id="gameGrid"></div></main>
+    <main class="content" id="content"><div class="content-header"><p class="eyebrow" id="contentEyebrow">Library</p><h1 class="content-title" id="contentTitle">All games</h1><p class="content-copy" id="contentCount">149 games</p><div class="content-toolbar"><div class="sort-control"><button class="sort-option is-active" data-sort="alphabetical">Alphabetical</button><button class="sort-option" data-sort="popularity">Most popular</button><button class="sort-option" data-sort="likes">Most liked</button></div><p class="sort-note" id="sortNote">Sorted alphabetically.</p></div></div><section class="recent-section" id="recentSection" hidden><div class="recent-section-head"><div><p class="recent-eyebrow">Recently played</p><h2 class="recent-title">Jump back in</h2></div><button class="recent-clear" id="recentClear">Clear</button></div><div class="recent-row" id="recentRow"></div></section><div class="game-grid" id="gameGrid"></div></main>
   </div>
 </div>
-<script src="script.js"></script>
+<!-- Search overlay -->
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Search games">
+  <button class="search-backdrop" id="searchBackdrop" aria-label="Close search"></button>
+  <div class="search-dialog">
+    <div class="search-row">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search games..." autocomplete="off">
+      <button type="button" class="search-close" id="searchClose" aria-label="Close search">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="search-body" id="searchBody">
+      <div class="search-empty" id="searchEmptyState">
+        <svg class="command-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg>
+        <p>Type to search games...</p>
+      </div>
+      <div class="search-results" id="searchResults" hidden=""></div>
+    </div>
+  </div>
+</div>
+
+<!-- Changelog modal -->
+<div id="changelog-backdrop" class="modal-backdrop modal-hidden" role="dialog" aria-modal="true" aria-labelledby="changelog-title">
+  <div class="modal-card" id="changelog-card">
+    <h2 id="changelog-title">Changelog</h2>
+    <div class="meta" id="changelog-meta">Version: 30/08/26</div>
+    <ul id="changelog-list"><li><div class="changelog-markdown"><p>More themes</p></div></li><li><div class="changelog-markdown"><p>More games</p></div></li><li><div class="changelog-markdown"><p>Linux Emulator</p></div></li></ul>
+    <div class="modal-actions">
+      <button type="button" id="outage-view-button">Outage notice</button>
+      <button type="button" id="changelog-view-button" class="is-active">Changelog</button>
+      <button id="changelog-close">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Credits modal -->
+<div id="credits-backdrop" class="modal-backdrop modal-hidden" role="dialog" aria-modal="true" aria-labelledby="credits-title">
+  <div class="modal-card" id="credits-card">
+    <h2 id="credits-title">Credits</h2>
+    <div class="meta">Thanks to the people who helped make Barnical.</div>
+    <ul id="credits-list"><li><strong>Johnny W</strong> - Scripter/coder!</li><li><strong>Cooper S</strong> - Artist!</li><li><strong>William M</strong> - Capitalizer And Speller!</li></ul>
+    <div class="modal-actions">
+      <button id="credits-close">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Feedback modal -->
+<div id="feedback-backdrop" class="modal-backdrop modal-hidden" role="dialog" aria-modal="true" aria-labelledby="feedback-title">
+  <div class="modal-card">
+    <h2 id="feedback-title">Send Feedback</h2>
+    <div class="meta">Got a suggestion, bug report, or game request? Let us know.</div>
+    <div id="feedback-type-group">
+      <button class="feedback-type-btn active" data-type="Suggestion">💡 Suggestion</button>
+      <button class="feedback-type-btn" data-type="Bug Report">🐛 Bug Report</button>
+      <button class="feedback-type-btn" data-type="Game Request">🎮 Game Request</button>
+      <button class="feedback-type-btn" data-type="Other">✉️ Other</button>
+    </div>
+    <textarea id="feedback-message" placeholder="Write your feedback here..."></textarea>
+    <div class="modal-actions">
+      <span id="feedback-status"></span>
+      <button id="feedback-cancel">Cancel</button>
+      <button id="feedback-submit">Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- Live chat modal -->
+<div id="chat-backdrop" class="modal-backdrop modal-hidden" role="dialog" aria-modal="true" aria-labelledby="chat-title">
+  <div class="modal-card chat-card">
+    <div class="chat-header">
+      <div>
+        <h2 id="chat-title">Live Chat</h2>
+        <div class="meta">Talk to other people. Recommended for you to use your real name! Don't listen to people impersonating me. (pls no impersonating)</div>
+      </div>
+      <span class="chat-pill" id="chat-pill">server live</span>
+    </div>
+    <div class="chat-thread" id="chat-thread" aria-live="polite"></div>
+    <div class="chat-composer">
+      <input id="chat-name" class="chat-name-input" type="text" maxlength="24" placeholder="Name" autocomplete="nickname">
+      <textarea id="chat-message" class="chat-message-input" maxlength="280" rows="2" placeholder="Type a message..."></textarea>
+      <button id="chat-send" type="button" class="chat-send">Send</button>
+    </div>
+    <div class="modal-actions chat-actions">
+      <span class="chat-note">Enter sends, profanity gets censored.</span>
+      <button id="chat-close" type="button">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Data must load before the app; defer keeps all scripts after DOM parsing. -->
+<script src="games.js" defer></script>
+<script src="changelog.js" defer></script>
+<script src="app.js" defer></script>
 </body></html>
