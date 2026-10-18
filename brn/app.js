@@ -4,18 +4,22 @@
   const games = window.games || window.__games || [];
   const getGameCategory = window.getGameCategory || ((game) => (game && game.category) || "arcade");
   const CATEGORY_LABELS = window.CATEGORY_LABELS || { all: "All" };
-  const RECENT_GAMES_KEY = "barnical-recent-games";
-  const THEME_KEY = "barnical-theme";
-  const SORT_KEY = "barnical-sort-mode";
-  const LIKES_STORAGE_KEY = "barnical-anonymous-likes";
+  const RECENT_GAMES_KEY = "gameplaza-brn-recent-games";
+  const THEME_KEY = "gameplaza-brn-theme";
+  const SORT_KEY = "gameplaza-brn-sort-mode";
+  const LIKES_STORAGE_KEY = "gameplaza-brn-anonymous-likes";
   const MAX_RECENT_GAMES = 8;
-  const POPULARITY_PATH = "barnical/game-popularity";
-  const LIKES_PATH = "barnical/game-likes";
-  const PRESENCE_PATH = "barnical/presence";
+  const POPULARITY_PATH = "gameplaza-brn/game-popularity";
+  const LIKES_PATH = "gameplaza-brn/game-likes";
+  const PRESENCE_PATH = "gameplaza-brn/presence";
   const NUMBER_FORMAT = new Intl.NumberFormat();
   const THEME_OPTIONS = {
-    resend: {
-      label: "Resend",
+    nex: {
+      label: "Nex",
+      bodyClass: "",
+    },
+    barnacle: {
+      label: "Barnacle",
       bodyClass: "",
     },
     ember: {
@@ -38,10 +42,6 @@
       label: "Discord",
       bodyClass: "",
     },
-    evil: {
-      label: "Evil",
-      bodyClass: "",
-    }
   };
 
   const ICONS = {
@@ -117,7 +117,6 @@
   const chatOpen = document.getElementById("chatOpen");
   const homeOpen = document.getElementById("homeOpen");
   const themeButtons = document.querySelectorAll(".theme-option");
-  const evilThemeButton = document.querySelector(".evil-theme-button");
   const mascotButton = document.getElementById("brandMascot");
   const mascotOverlay = document.getElementById("mascotRainbowOverlay");
   let mascotTapCount = 0;
@@ -149,17 +148,11 @@
       Math.min(1, vw / SCALE_DESIGN_WIDTH, vh / SCALE_DESIGN_HEIGHT)
     );
 
-    // The evil theme reserves 176px at the top (56px topbar + 120px banner)
-    // via body padding, so shrink the shell by that much or its bottom —
-    // where the sidebar footer (feedback / live chat) lives — gets clipped.
-    const evilTopOffset = (document.body.dataset.theme === "evil" || document.documentElement.dataset.theme === "evil") ? 176 : 0;
-
-    // Scale the whole shell from the top-left and compensate its size so the
-    // scaled result still fills the viewport exactly (minus the evil banner).
+    // Scale the shell to fill the viewport.
     appShell.style.transformOrigin = "top left";
     appShell.style.transform = "scale(" + scale + ")";
     appShell.style.width = 100 / scale + "vw";
-    appShell.style.height = Math.max(0, (100 / scale) * (1 - evilTopOffset / vh)) + "vh";
+    appShell.style.height = (100 / scale) + "vh";
   }
 
   let scaleRaf = null;
@@ -583,9 +576,8 @@
       return;
     }
 
-    const isEvil = document.body.dataset.theme === "evil" || document.documentElement.dataset.theme === "evil";
     items.forEach((game) => {
-      const displayLabel = isEvil ? `Evil ${game.label}` : game.label;
+      const displayLabel = game.label;
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "recent-card";
@@ -599,6 +591,13 @@
           <span class="recent-card-category">${CATEGORY_LABELS[game.category] || game.category || "Game"}</span>
         </span>
       `;
+      const recentImage = btn.querySelector("img");
+      if (recentImage) recentImage.onerror = () => {
+        const fallback = document.createElement("span");
+        fallback.className = "recent-card-fallback";
+        fallback.textContent = game.label.charAt(0).toUpperCase();
+        recentImage.replaceWith(fallback);
+      };
       btn.addEventListener("click", (event) => navigateToGame(game, event));
       recentRow.appendChild(btn);
     });
@@ -606,9 +605,10 @@
 
   function readTheme() {
     try {
-      return localStorage.getItem(THEME_KEY) || "resend";
+      const stored = localStorage.getItem(THEME_KEY);
+      return stored === "resend" ? "nex" : (stored || "nex");
     } catch (err) {
-      return "resend";
+      return "nex";
     }
   }
 
@@ -625,7 +625,7 @@
     if (!creditsList) return;
 
     try {
-      const response = await fetch("assets/credits.json");
+      const response = await fetch("credits.json");
       if (!response.ok) throw new Error("Unable to load credits");
       const data = await response.json();
       const entries = Object.entries(data || {});
@@ -637,13 +637,13 @@
         .map(([name, role]) => `<li><strong>${escapeHtml(name)}</strong> - ${escapeHtml(role)}</li>`)
         .join("");
     } catch (error) {
-      creditsList.innerHTML = "<li>Credits are unavailable right now.</li>";
+      // Keep the inline attribution when optional credits are unavailable.
       console.warn("Failed to load credits.", error);
     }
   }
 
   function applyTheme(themeName) {
-    const theme = THEME_OPTIONS[themeName] ? themeName : "resend";
+    const theme = THEME_OPTIONS[themeName] ? themeName : "nex";
     document.documentElement.dataset.theme = theme;
     document.body.dataset.theme = theme;
     try {
@@ -654,50 +654,11 @@
     themeButtons.forEach((button) => {
       button.classList.toggle("is-active", button.dataset.theme === theme);
     });
-    if (evilThemeButton) {
-      evilThemeButton.classList.toggle("is-active", theme === "evil");
-    }
-    applyEvilText(theme === "evil");
+
     renderGrid();
     scheduleAutoScale();
   }
 
-  function applyEvilText(isEvil) {
-    if (breadcrumbBrand) breadcrumbBrand.textContent = isEvil ? "Evil Barnical" : "Barnical V4";
-    if (contentEyebrow) contentEyebrow.textContent = isEvil ? "Evil Library" : "Library";
-    if (contentTitle) contentTitle.textContent = isEvil ? "All evil" : (activeCategory === "all" ? "All games" : CATEGORY_LABELS[activeCategory]);
-    if (brandTitle) brandTitle.textContent = isEvil ? "Evil Barnical" : "Barnical V4";
-    if (brandSubtitle) brandSubtitle.textContent = isEvil ? "Made by evil students" : "Made by a student, for students";
-    if (themePanelLabel) themePanelLabel.textContent = isEvil ? "Evil Theme" : "Theme";
-
-    const searchInputEl = document.getElementById("searchInput");
-    const searchOverlayEl = document.getElementById("searchOverlay");
-    const searchEmptyState = document.getElementById("searchEmptyState");
-    const recentEyebrow = document.querySelector(".recent-eyebrow");
-    const recentTitle = document.querySelector(".recent-title");
-    const surpriseMeButtonEl = document.getElementById("surpriseMeButton");
-    const feedbackTitle = document.getElementById("feedback-title");
-    const changelogTitle = document.getElementById("changelog-title");
-    const creditsTitle = document.getElementById("credits-title");
-    const chatTitle = document.getElementById("chat-title");
-
-    if (searchInputEl) searchInputEl.placeholder = isEvil ? "Search evil games..." : "Search games...";
-    if (searchOverlayEl) searchOverlayEl.setAttribute("aria-label", isEvil ? "Search evil games" : "Search games");
-    if (searchEmptyState) {
-      const emptyText = searchEmptyState.querySelector("p");
-      if (emptyText) emptyText.textContent = isEvil ? "Type to search evil games..." : "Type to search games...";
-    }
-    if (recentEyebrow) recentEyebrow.textContent = isEvil ? "Recently evil" : "Recently played";
-    if (recentTitle) recentTitle.textContent = isEvil ? "Jump back into evil" : "Jump back in";
-    if (surpriseMeButtonEl) {
-      const surpriseLabel = surpriseMeButtonEl.querySelector("span");
-      if (surpriseLabel) surpriseLabel.textContent = isEvil ? "Surprise evil" : "Surprise me";
-    }
-    if (feedbackTitle) feedbackTitle.textContent = isEvil ? "Send evil feedback" : "Send Feedback";
-    if (changelogTitle) changelogTitle.textContent = isEvil ? "Evil Changelog" : "Changelog";
-    if (creditsTitle) creditsTitle.textContent = isEvil ? "Evil Credits" : "Credits";
-    if (chatTitle) chatTitle.textContent = isEvil ? "Evil Chat" : "Live Chat";
-  }
 
   function triggerMascotEffect() {
     if (!mascotButton) return;
@@ -751,16 +712,13 @@
   }
 
   themeButtons.forEach((button) => {
-    button.addEventListener("click", () => applyTheme(button.dataset.theme || "resend"));
+    button.addEventListener("click", () => applyTheme(button.dataset.theme || "nex"));
   });
 
-  if (evilThemeButton) {
-    evilThemeButton.addEventListener("click", () => applyTheme("evil"));
-  }
 
   if (homeOpen) {
     homeOpen.addEventListener("click", () => {
-      window.location.href = "/";
+      window.location.href = "../site/";
     });
   }
 
@@ -793,8 +751,7 @@
   // ---------- Game cards ----------
 
   function buildCard({ game, category }) {
-    const isEvil = document.body.dataset.theme === "evil" || document.documentElement.dataset.theme === "evil";
-    const displayLabel = isEvil ? `Evil ${game.label}` : game.label;
+    const displayLabel = game.label;
     const card = document.createElement("button");
     card.type = "button";
     card.className = "game-card";
@@ -929,15 +886,14 @@
       const matchesTerm = !term || game.label.toLowerCase().includes(term);
       return matchesCategory && matchesTerm;
     });
-    const isEvil = document.body.dataset.theme === "evil" || document.documentElement.dataset.theme === "evil";
 
-    const activeLabel = activeCategory === "all" ? (isEvil ? "All evil" : "All games") : (isEvil ? `Evil ${CATEGORY_LABELS[activeCategory]}` : CATEGORY_LABELS[activeCategory]);
+    const activeLabel = activeCategory === "all" ? "All games" : CATEGORY_LABELS[activeCategory];
     breadcrumbTitle.textContent = activeLabel;
     contentTitle.textContent = activeLabel;
-    contentEyebrow.textContent = isEvil ? "Evil Library" : "Library";
+    contentEyebrow.textContent = "Library";
     contentCount.textContent = isLoading
       ? (activeSort === "likes" ? "Loading likes..." : "Loading popularity...")
-      : `${list.length} ${isEvil ? "evil game" : "game"}${list.length === 1 ? "" : "s"}`;
+      : `${list.length} game${list.length === 1 ? "" : "s"}`;
     if (sortNote) {
       if (activeSort === "popularity") {
         sortNote.textContent = popularityReady ? "Sorted by most popular." : "Loading popularity...";
@@ -1016,12 +972,11 @@
 
   function renderSearchResults(term) {
     const cleaned = term.trim().toLowerCase();
-    const isEvil = document.body.dataset.theme === "evil" || document.documentElement.dataset.theme === "evil";
     if (!cleaned) {
       searchEmptyState.hidden = false;
-      searchEmptyState.querySelector("p").textContent = isEvil ? "Type to search evil games..." : "Type to search games...";
-      searchOverlay.setAttribute("aria-label", isEvil ? "Search evil games" : "Search games");
-      if (searchInput) searchInput.placeholder = isEvil ? "Search evil games..." : "Search games...";
+      searchEmptyState.querySelector("p").textContent = "Type to search games...";
+      searchOverlay.setAttribute("aria-label", "Search games");
+      if (searchInput) searchInput.placeholder = "Search games...";
       searchResults.hidden = true;
       searchResults.innerHTML = "";
       return;
@@ -1033,7 +988,7 @@
 
     if (matches.length === 0) {
       searchEmptyState.hidden = false;
-      searchEmptyState.querySelector("p").textContent = isEvil ? "No evil games found." : "No games found.";
+      searchEmptyState.querySelector("p").textContent = "No games found.";
       searchResults.hidden = true;
       searchResults.innerHTML = "";
       return;
@@ -1044,7 +999,7 @@
     searchResults.innerHTML = "";
 
     matches.forEach(({ game, category }) => {
-      const displayLabel = isEvil ? `Evil ${game.label}` : game.label;
+      const displayLabel = game.label;
       const row = document.createElement("button");
       row.type = "button";
       row.className = "search-result-item";
@@ -1218,9 +1173,9 @@
 
   // ---------- Live chat ----------
 
-  const CHAT_STORAGE_KEY = "barnical-live-chat-messages";
-  const CHAT_NAME_KEY = "barnical-live-chat-name";
-  const CHAT_CHANNEL_NAME = "barnical-live-chat";
+  const CHAT_STORAGE_KEY = "gameplaza-brn-live-chat-messages";
+  const CHAT_NAME_KEY = "gameplaza-brn-live-chat-name";
+  const CHAT_CHANNEL_NAME = "gameplaza-brn-live-chat";
   const CHAT_MESSAGE_LIMIT = 100;
   const MAX_CHAT_NAME_LENGTH = 24;
   const MAX_CHAT_MESSAGE_LENGTH = 280;
@@ -1233,7 +1188,7 @@
 
   // Track user message history for rate limiting and spam detection
   let userMessageHistory = {};
-  const CHAT_ROOM_PATH = window.FIREBASE_CHAT_PATH || "barnical/chat/main/messages";
+  const CHAT_ROOM_PATH = window.FIREBASE_CHAT_PATH || "gameplaza-brn/chat/main/messages";
   const FIREBASE_CONFIG = window.FIREBASE_CONFIG || null;
   const PROFANITY_PATTERNS = [
     /f[\W_]*u[\W_]*c[\W_]*k(?:[\W_]*(?:ing|er|ers|ed|s|y))?/gi,
@@ -1724,6 +1679,8 @@
     waitForFirebaseRuntime().then((ready) => {
       if (!ready) {
         popularityReady = true;
+        likesReady = true;
+        setPresenceCount(0);
         renderGrid();
         setLocalChatMode();
         return;

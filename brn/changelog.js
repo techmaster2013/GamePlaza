@@ -1,12 +1,12 @@
 // Simple changelog popup shown on every load
 const changelogViews = {
   changelog: {
-    title: 'OFFICAL V4 UPDATE:',
-    meta: 'Version: 30/08/26',
+    title: 'GamePlaza / brn — A new chapter',
+    meta: 'October 17, 2026',
     items: [
-      "More themes",
-      "More games",
-      "Linux Emulator"
+      "Nex brings the GamePlaza purple, violet, and pink palette to the arcade.",
+      "The complete GamePlaza catalog joins the existing brn library.",
+      "Barnacle preserves the original monochrome theme. Search, sorting, and recently played stay close at hand."
     ]
   },
   outage: {
